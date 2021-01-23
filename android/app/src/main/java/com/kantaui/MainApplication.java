@@ -15,7 +15,7 @@ import java.util.List;
 import com.microsoft.codepush.react.CodePush;
 
 // FaceBookSDK
-import com.facebook.reactnative.androidsdk.FBSDKPackage;
+// import com.facebook.reactnative.androidsdk.FBSDKPackage;
 
 
 public class MainApplication extends Application implements ReactApplication {
@@ -36,7 +36,7 @@ public class MainApplication extends Application implements ReactApplication {
 
           // FaceBookSDK
           // new MainReactPackage(),
-          new FBSDKPackage()
+          // new FBSDKPackage()
           return packages;
         }
 
