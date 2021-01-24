@@ -28,30 +28,30 @@ public class MainApplication extends Application implements ReactApplication {
         }
         
 
-        // @Override
-        // protected List<ReactPackage> getPackages() {
-        //   @SuppressWarnings("UnnecessaryLocalVariable")
-        //   List<ReactPackage> packages = new PackageList(this).getPackages();
-        //   // Packages that cannot be autolinked yet can be added manually here, for example:
-        //   // packages.add(new MyReactNativePackage());
-
-        //   // FaceBookSDK
-        //   packages.add(new MainReactPackage());
-        //   packages.add(new FBSDKPackage());
-
-        //   // new MainReactPackage(),
-        //   // new FBSDKPackage(),
-        //   return packages;
-        // }
-
         @Override
         protected List<ReactPackage> getPackages() {
           @SuppressWarnings("UnnecessaryLocalVariable")
-            return Arrays.</ReactPackage>ReactPackage>asList(
-              new MainReactPackage(),
-              new FBSDKPackage()
-          );
+          List<ReactPackage> packages = new PackageList(this).getPackages();
+          // Packages that cannot be autolinked yet can be added manually here, for example:
+          // packages.add(new MyReactNativePackage());
+
+          // FaceBookSDK
+          // packages.add(new MainReactPackage());
+          // packages.add(new FBSDKPackage());
+
+          // new MainReactPackage(),
+          // new FBSDKPackage(),
+          return packages;
         }
+
+        // @Override
+        // protected List<ReactPackage> getPackages() {
+        //   @SuppressWarnings("UnnecessaryLocalVariable")
+        //     return Arrays.</ReactPackage>ReactPackage>asList(
+        //       new MainReactPackage(),
+        //       new FBSDKPackage()
+        //   );
+        // }
 
         @Override
         protected String getJSMainModuleName() {
