@@ -37,7 +37,7 @@ public class MainApplication extends Application implements ReactApplication {
 
           // FaceBookSDK
           new MainReactPackage(),
-          new FBSDKPackage()
+          new FBSDKPackage(),
           return packages;
         }
 
