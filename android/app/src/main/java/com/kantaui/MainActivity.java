@@ -14,19 +14,19 @@ public class MainActivity extends ReactActivity {
   }
 }
 
-...
-//CodePush //
-// 1. Import the plugin class.
-import com.microsoft.codepush.react.CodePush;
-public class MainApplication extends Application implements ReactApplication {
-    private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
-        ...
-        // 2. Override the getJSBundleFile method to let
-        // the CodePush runtime determine where to get the JS
-        // bundle location from on each app start
-        @Override
-        protected String getJSBundleFile() {
-            return CodePush.getJSBundleFile();
-        }
-    };
+// ...
+// //CodePush //
+// // 1. Import the plugin class.
+// import com.microsoft.codepush.react.CodePush;
+// public class MainApplication extends Application implements ReactApplication {
+//     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+//         ...
+//         // 2. Override the getJSBundleFile method to let
+//         // the CodePush runtime determine where to get the JS
+//         // bundle location from on each app start
+//         @Override
+//         protected String getJSBundleFile() {
+//             return CodePush.getJSBundleFile();
+//         }
+//     };
 }

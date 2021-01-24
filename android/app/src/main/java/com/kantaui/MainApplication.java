@@ -12,7 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
   // CodePush
-import com.microsoft.codepush.react.CodePush;
+// import com.microsoft.codepush.react.CodePush;
 
 // FaceBookSDK
 // import com.facebook.reactnative.androidsdk.FBSDKPackage;
