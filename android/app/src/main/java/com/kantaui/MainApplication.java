@@ -45,6 +45,15 @@ public class MainApplication extends Application implements ReactApplication {
         }
 
         @Override
+    protected List<ReactPackage> getPackages() {
+      @SuppressWarnings("UnnecessaryLocalVariable")
+        return Arrays.</ReactPackage>ReactPackage>asList(
+          new MainReactPackage(),
+          new FBSDKPackage()
+      );
+    }
+
+        @Override
         protected String getJSMainModuleName() {
           return "index";
         }
