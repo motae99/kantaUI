@@ -36,8 +36,11 @@ public class MainApplication extends Application implements ReactApplication {
           // packages.add(new MyReactNativePackage());
 
           // FaceBookSDK
-          new MainReactPackage(),
-          new FBSDKPackage(),
+          packages.add(new MainReactPackage());
+          packages.add(new FBSDKPackage());
+
+          // new MainReactPackage(),
+          // new FBSDKPackage(),
           return packages;
         }
 

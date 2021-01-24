@@ -3,5 +3,6 @@
     <!-- <string name="facebook_app_id"></string>
     <string name="fb_login_protocol_scheme"></string>
     <string name="googe_map_api_key">AIzaSyAiJZomZxOvuedI5Q5bATkcH3FWsljlhdo</string> -->
+    <string name="facebook_app_id">745269343087680</string>
     <string moduleConfig="true" name="CodePushDeploymentKey">E2Qx8e3IZNbYukbh4wGfWAkyiwyjV68eVvHop4</string>
 </resources>
