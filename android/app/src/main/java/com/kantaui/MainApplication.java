@@ -16,9 +16,9 @@ import com.microsoft.codepush.react.CodePush;
 
 // FaceBookSDK
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
+import androidx.multidex.MultiDexApplication; // <-- rnfirebase
 
-
-public class MainApplication extends Application implements ReactApplication {
+public class MainApplication extends MultiDexApplication implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
       new ReactNativeHost(this) {
