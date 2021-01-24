@@ -12,11 +12,28 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
   // CodePush
-// import com.microsoft.codepush.react.CodePush;
+import com.microsoft.codepush.react.CodePush;
 
 // FaceBookSDK
 // import com.facebook.reactnative.androidsdk.FBSDKPackage;
 
+
+// ...
+// //CodePush //
+// // 1. Import the plugin class.
+// import com.microsoft.codepush.react.CodePush;
+// public class MainApplication extends Application implements ReactApplication {
+//     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+//         ...
+//         // 2. Override the getJSBundleFile method to let
+//         // the CodePush runtime determine where to get the JS
+//         // bundle location from on each app start
+//         @Override
+//         protected String getJSBundleFile() {
+//             return CodePush.getJSBundleFile();
+//         }
+//     };
+// }
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -25,6 +42,10 @@ public class MainApplication extends Application implements ReactApplication {
         @Override
         public boolean getUseDeveloperSupport() {
           return BuildConfig.DEBUG;
+        }
+        @Override
+        protected String getJSBundleFile() {
+            return CodePush.getJSBundleFile();
         }
 
         @Override
