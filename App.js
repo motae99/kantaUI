@@ -39,8 +39,8 @@ const mymovies = [
   {
     key: '123',
     title: 'BEAUTY',
-    poster: require('./img/beauty.jpeg'),
-    backdrop: require('./img/beauty.jpeg'),
+    poster: require('./App/img/beauty.jpeg'),
+    backdrop: require('./App/img/beauty.jpeg'),
     description:
       ' some text some text some text some text some text some text some text some text some text',
     releaseDate: '12',
@@ -48,8 +48,8 @@ const mymovies = [
   {
     key: '234',
     title: 'HOTELS',
-    poster: require('./img/hotels.jpeg'),
-    backdrop: require('./img/hotels.jpeg'),
+    poster: require('./App/img/hotels.jpeg'),
+    backdrop: require('./App/img/hotels.jpeg'),
     description:
       ' some text some text some text some text some text some text some text some text some text',
     releaseDate: '12',
@@ -57,8 +57,8 @@ const mymovies = [
   {
     key: '345',
     title: 'MAKEUP ARTISTS',
-    poster: require('./img/makeup.jpeg'),
-    backdrop: require('./img/makeup.jpeg'),
+    poster: require('./App/img/makeup.jpeg'),
+    backdrop: require('./App/img/makeup.jpeg'),
     description:
       ' some text some text some text some text some text some text some text some text some text',
     releaseDate: '12',
@@ -66,8 +66,8 @@ const mymovies = [
   {
     key: '456',
     title: 'PHOTOGRAPHY',
-    poster: require('./img/photography.jpeg'),
-    backdrop: require('./img/photography.jpeg'),
+    poster: require('./App/img/photography.jpeg'),
+    backdrop: require('./App/img/photography.jpeg'),
     description:
       ' some text some text some text some text some text some text some text some text some text',
     releaseDate: '12',
@@ -75,8 +75,8 @@ const mymovies = [
   {
     key: '567',
     title: 'EVENTS',
-    poster: require('./img/events.jpeg'),
-    backdrop: require('./img/events.jpeg'),
+    poster: require('./App/img/events.jpeg'),
+    backdrop: require('./App/img/events.jpeg'),
     description:
       ' some text some text some text some text some text some text some text some text some text',
     releaseDate: '12',
