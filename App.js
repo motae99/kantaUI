@@ -1,26 +1,22 @@
-import React, {Component} from 'react';
-import {View} from 'react-native';
-import {LoginButton, AccessToken} from 'react-native-fbsdk';
+import React from 'react';
+import {View, Text} from 'react-native';
+// import {LoginButton, AccessToken} from 'react-native-fbsdk';
+import codePush from 'react-native-code-push';
 
-export default class Login extends Component {
-  render() {
-    return (
-      <View>
-        <LoginButton
-          onLoginFinished={(error, result) => {
-            if (error) {
-              console.log('login has error: ' + result.error);
-            } else if (result.isCancelled) {
-              console.log('login is cancelled.');
-            } else {
-              AccessToken.getCurrentAccessToken().then((data) => {
-                console.log(data.accessToken.toString());
-              });
-            }
-          }}
-          onLogoutFinished={() => console.log('logout.')}
-        />
-      </View>
-    );
-  }
-}
+const codePushOptions = {
+  updateDialog: true,
+  checkFrequency: codePush.CheckFrequency.ON_APP_START,
+  installMode: codePush.InstallMode.IMMEDIATE,
+};
+
+const App = () => {
+  return (
+    <View style={{justifyContent: 'center', alignItems: 'center'}}>
+      <Text style={{fontSize: '28', fontWeight: 'bold'}}>
+        KantaUI Starting Point
+      </Text>
+    </View>
+  );
+};
+export default codePush(codePushOptions)(App);
+// export default App;
