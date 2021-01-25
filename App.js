@@ -2,17 +2,21 @@
 import * as React from 'react';
 import {
   StatusBar,
-  Animated,
   Text,
-  Image,
   View,
   StyleSheet,
+  FlatList,
+  Image,
   Dimensions,
+  Animated,
+  TouchableOpacity,
   Platform,
-  SafeAreaView,
 } from 'react-native';
-import codePush from 'react-native-code-push';
 const {width, height} = Dimensions.get('window');
+import {LinearGradient} from 'expo-linear-gradient';
+
+import codePush from 'react-native-code-push';
+// import LottieView from 'lottie-react-native';
 
 const codePushOptions = {
   updateDialog: true,
@@ -20,195 +24,312 @@ const codePushOptions = {
   installMode: codePush.InstallMode.IMMEDIATE,
 };
 
-const bgs = ['#28abb9', '#6a097d', '#01c5c4', '#B98EFF'];
-const DATA = [
+const SPACING = 10;
+const ITEM_SIZE = Platform.OS === 'ios' ? width * 0.72 : width * 0.82;
+const EMPTY_ITEM_SIZE = (width - ITEM_SIZE) / 2;
+const BACKDROP_HEIGHT = height * 0.65;
+
+const Loading = () => (
+  <View style={styles.loadingContainer}>
+    <Text style={styles.paragraph}>Loading...</Text>
+  </View>
+);
+
+const mymovies = [
   {
-    key: '3571572',
-    title: 'Multi-lateral intermediate moratorium',
+    key: '123',
+    title: 'BEAUTY',
+    poster: require('./img/beauty.jpeg'),
+    backdrop: require('./img/beauty.jpeg'),
     description:
-      "I'll back up the multi-byte XSS matrix, that should feed the SCSI application!",
-    image: 'https://image.flaticon.com/icons/png/256/3571/3571572.png',
+      ' some text some text some text some text some text some text some text some text some text',
+    releaseDate: '12',
   },
   {
-    key: '3571747',
-    title: 'Automated radical data-warehouse',
+    key: '234',
+    title: 'HOTELS',
+    poster: require('./img/hotels.jpeg'),
+    backdrop: require('./img/hotels.jpeg'),
     description:
-      'Use the optical SAS system, then you can navigate the auxiliary alarm!',
-    image: 'https://image.flaticon.com/icons/png/256/3571/3571747.png',
+      ' some text some text some text some text some text some text some text some text some text',
+    releaseDate: '12',
   },
   {
-    key: '3571680',
-    title: 'Inverse attitude-oriented system engine',
+    key: '345',
+    title: 'MAKEUP ARTISTS',
+    poster: require('./img/makeup.jpeg'),
+    backdrop: require('./img/makeup.jpeg'),
     description:
-      'The ADP array is down, compress the online sensor so we can input the HTTP panel!',
-    image: 'https://image.flaticon.com/icons/png/256/3571/3571680.png',
+      ' some text some text some text some text some text some text some text some text some text',
+    releaseDate: '12',
   },
   {
-    key: '3571603',
-    title: 'Monitored global data-warehouse',
-    description: 'We need to program the open-source IB interface!',
-    image: 'https://image.flaticon.com/icons/png/256/3571/3571603.png',
+    key: '456',
+    title: 'PHOTOGRAPHY',
+    poster: require('./img/photography.jpeg'),
+    backdrop: require('./img/photography.jpeg'),
+    description:
+      ' some text some text some text some text some text some text some text some text some text',
+    releaseDate: '12',
+  },
+  {
+    key: '567',
+    title: 'EVENTS',
+    poster: require('./img/events.jpeg'),
+    backdrop: require('./img/events.jpeg'),
+    description:
+      ' some text some text some text some text some text some text some text some text some text',
+    releaseDate: '12',
   },
 ];
 
-const Indicator = ({scrollx}) => {
+const Backdrop = ({movies, scrollX}) => {
   return (
-    <View style={{position: 'absolute', bottom: 100, flexDirection: 'row'}}>
-      {DATA.map((_, i) => {
-        const inputRange = [(i - 1) * width, i * width, (i + 1) * width];
-        const scale = scrollx.interpolate({
-          inputRange,
-          outputRange: [0.8, 1.4, 0.8],
-          extrapolate: 'clamp',
-        });
-
-        const opacity = scrollx.interpolate({
-          inputRange,
-          outputRange: [0.4, 0.9, 0.4],
-          extrapolate: 'clamp',
-        });
-        return (
-          <Animated.View
-            key={`indicator-${i}`}
-            style={{
-              height: 10,
-              width: 10,
-              borderRadius: 5,
-              backgroundColor: '#fff',
-              opacity,
-              margin: 10,
-              transform: [{scale}],
-            }}
-          />
-        );
-      })}
-    </View>
-  );
-};
-
-const Backdrop = ({scrollx}) => {
-  const backgroundColor = scrollx.interpolate({
-    inputRange: bgs.map((_, i) => i * width),
-    outputRange: bgs.map((bg) => bg),
-  });
-  return (
-    <Animated.View
-      style={[
-        StyleSheet.absoluteFillObject,
-        {
-          backgroundColor,
-        },
-      ]}
-    />
-  );
-};
-
-const Square = ({scrollx}) => {
-  const YOLO = Animated.modulo(
-    Animated.divide(Animated.modulo(scrollx, width), new Animated.Value(width)),
-    1,
-  );
-
-  const rotate = YOLO.interpolate({
-    inputRange: [0, 0.5, 1],
-    outputRange: ['25deg', '0deg', '25deg'],
-  });
-  const translateX = YOLO.interpolate({
-    inputRange: [0, 0.5, 1],
-    outputRange: [-30, -height, -30],
-  });
-  return (
-    <Animated.View
-      style={{
-        width: height,
-        height: height,
-        borderRadius: 86,
-        backgroundColor: '#fff',
-        position: 'absolute',
-        top: -height * 0.6,
-        left: -height * 0.3,
-        transform: [
-          {
-            rotate,
-          },
-          {
-            translateX,
-          },
-        ],
-      }}
-    />
-  );
-};
-
-const App = () => {
-  const scrollx = React.useRef(new Animated.Value(0)).current;
-  return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar translucent />
-      <Backdrop scrollx={scrollx} />
-      <Square scrollx={scrollx} />
-      <Animated.FlatList
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{paddingBottom: 100}}
-        scrollEventThrottle={32}
-        onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {x: scrollx}}}],
-          {useNativeDriver: false},
-        )}
-        pagingEnabled
-        data={DATA}
-        keyExtractor={(item) => item.key}
-        renderItem={({item}) => {
+    <View style={{height: BACKDROP_HEIGHT, width, position: 'absolute'}}>
+      <FlatList
+        data={movies}
+        keyExtractor={(item) => item.key + '-backdrop'}
+        removeClippedSubviews={false}
+        contentContainerStyle={{width, height: BACKDROP_HEIGHT}}
+        renderItem={({item, index}) => {
+          if (!item.backdrop) {
+            return null;
+          }
+          // const translateX = scrollX.interpolate({
+          //   inputRange: [(index - 2) * ITEM_SIZE, (index - 1) * ITEM_SIZE],
+          //   outputRange: [0, width],
+          //   // extrapolate:'clamp'
+          // });
+          const opacity = scrollX.interpolate({
+            inputRange: [(index - 2) * ITEM_SIZE, (index - 1) * ITEM_SIZE],
+            outputRange: [0, 1],
+            // extrapolate:'clamp'
+          });
+          // let back = require(item.backdrop)
           return (
-            <View style={{width, alignItems: 'center', padding: 20}}>
-              <View style={{flex: 0.7, justifyContent: 'center'}}>
+            <View>
+              <Animated.View
+                removeClippedSubviews={false}
+                style={{
+                  position: 'absolute',
+                  // width: translateX,
+                  opacity,
+                  height,
+                  // overflow: 'hidden',
+                }}>
                 <Image
-                  source={{uri: item.image}}
+                  source={item.backdrop}
                   style={{
-                    width: width / 2,
-                    height: height / 4,
-                    resizeMode: 'contain',
+                    width,
+                    height: BACKDROP_HEIGHT,
+                    position: 'absolute',
                   }}
                 />
-              </View>
-              <View style={{flex: 0.3}}>
-                <Text
+                <View
                   style={{
-                    color: '#fff',
-                    fontWeight: '800',
-                    fontSize: 28,
-                    marginBottom: 10,
+                    width: 255,
+                    position: 'absolute',
+                    top: 130,
+                    left: 60,
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}>
-                  {item.title}
-                </Text>
-                <Text style={{color: '#fff', fontWeight: '300'}}>
-                  {item.description}
-                </Text>
-              </View>
+                  <Text
+                    style={{fontSize: 45, color: '#fff', textAlign: 'center'}}>
+                    {item.title}
+                  </Text>
+                </View>
+              </Animated.View>
             </View>
           );
         }}
       />
-      <Indicator scrollx={scrollx} />
-    </SafeAreaView>
+      <LinearGradient
+        colors={['rgba(0, 0, 0, 0)', 'white']}
+        style={{
+          height: BACKDROP_HEIGHT / 1.5,
+          width,
+          position: 'absolute',
+          bottom: 0,
+        }}
+      />
+      <View style={{position: 'absolute', top: 50, left: 20}}>
+        <Text style={{fontSize: 25, color: '#fff', textAlign: 'center'}}>
+          KANTA BOOK
+        </Text>
+      </View>
+
+      <View
+        style={{
+          position: 'absolute',
+          top: 50,
+          right: 20,
+          height: 40,
+          width: 40,
+          borderRadius: 20,
+          backgroundColor: 'white',
+        }}>
+        <Image
+          source={{
+            uri:
+              'https://www.flaticon.com/svg/vstatic/svg/4061/4061283.svg?token=exp=1610923650~hmac=1dd0068cddddc21a29b99511cf3ee25c',
+          }}
+          style={{width: width / 2, height: height / 4, resizeMode: 'contain'}}
+        />
+      </View>
+    </View>
+  );
+};
+
+const App = () => {
+  const [movies, setMovies] = React.useState([]);
+  const scrollX = React.useRef(new Animated.Value(0)).current;
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const movies = mymovies; //await getMovies();
+      // Add empty items to create fake space
+      // [empty_item, ...movies, empty_item]
+      setMovies([{key: 'empty-left'}, ...mymovies, {key: 'empty-right'}]);
+    };
+
+    if (movies.length === 0) {
+      fetchData(movies);
+    }
+  }, [movies]);
+
+  if (movies.length === 0) {
+    return <Loading />;
+  }
+
+  return (
+    <View style={styles.container}>
+      <Backdrop movies={movies} scrollX={scrollX} />
+      <StatusBar translucent backgroundColor="transparent" />
+      <Animated.FlatList
+        showsHorizontalScrollIndicator={false}
+        data={movies}
+        keyExtractor={(item) => item.key}
+        horizontal
+        bounces={false}
+        decelerationRate={Platform.OS === 'ios' ? 0 : 0.98}
+        renderToHardwareTextureAndroid
+        contentContainerStyle={{alignItems: 'center'}}
+        snapToInterval={ITEM_SIZE}
+        snapToAlignment="start"
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {x: scrollX}}}],
+          {useNativeDriver: false},
+        )}
+        scrollEventThrottle={16}
+        renderItem={({item, index}) => {
+          if (!item.poster) {
+            return <View style={{width: EMPTY_ITEM_SIZE}} />;
+          }
+
+          const inputRange = [
+            (index - 2) * ITEM_SIZE,
+            (index - 1) * ITEM_SIZE,
+            index * ITEM_SIZE,
+          ];
+
+          const translateY = scrollX.interpolate({
+            inputRange,
+            outputRange: [140, 100, 140],
+            extrapolate: 'clamp',
+          });
+
+          return (
+            <View style={{width: ITEM_SIZE}}>
+              <Animated.View
+                style={{
+                  marginHorizontal: SPACING,
+                  padding: SPACING * 2,
+                  alignItems: 'center',
+                  transform: [{translateY}],
+                  backgroundColor: 'white',
+                  borderRadius: 34,
+                }}>
+                <Image source={item.poster} style={styles.posterImage} />
+                {/* <Text style={{ fontSize: 24 }} numberOfLines={1}>
+                  {item.title}
+                </Text> */}
+                {/* <Rating rating={item.rating} />
+                <Genres genres={item.genres} /> */}
+                <Text
+                  style={{fontSize: 13, textAlign: 'center', color: '#3A4154'}}
+                  numberOfLines={3}>
+                  {item.description}
+                </Text>
+                <TouchableOpacity
+                  style={{
+                    margin: 10,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: 60,
+                    width: '95%',
+                    backgroundColor: '#2C3449',
+                    borderRadius: 10,
+                  }}
+                  onPress={() => {}}>
+                  <Text
+                    style={{color: '#fff', fontSize: 28, textAlign: 'center'}}>
+                    See All
+                  </Text>
+                </TouchableOpacity>
+              </Animated.View>
+            </View>
+          );
+        }}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  loadingContainer: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: Platform.OS === 'android' ? 25 : 0,
   },
-  androidSafeArea: {
+  container: {
     flex: 1,
-    backgroundColor: 'green',
-    // paddingTop: Platform.OS === 'android' ? 25 : 0,
-    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
+  },
+  paragraph: {
+    margin: 24,
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  posterImage: {
+    width: '98%',
+    height: ITEM_SIZE,
+    resizeMode: 'cover',
+    borderRadius: 24,
+    margin: 0,
+    marginBottom: 10,
   },
 });
 
 export default codePush(codePushOptions)(App);
+
+// import React from 'react';
+// import LottieView from 'lottie-react-native';
+
+// export default class BasicExample extends React.Component {
+//   componentDidMount() {
+//     this.animation.play();
+//     // Or set a specific startFrame and endFrame with:
+//     this.animation.play(30, 120);
+//   }
+
+//   render() {
+//     return (
+//       <LottieView
+//         ref={(animation) => {
+//           this.animation = animation;
+//         }}
+//         source={require('./Lottie/first.json')}
+//       />
+//     );
+//   }
+// }
