@@ -5,18 +5,13 @@ import {
   Text,
   View,
   StyleSheet,
-  FlatList,
   Image,
   Dimensions,
   Animated,
-  TouchableOpacity,
-  Platform,
 } from 'react-native';
-const {width, height} = Dimensions.get('window');
-import {LinearGradient} from 'expo-linear-gradient';
-
 import codePush from 'react-native-code-push';
-// import LottieView from 'lottie-react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 const codePushOptions = {
   updateDialog: true,
@@ -24,292 +19,213 @@ const codePushOptions = {
   installMode: codePush.InstallMode.IMMEDIATE,
 };
 
-const SPACING = 10;
-const ITEM_SIZE = Platform.OS === 'ios' ? width * 0.72 : width * 0.82;
-const EMPTY_ITEM_SIZE = (width - ITEM_SIZE) / 2;
-const BACKDROP_HEIGHT = height * 0.65;
+const {width, height} = Dimensions.get('window');
 
-const Loading = () => (
-  <View style={styles.loadingContainer}>
-    <Text style={styles.paragraph}>Loading...</Text>
-  </View>
-);
-
-const mymovies = [
-  {
-    key: '123',
-    title: 'BEAUTY',
-    poster: require('./App/img/beauty.jpeg'),
-    backdrop: require('./App/img/beauty.jpeg'),
-    description:
-      ' some text some text some text some text some text some text some text some text some text',
-    releaseDate: '12',
-  },
-  {
-    key: '234',
-    title: 'HOTELS',
-    poster: require('./App/img/hotels.jpeg'),
-    backdrop: require('./App/img/hotels.jpeg'),
-    description:
-      ' some text some text some text some text some text some text some text some text some text',
-    releaseDate: '12',
-  },
-  {
-    key: '345',
-    title: 'MAKEUP ARTISTS',
-    poster: require('./App/img/makeup.jpeg'),
-    backdrop: require('./App/img/makeup.jpeg'),
-    description:
-      ' some text some text some text some text some text some text some text some text some text',
-    releaseDate: '12',
-  },
-  {
-    key: '456',
-    title: 'PHOTOGRAPHY',
-    poster: require('./App/img/photography.jpeg'),
-    backdrop: require('./App/img/photography.jpeg'),
-    description:
-      ' some text some text some text some text some text some text some text some text some text',
-    releaseDate: '12',
-  },
-  {
-    key: '567',
-    title: 'EVENTS',
-    poster: require('./App/img/events.jpeg'),
-    backdrop: require('./App/img/events.jpeg'),
-    description:
-      ' some text some text some text some text some text some text some text some text some text',
-    releaseDate: '12',
-  },
+const articleParagraphs = [
+  'One advanced diverted domestic sex repeated bringing you old. Possible procured her trifling laughter thoughts property she met way. Companions shy had solicitude favourable own. Which could saw guest man now heard but. Lasted my coming uneasy marked so should. Gravity letters it amongst herself dearest an windows by. Wooded ladies she basket season age her uneasy saw. Discourse unwilling am no described dejection incommode no listening of. Before nature his parish boy. ',
+  'Folly words widow one downs few age every seven. If miss part by fact he park just shew. Discovered had get considered projection who favourable. Necessary up knowledge it tolerably. Unwilling departure education is be dashwoods or an. Use off agreeable law unwilling sir deficient curiosity instantly. Easy mind life fact with see has bore ten. Parish any chatty can elinor direct for former. Up as meant widow equal an share least. ',
+  'Another journey chamber way yet females man. Way extensive and dejection get delivered deficient sincerity gentleman age. Too end instrument possession contrasted motionless. Calling offence six joy feeling. Coming merits and was talent enough far. Sir joy northward sportsmen education. Discovery incommode earnestly no he commanded if. Put still any about manor heard. ',
+  'Village did removed enjoyed explain nor ham saw calling talking. Securing as informed declared or margaret. Joy horrible moreover man feelings own shy. Request norland neither mistake for yet. Between the for morning assured country believe. On even feet time have an no at. Relation so in confined smallest children unpacked delicate. Why sir end believe uncivil respect. Always get adieus nature day course for common. My little garret repair to desire he esteem. ',
+  'In it except to so temper mutual tastes mother. Interested cultivated its continuing now yet are. Out interested acceptance our partiality affronting unpleasant why add. Esteem garden men yet shy course. Consulted up my tolerably sometimes perpetual oh. Expression acceptance imprudence particular had eat unsatiable. ',
+  'Had denoting properly jointure you occasion directly raillery. In said to of poor full be post face snug. Introduced imprudence see say unpleasing devonshire acceptance son. Exeter longer wisdom gay nor design age. Am weather to entered norland no in showing service. Nor repeated speaking shy appetite. Excited it hastily an pasture it observe. Snug hand how dare here too. ',
+  'Improve ashamed married expense bed her comfort pursuit mrs. Four time took ye your as fail lady. Up greatest am exertion or marianne. Shy occasional terminated insensible and inhabiting gay. So know do fond to half on. Now who promise was justice new winding. In finished on he speaking suitable advanced if. Boy happiness sportsmen say prevailed offending concealed nor was provision. Provided so as doubtful on striking required. Waiting we to compass assured. ',
 ];
 
-const Backdrop = ({movies, scrollX}) => {
-  return (
-    <View style={{height: BACKDROP_HEIGHT, width, position: 'absolute'}}>
-      <FlatList
-        data={movies}
-        keyExtractor={(item) => item.key + '-backdrop'}
-        removeClippedSubviews={false}
-        contentContainerStyle={{width, height: BACKDROP_HEIGHT}}
-        renderItem={({item, index}) => {
-          if (!item.backdrop) {
-            return null;
-          }
-          // const translateX = scrollX.interpolate({
-          //   inputRange: [(index - 2) * ITEM_SIZE, (index - 1) * ITEM_SIZE],
-          //   outputRange: [0, width],
-          //   // extrapolate:'clamp'
-          // });
-          const opacity = scrollX.interpolate({
-            inputRange: [(index - 2) * ITEM_SIZE, (index - 1) * ITEM_SIZE],
-            outputRange: [0, 1],
-            // extrapolate:'clamp'
-          });
-          // let back = require(item.backdrop)
-          return (
-            <View>
-              <Animated.View
-                removeClippedSubviews={false}
-                style={{
-                  position: 'absolute',
-                  // width: translateX,
-                  opacity,
-                  height,
-                  // overflow: 'hidden',
-                }}>
-                <Image
-                  source={item.backdrop}
-                  style={{
-                    width,
-                    height: BACKDROP_HEIGHT,
-                    position: 'absolute',
-                  }}
-                />
-                <View
-                  style={{
-                    width: 255,
-                    position: 'absolute',
-                    top: 130,
-                    left: 60,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <Text
-                    style={{fontSize: 45, color: '#fff', textAlign: 'center'}}>
-                    {item.title}
-                  </Text>
-                </View>
-              </Animated.View>
-            </View>
-          );
-        }}
-      />
-      <LinearGradient
-        colors={['rgba(0, 0, 0, 0)', 'white']}
-        style={{
-          height: BACKDROP_HEIGHT / 1.5,
-          width,
-          position: 'absolute',
-          bottom: 0,
-        }}
-      />
-      <View style={{position: 'absolute', top: 50, left: 20}}>
-        <Text style={{fontSize: 25, color: '#fff', textAlign: 'center'}}>
-          KANTA BOOK
-        </Text>
-      </View>
-
-      <View
-        style={{
-          position: 'absolute',
-          top: 50,
-          right: 20,
-          height: 40,
-          width: 40,
-          borderRadius: 20,
-          backgroundColor: 'white',
-        }}>
-        <Image
-          source={{
-            uri:
-              'https://www.flaticon.com/svg/vstatic/svg/4061/4061283.svg?token=exp=1610923650~hmac=1dd0068cddddc21a29b99511cf3ee25c',
-          }}
-          style={{width: width / 2, height: height / 4, resizeMode: 'contain'}}
-        />
-      </View>
-    </View>
-  );
-};
+const getImage = (i) =>
+  `https://source.unsplash.com/600x${400 + i}/?blackandwhite`;
 
 const App = () => {
-  const [movies, setMovies] = React.useState([]);
-  const scrollX = React.useRef(new Animated.Value(0)).current;
-  React.useEffect(() => {
-    const fetchData = async () => {
-      const movies = mymovies; //await getMovies();
-      // Add empty items to create fake space
-      // [empty_item, ...movies, empty_item]
-      setMovies([{key: 'empty-left'}, ...mymovies, {key: 'empty-right'}]);
-    };
+  const top = 20;
 
-    if (movies.length === 0) {
-      fetchData(movies);
-    }
-  }, [movies]);
-
-  if (movies.length === 0) {
-    return <Loading />;
-  }
+  const scollY = React.useRef(new Animated.Value(0)).current;
+  const [bottomActions, setBottomAction] = React.useState(null);
+  const topEdge =
+    bottomActions?.y - (height - top) + bottomActions?.height + top;
+  const inputRange = [-1, 0, topEdge - 60, topEdge, topEdge + 1];
 
   return (
-    <View style={styles.container}>
-      <Backdrop movies={movies} scrollX={scrollX} />
+    <SafeAreaView style={{flex: 1}}>
       <StatusBar translucent backgroundColor="transparent" />
-      <Animated.FlatList
-        showsHorizontalScrollIndicator={false}
-        data={movies}
-        keyExtractor={(item) => item.key}
-        horizontal
-        bounces={false}
-        decelerationRate={Platform.OS === 'ios' ? 0 : 0.98}
-        renderToHardwareTextureAndroid
-        contentContainerStyle={{alignItems: 'center'}}
-        snapToInterval={ITEM_SIZE}
-        snapToAlignment="start"
+      <Text style={styles.heading}>Black and White</Text>
+      <Animated.ScrollView
+        contentContainerStyle={{padding: 20}}
         onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {x: scrollX}}}],
-          {useNativeDriver: false},
-        )}
-        scrollEventThrottle={16}
-        renderItem={({item, index}) => {
-          if (!item.poster) {
-            return <View style={{width: EMPTY_ITEM_SIZE}} />;
-          }
-
-          const inputRange = [
-            (index - 2) * ITEM_SIZE,
-            (index - 1) * ITEM_SIZE,
-            index * ITEM_SIZE,
-          ];
-
-          const translateY = scrollX.interpolate({
-            inputRange,
-            outputRange: [140, 100, 140],
-            extrapolate: 'clamp',
-          });
-
+          [{nativeEvent: {contentOffset: {y: scollY}}}],
+          {useNativeDriver: true},
+        )}>
+        {articleParagraphs.map((text, index) => {
           return (
-            <View style={{width: ITEM_SIZE}}>
-              <Animated.View
-                style={{
-                  marginHorizontal: SPACING,
-                  padding: SPACING * 2,
-                  alignItems: 'center',
-                  transform: [{translateY}],
-                  backgroundColor: 'white',
-                  borderRadius: 34,
-                }}>
-                <Image source={item.poster} style={styles.posterImage} />
-                {/* <Text style={{ fontSize: 24 }} numberOfLines={1}>
-                  {item.title}
-                </Text> */}
-                {/* <Rating rating={item.rating} />
-                <Genres genres={item.genres} /> */}
-                <Text
-                  style={{fontSize: 13, textAlign: 'center', color: '#3A4154'}}
-                  numberOfLines={3}>
-                  {item.description}
-                </Text>
-                <TouchableOpacity
-                  style={{
-                    margin: 10,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    height: 60,
-                    width: '95%',
-                    backgroundColor: '#2C3449',
-                    borderRadius: 10,
-                  }}
-                  onPress={() => {}}>
-                  <Text
-                    style={{color: '#fff', fontSize: 28, textAlign: 'center'}}>
-                    See All
-                  </Text>
-                </TouchableOpacity>
-              </Animated.View>
+            <View key={index}>
+              {index % 3 === 0 ? (
+                <Image source={{uri: getImage(index)}} style={styles.image} />
+              ) : null}
+              <Text style={styles.paragraph}>{text}</Text>
             </View>
           );
-        }}
-      />
-    </View>
+        })}
+        <View
+          onLayout={(ev) => {
+            setBottomAction(ev.nativeEvent.layout);
+          }}
+          style={[styles.bottomActions, {backgroundColor: 'red'}]}
+        />
+        <View>
+          <Text style={styles.featuredTitle}>Featured</Text>
+          {articleParagraphs.slice(0, 3).map((text, index) => {
+            return (
+              <View
+                key={`featured_${index}`}
+                style={{flexDirection: 'row', marginBottom: 20}}>
+                <Image
+                  style={styles.featuredImage}
+                  source={{uri: getImage(index)}}
+                />
+                <Text numberOfLines={3} style={styles.paragraph}>
+                  {text}
+                </Text>
+              </View>
+            );
+          })}
+        </View>
+      </Animated.ScrollView>
+
+      {bottomActions && (
+        <Animated.View
+          style={[
+            styles.bottomActions,
+            {
+              paddingHorizontal: 20,
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              transform: [
+                {
+                  translateY: scollY.interpolate({
+                    inputRange,
+                    outputRange: [0, 0, 0, 0, -1],
+                  }),
+                },
+              ],
+            },
+          ]}>
+          <View
+            style={{
+              flexDirection: 'row',
+              height: 60,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Entypo
+              name="adjust"
+              size={24}
+              color="black"
+              style={{marginHorizontal: 10}}
+            />
+            <Animated.Text
+              style={{
+                opacity: scollY.interpolate({
+                  inputRange,
+                  outputRange: [0, 0, 0, 1, 1],
+                }),
+              }}>
+              326
+            </Animated.Text>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Animated.View
+              style={[
+                styles.icon,
+                {
+                  opacity: scollY.interpolate({
+                    inputRange,
+                    outputRange: [0, 0, 0, 1, 1],
+                  }),
+                },
+              ]}>
+              <Entypo name="export" size={24} color="black" />
+            </Animated.View>
+            <Animated.View
+              style={[
+                styles.icon,
+                {
+                  transform: [
+                    {
+                      translateX: scollY.interpolate({
+                        inputRange,
+                        outputRange: [60, 60, 60, 0, 0],
+                      }),
+                    },
+                  ],
+                },
+              ]}>
+              <Entypo name="credit" size={24} color="green" />
+            </Animated.View>
+            <Animated.View
+              style={[
+                styles.icon,
+                {
+                  opacity: scollY.interpolate({
+                    inputRange,
+                    outputRange: [0, 0, 0, 1, 1],
+                  }),
+                },
+              ]}>
+              <Entypo name="share-alternative" size={24} color="black" />
+            </Animated.View>
+          </View>
+        </Animated.View>
+      )}
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  loadingContainer: {
+  featuredImage: {
+    width: 50,
+    height: 50,
+    resizeMode: 'cover',
+    marginRight: 20,
+    borderRadius: 10,
+  },
+  bottomActions: {
+    height: 80,
+    backgroundColor: 'rgba(255, 255, 255, 1)',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+  image: {
+    width: '100%',
+    height: height * 0.4,
+    resizeMode: 'cover',
+    marginBottom: 20,
+  },
+  featuredTitle: {
+    fontSize: 24,
+    fontWeight: '800',
+    marginVertical: 20,
+  },
+  heading: {
+    marginTop: 20,
+    fontSize: 32,
+    fontWeight: '800',
+    marginBottom: 30,
+  },
+  paragraph: {
     flex: 1,
+    marginBottom: 10,
+    // fontFamily: 'Georgia'
+    fontSize: 14,
+    lineHeight: 16 * 1.5,
+  },
+  icon: {
+    height: 60,
+    width: 60,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  container: {
-    flex: 1,
-  },
-  paragraph: {
-    margin: 24,
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  posterImage: {
-    width: '98%',
-    height: ITEM_SIZE,
-    resizeMode: 'cover',
-    borderRadius: 24,
-    margin: 0,
-    marginBottom: 10,
-  },
 });
-
 export default codePush(codePushOptions)(App);
 
 // import React from 'react';
