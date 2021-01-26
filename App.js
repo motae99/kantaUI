@@ -2,259 +2,209 @@
 import * as React from 'react';
 import {
   StatusBar,
+  Animated,
   Text,
+  Image,
   View,
   StyleSheet,
-  Image,
   Dimensions,
-  Animated,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
-import codePush from 'react-native-code-push';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import Entypo from 'react-native-vector-icons/Entypo';
-
-const codePushOptions = {
-  updateDialog: true,
-  checkFrequency: codePush.CheckFrequency.ON_APP_START,
-  installMode: codePush.InstallMode.IMMEDIATE,
-};
-
+import {TouchableOpacity} from 'react-native-gesture-handler';
 const {width, height} = Dimensions.get('window');
 
-const articleParagraphs = [
-  'One advanced diverted domestic sex repeated bringing you old. Possible procured her trifling laughter thoughts property she met way. Companions shy had solicitude favourable own. Which could saw guest man now heard but. Lasted my coming uneasy marked so should. Gravity letters it amongst herself dearest an windows by. Wooded ladies she basket season age her uneasy saw. Discourse unwilling am no described dejection incommode no listening of. Before nature his parish boy. ',
-  'Folly words widow one downs few age every seven. If miss part by fact he park just shew. Discovered had get considered projection who favourable. Necessary up knowledge it tolerably. Unwilling departure education is be dashwoods or an. Use off agreeable law unwilling sir deficient curiosity instantly. Easy mind life fact with see has bore ten. Parish any chatty can elinor direct for former. Up as meant widow equal an share least. ',
-  'Another journey chamber way yet females man. Way extensive and dejection get delivered deficient sincerity gentleman age. Too end instrument possession contrasted motionless. Calling offence six joy feeling. Coming merits and was talent enough far. Sir joy northward sportsmen education. Discovery incommode earnestly no he commanded if. Put still any about manor heard. ',
-  'Village did removed enjoyed explain nor ham saw calling talking. Securing as informed declared or margaret. Joy horrible moreover man feelings own shy. Request norland neither mistake for yet. Between the for morning assured country believe. On even feet time have an no at. Relation so in confined smallest children unpacked delicate. Why sir end believe uncivil respect. Always get adieus nature day course for common. My little garret repair to desire he esteem. ',
-  'In it except to so temper mutual tastes mother. Interested cultivated its continuing now yet are. Out interested acceptance our partiality affronting unpleasant why add. Esteem garden men yet shy course. Consulted up my tolerably sometimes perpetual oh. Expression acceptance imprudence particular had eat unsatiable. ',
-  'Had denoting properly jointure you occasion directly raillery. In said to of poor full be post face snug. Introduced imprudence see say unpleasing devonshire acceptance son. Exeter longer wisdom gay nor design age. Am weather to entered norland no in showing service. Nor repeated speaking shy appetite. Excited it hastily an pasture it observe. Snug hand how dare here too. ',
-  'Improve ashamed married expense bed her comfort pursuit mrs. Four time took ye your as fail lady. Up greatest am exertion or marianne. Shy occasional terminated insensible and inhabiting gay. So know do fond to half on. Now who promise was justice new winding. In finished on he speaking suitable advanced if. Boy happiness sportsmen say prevailed offending concealed nor was provision. Provided so as doubtful on striking required. Waiting we to compass assured. ',
+// https://www.flaticon.com/packs/retro-wave
+// inspiration: https://dribbble.com/shots/11164698-Onboarding-screens-animation
+// https://twitter.com/mironcatalin/status/1321180191935373312
+
+const bgs = ['#28abb9', '#6a097d', '#01c5c4', '#B98EFF'];
+const DATA = [
+  {
+    key: '3571572',
+    title: 'Multi-lateral intermediate moratorium',
+    description:
+      "I'll back up the multi-byte XSS matrix, that should feed the SCSI application!",
+    image: 'https://image.flaticon.com/icons/png/256/3571/3571572.png',
+  },
+  {
+    key: '3571747',
+    title: 'Automated radical data-warehouse',
+    description:
+      'Use the optical SAS system, then you can navigate the auxiliary alarm!',
+    image: 'https://image.flaticon.com/icons/png/256/3571/3571747.png',
+  },
+  {
+    key: '3571680',
+    title: 'Inverse attitude-oriented system engine',
+    description:
+      'The ADP array is down, compress the online sensor so we can input the HTTP panel!',
+    image: 'https://image.flaticon.com/icons/png/256/3571/3571680.png',
+  },
+  {
+    key: '3571603',
+    title: 'Monitored global data-warehouse',
+    description: 'We need to program the open-source IB interface!',
+    image: 'https://image.flaticon.com/icons/png/256/3571/3571603.png',
+  },
 ];
 
-const getImage = (i) =>
-  `https://source.unsplash.com/600x${400 + i}/?blackandwhite`;
-
-const App = () => {
-  const top = 46.4;
-
-  const scollY = React.useRef(new Animated.Value(0)).current;
-  const [bottomActions, setBottomAction] = React.useState(null);
-  const topEdge =
-    bottomActions?.y - (height - top) + bottomActions?.height + top;
-  const inputRange = [-1, 0, topEdge - 60, topEdge, topEdge + 1];
-
+const Indicator = ({scrollx}) => {
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <StatusBar translucent backgroundColor="transparent" />
-      <Text style={styles.heading}>Black and White</Text>
-      <Animated.ScrollView
-        contentContainerStyle={{padding: 20}}
-        onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {y: scollY}}}],
-          {useNativeDriver: true},
-        )}>
-        {articleParagraphs.map((text, index) => {
-          return (
-            <View key={index}>
-              {index % 3 === 0 ? (
-                <Image source={{uri: getImage(index)}} style={styles.image} />
-              ) : null}
-              <Text style={styles.paragraph}>{text}</Text>
-            </View>
-          );
-        })}
-        <View
-          onLayout={(ev) => {
-            setBottomAction(ev.nativeEvent.layout);
-          }}
-          style={[styles.bottomActions, {backgroundColor: 'red'}]}
-        />
-        <View>
-          <Text style={styles.featuredTitle}>Featured</Text>
-          {articleParagraphs.slice(0, 3).map((text, index) => {
-            return (
-              <View
-                key={`featured_${index}`}
-                style={{flexDirection: 'row', marginBottom: 20}}>
-                <Image
-                  style={styles.featuredImage}
-                  source={{uri: getImage(index)}}
-                />
-                <Text numberOfLines={3} style={styles.paragraph}>
-                  {text}
-                </Text>
-              </View>
-            );
-          })}
-        </View>
-      </Animated.ScrollView>
+    <View style={{position: 'absolute', bottom: 100, flexDirection: 'row'}}>
+      {DATA.map((_, i) => {
+        const inputRange = [(i - 1) * width, i * width, (i + 1) * width];
+        const scale = scrollx.interpolate({
+          inputRange,
+          outputRange: [0.8, 1.4, 0.8],
+          extrapolate: 'clamp',
+        });
 
-      {bottomActions && (
-        <Animated.View
-          style={[
-            styles.bottomActions,
-            {
-              paddingHorizontal: 20,
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              transform: [
-                {
-                  translateY: scollY.interpolate({
-                    inputRange,
-                    outputRange: [0, 0, 0, 0, -1],
-                  }),
-                },
-              ],
-            },
-          ]}>
-          <View
+        const opacity = scrollx.interpolate({
+          inputRange,
+          outputRange: [0.4, 0.9, 0.4],
+          extrapolate: 'clamp',
+        });
+        return (
+          <Animated.View
+            key={`indicator-${i}`}
             style={{
-              flexDirection: 'row',
-              height: 60,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Entypo
-              name="adjust"
-              size={24}
-              color="black"
-              style={{marginHorizontal: 10}}
-            />
-            <Animated.Text
-              style={{
-                opacity: scollY.interpolate({
-                  inputRange,
-                  outputRange: [0, 0, 0, 1, 1],
-                }),
-              }}>
-              326
-            </Animated.Text>
-          </View>
-          <View style={{flexDirection: 'row'}}>
-            <Animated.View
-              style={[
-                styles.icon,
-                {
-                  opacity: scollY.interpolate({
-                    inputRange,
-                    outputRange: [0, 0, 0, 1, 1],
-                  }),
-                },
-              ]}>
-              <Entypo name="export" size={24} color="black" />
-            </Animated.View>
-            <Animated.View
-              style={[
-                styles.icon,
-                {
-                  transform: [
-                    {
-                      translateX: scollY.interpolate({
-                        inputRange,
-                        outputRange: [60, 60, 60, 0, 0],
-                      }),
-                    },
-                  ],
-                },
-              ]}>
-              <Entypo name="credit" size={24} color="green" />
-            </Animated.View>
-            <Animated.View
-              style={[
-                styles.icon,
-                {
-                  opacity: scollY.interpolate({
-                    inputRange,
-                    outputRange: [0, 0, 0, 1, 1],
-                  }),
-                },
-              ]}>
-              <Entypo name="share-alternative" size={24} color="black" />
-            </Animated.View>
-          </View>
-        </Animated.View>
-      )}
-    </SafeAreaView>
+              height: 10,
+              width: 10,
+              borderRadius: 5,
+              backgroundColor: '#fff',
+              opacity,
+              margin: 10,
+              transform: [{scale}],
+            }}
+          />
+        );
+      })}
+    </View>
   );
 };
 
+const Backdrop = ({scrollx}) => {
+  const backgroundColor = scrollx.interpolate({
+    inputRange: bgs.map((_, i) => i * width),
+    outputRange: bgs.map((bg) => bg),
+  });
+  return (
+    <Animated.View
+      style={[
+        StyleSheet.absoluteFillObject,
+        {
+          backgroundColor,
+        },
+      ]}
+    />
+  );
+};
+
+const Square = ({scrollx}) => {
+  const YOLO = Animated.modulo(
+    Animated.divide(Animated.modulo(scrollx, width), new Animated.Value(width)),
+    1,
+  );
+
+  const rotate = YOLO.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: ['25deg', '0deg', '25deg'],
+  });
+  const translateX = YOLO.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: [-30, -height, -30],
+  });
+  return (
+    <Animated.View
+      style={{
+        width: height,
+        height: height,
+        borderRadius: 86,
+        backgroundColor: '#fff',
+        position: 'absolute',
+        top: -height * 0.6,
+        left: -height * 0.3,
+        transform: [
+          {
+            rotate,
+          },
+          {
+            translateX,
+          },
+        ],
+      }}
+    />
+  );
+};
+
+export default function App() {
+  const scrollx = React.useRef(new Animated.Value(0)).current;
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar translucent />
+      <Backdrop scrollx={scrollx} />
+      <Square scrollx={scrollx} />
+      <Animated.FlatList
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{paddingBottom: 100}}
+        scrollEventThrottle={32}
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {x: scrollx}}}],
+          {useNativeDriver: false},
+        )}
+        pagingEnabled
+        data={DATA}
+        keyExtractor={(item) => item.key}
+        renderItem={({item}) => {
+          return (
+            <View style={{width, alignItems: 'center', padding: 20}}>
+              <View style={{flex: 0.7, justifyContent: 'center'}}>
+                <Image
+                  source={{uri: item.image}}
+                  style={{
+                    width: width / 2,
+                    height: height / 4,
+                    resizeMode: 'contain',
+                  }}
+                />
+              </View>
+              <View style={{flex: 0.3}}>
+                <Text
+                  style={{
+                    color: '#fff',
+                    fontWeight: '800',
+                    fontSize: 28,
+                    marginBottom: 10,
+                  }}>
+                  {item.title}
+                </Text>
+                <Text style={{color: '#fff', fontWeight: '300'}}>
+                  {item.description}
+                </Text>
+              </View>
+            </View>
+          );
+        }}
+      />
+      <Indicator scrollx={scrollx} />
+    </SafeAreaView>
+  );
+}
+
 const styles = StyleSheet.create({
-  featuredImage: {
-    width: 50,
-    height: 50,
-    resizeMode: 'cover',
-    marginRight: 20,
-    borderRadius: 10,
-  },
-  bottomActions: {
-    height: 80,
-    backgroundColor: 'rgba(255, 255, 255, 1)',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-  },
-  image: {
-    width: '100%',
-    height: height * 0.4,
-    resizeMode: 'cover',
-    marginBottom: 20,
-  },
-  featuredTitle: {
-    fontSize: 24,
-    fontWeight: '800',
-    marginVertical: 20,
-  },
-  heading: {
-    marginTop: 20,
-    fontSize: 32,
-    fontWeight: '800',
-    marginBottom: 30,
-  },
-  paragraph: {
+  container: {
     flex: 1,
-    marginBottom: 10,
-    // fontFamily: 'Georgia'
-    fontSize: 14,
-    lineHeight: 16 * 1.5,
-  },
-  icon: {
-    height: 60,
-    width: 60,
+    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingTop: Platform.OS === 'android' ? 25 : 0,
+  },
+  androidSafeArea: {
+    flex: 1,
+    backgroundColor: 'green',
+    // paddingTop: Platform.OS === 'android' ? 25 : 0,
+    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
   },
 });
-export default codePush(codePushOptions)(App);
-
-// import React from 'react';
-// import {View} from 'react-native';
-// import LottieView from 'lottie-react-native';
-
-// export default class BasicExample extends React.Component {
-//   componentDidMount() {
-//     this.animation.play();
-//     // Or set a specific startFrame and endFrame with:
-//     this.animation.play(30, 1000);
-//   }
-
-//   render() {
-//     return (
-//       <View
-//         style={{
-//           flex: 1,
-//           justifyContent: 'center',
-//           alignItems: 'center',
-//         }}>
-//         <LottieView
-//           style={{height: 150, width: 150}}
-//           ref={(animation) => {
-//             this.animation = animation;
-//           }}
-//           source={require('./assets/Lottie/first.json')}
-//         />
-//       </View>
-//     );
-//   }
-// }
