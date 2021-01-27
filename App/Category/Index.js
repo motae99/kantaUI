@@ -310,4 +310,33 @@ const styles = StyleSheet.create({
 });
 export default codePush(codePushOptions)(App);
 
-//
+// import React from 'react';
+// import {View} from 'react-native';
+// import LottieView from 'lottie-react-native';
+
+// export default class BasicExample extends React.Component {
+//   componentDidMount() {
+//     this.animation.play();
+//     // Or set a specific startFrame and endFrame with:
+//     this.animation.play(30, 1000);
+//   }
+
+//   render() {
+//     return (
+//       <View
+//         style={{
+//           flex: 1,
+//           justifyContent: 'center',
+//           alignItems: 'center',
+//         }}>
+//         <LottieView
+//           style={{height: 150, width: 150}}
+//           ref={(animation) => {
+//             this.animation = animation;
+//           }}
+//           source={require('./assets/Lottie/first.json')}
+//         />
+//       </View>
+//     );
+//   }
+// }

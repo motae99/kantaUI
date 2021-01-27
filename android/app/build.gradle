@@ -226,4 +226,11 @@ apply from: file("../../node_modules/@react-native-community/cli-platform-androi
 apply from: "../../node_modules/react-native/react.gradle"
 apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 // codePush //
+
+// VectorIcons //
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+// VectorIcons //
+
+// Firebase //
+apply plugin: 'com.google.gms.google-services'
+// Firebase //

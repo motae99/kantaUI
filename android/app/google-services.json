@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "337309192499",
+    "project_id": "kantaui-8c77b",
+    "storage_bucket": "kantaui-8c77b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:337309192499:android:9e7126d18ce91732b0ae46",
+        "android_client_info": {
+          "package_name": "com.kantaui"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "337309192499-ph7ehj09vcuq47jggcm58s05gkaaskv5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kantaui",
+            "certificate_hash": "c7d0e5e995497523e1c3c9fa4f8496c6deb88724"
+          }
+        },
+        {
+          "client_id": "337309192499-n2cu8ljihpaim2lnjc074hdhtu5rojh1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQ5DOX3d0Ol6oKj0FSCL29PXnmDLVuaBg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "337309192499-n2cu8ljihpaim2lnjc074hdhtu5rojh1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
