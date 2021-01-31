@@ -10,14 +10,6 @@ import {
 import PhoneInput from 'react-native-phone-number-input';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-import codePush from 'react-native-code-push';
-const codePushOptions = {
-  updateDialog: true,
-  checkFrequency: codePush.CheckFrequency.ON_APP_START,
-  installMode: codePush.InstallMode.IMMEDIATE,
-};
-
 const App = () => {
   const [value, setValue] = useState('');
   const [countryCode, setCountryCode] = useState('');
@@ -28,7 +20,7 @@ const App = () => {
   const phoneInput = useRef(null);
   return (
     <>
-      <StatusBar translucent={true} barStyle="dark-content" />
+      <StatusBar barStyle="dark-content" />
       <View style={styles.container}>
         <View style={styles.backButton}>
           <Ionicons name="arrow-back" size={20} color="black" />
@@ -214,4 +206,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default codePush(codePushOptions)(App);
+export default App;

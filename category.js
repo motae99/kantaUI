@@ -1,32 +1,3 @@
-// /* eslint-disable react-native/no-inline-styles */
-// import * as React from 'react';
-// import {ScrollView} from 'react-native';
-// import EventCard from './App/components/cards/EventCard';
-// import codePush from 'react-native-code-push';
-
-// const codePushOptions = {
-//   updateDialog: true,
-//   checkFrequency: codePush.CheckFrequency.ON_APP_START,
-//   installMode: codePush.InstallMode.IMMEDIATE,
-// };
-// const App = () => {
-//   return (
-//     <ScrollView
-//       style={{marginTop: 100}}
-//       contentContainerStyle={{marginVertical: 20}}>
-//       <EventCard />
-//       <EventCard />
-//       <EventCard />
-//       <EventCard />
-//       <EventCard />
-//       <EventCard />
-//     </ScrollView>
-//   );
-// };
-// export default codePush(codePushOptions)(App);
-
-// /* eslint-disable react-native/no-inline-styles */
-
 /* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
 import {
@@ -41,9 +12,9 @@ import {
   TouchableOpacity,
   Platform,
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-
 import codePush from 'react-native-code-push';
+// import {LinearGradient} from 'react-native-linear-gradient';
+
 const codePushOptions = {
   updateDialog: true,
   checkFrequency: codePush.CheckFrequency.ON_APP_START,
@@ -123,11 +94,11 @@ const Backdrop = ({movies, scrollX}) => {
           if (!item.backdrop) {
             return null;
           }
-          // const translateX = scrollX.interpolate({
-          //   inputRange: [(index - 2) * ITEM_SIZE, (index - 1) * ITEM_SIZE],
-          //   outputRange: [0, width],
-          //   // extrapolate:'clamp'
-          // });
+          const translateX = scrollX.interpolate({
+            inputRange: [(index - 2) * ITEM_SIZE, (index - 1) * ITEM_SIZE],
+            outputRange: [0, width],
+            // extrapolate:'clamp'
+          });
           const opacity = scrollX.interpolate({
             inputRange: [(index - 2) * ITEM_SIZE, (index - 1) * ITEM_SIZE],
             outputRange: [0, 1],
@@ -140,10 +111,10 @@ const Backdrop = ({movies, scrollX}) => {
                 removeClippedSubviews={false}
                 style={{
                   position: 'absolute',
-                  // width: translateX,
+                  width: translateX,
                   opacity,
                   height,
-                  // overflow: 'hidden',
+                  overflow: 'hidden',
                 }}>
                 <Image
                   source={item.backdrop}
@@ -151,15 +122,6 @@ const Backdrop = ({movies, scrollX}) => {
                     width,
                     height: BACKDROP_HEIGHT,
                     position: 'absolute',
-                  }}
-                />
-                <LinearGradient
-                  colors={['black', 'rgba(0, 0, 0, 0)', 'white']}
-                  style={{
-                    height: BACKDROP_HEIGHT,
-                    width,
-                    position: 'absolute',
-                    top: 0,
                   }}
                 />
                 <View
@@ -172,13 +134,7 @@ const Backdrop = ({movies, scrollX}) => {
                     alignItems: 'center',
                   }}>
                   <Text
-                    style={{
-                      fontFamily: 'Montserrat',
-                      fontWeight: '600',
-                      textAlign: 'center',
-                      fontSize: 34,
-                      color: '#fff',
-                    }}>
+                    style={{fontSize: 45, color: '#fff', textAlign: 'center'}}>
                     {item.title}
                   </Text>
                 </View>
@@ -187,17 +143,17 @@ const Backdrop = ({movies, scrollX}) => {
           );
         }}
       />
-
+      <LinearGradient
+        colors={['rgba(0, 0, 0, 0)', 'white']}
+        style={{
+          height: BACKDROP_HEIGHT / 1.5,
+          width,
+          position: 'absolute',
+          bottom: 0,
+        }}
+      />
       <View style={{position: 'absolute', top: 50, left: 20}}>
-        <Text
-          style={{
-            fontFamily: 'Montserrat',
-            fontWeight: 'bold',
-            textAlign: 'center',
-            fontSize: 18,
-            color: '#fff',
-            letterSpacing: 3,
-          }}>
+        <Text style={{fontSize: 25, color: '#fff', textAlign: 'center'}}>
           KANTA BOOK
         </Text>
       </View>
@@ -217,7 +173,7 @@ const Backdrop = ({movies, scrollX}) => {
             uri:
               'https://www.flaticon.com/svg/vstatic/svg/4061/4061283.svg?token=exp=1610923650~hmac=1dd0068cddddc21a29b99511cf3ee25c',
           }}
-          style={{width: width / 2, height: height / 4, resizeMode: 'cover'}}
+          style={{width: width / 2, height: height / 4, resizeMode: 'contain'}}
         />
       </View>
     </View>
@@ -261,7 +217,7 @@ const App = () => {
         snapToAlignment="start"
         onScroll={Animated.event(
           [{nativeEvent: {contentOffset: {x: scrollX}}}],
-          {useNativeDriver: true},
+          {useNativeDriver: false},
         )}
         scrollEventThrottle={16}
         renderItem={({item, index}) => {
@@ -277,68 +233,25 @@ const App = () => {
 
           const translateY = scrollX.interpolate({
             inputRange,
-            outputRange: [160, 100, 160],
+            outputRange: [140, 100, 140],
             extrapolate: 'clamp',
           });
-
-          const translateX = scrollX.interpolate({
-            inputRange,
-            outputRange: [-width * 0.7, 0, width * 0.7],
-            extrapolate: 'clamp',
-          });
-
-          // const opacity = scrollX.interpolate({
-          //   inputRange,
-          //   outputRange: [0.8, 1, 0.8],
-          //   extrapolate: 'clamp',
-          // });
 
           return (
-            <View
-              style={{
-                width: ITEM_SIZE,
-                // justifyContent: 'center',
-                // alignItems: 'center',
-              }}>
+            <View style={{width: ITEM_SIZE}}>
               <Animated.View
                 style={{
                   marginHorizontal: SPACING,
                   padding: SPACING * 2,
                   alignItems: 'center',
-                  // opacity,
-                  backgroundColor: '#fff',
                   transform: [{translateY}],
-                  borderColor: 'white',
+                  backgroundColor: 'white',
                   borderRadius: 34,
                 }}>
-                <View
-                  style={{
-                    width: '98%',
-                    height: ITEM_SIZE,
-                    overflow: 'hidden',
-                    alignItems: 'center',
-                    borderRadius: 34,
-                  }}>
-                  <Animated.Image
-                    source={item.poster}
-                    style={[styles.posterImage, {transform: [{translateX}]}]}
-                  />
-                </View>
-                {/* <Text style={{ fontSize: 24 }} numberOfLines={1}>
-                  {item.title}
-                </Text> */}
-                {/* <Rating rating={item.rating} />
-                <Genres genres={item.genres} /> */}
+                <Image source={item.poster} style={styles.posterImage} />
+
                 <Text
-                  style={{
-                    fontFamily: 'Montserrat',
-                    fontSize: 12,
-                    textAlign: 'center',
-                    color: '#3A4154',
-                    lineHeight: 18,
-                    marginVertical: 10,
-                    width: ITEM_SIZE * 0.7,
-                  }}
+                  style={{fontSize: 13, textAlign: 'center', color: '#3A4154'}}
                   numberOfLines={3}>
                   {item.description}
                 </Text>
@@ -383,7 +296,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   posterImage: {
-    width: ITEM_SIZE + 40,
+    width: '98%',
     height: ITEM_SIZE,
     resizeMode: 'cover',
     borderRadius: 24,
@@ -392,3 +305,34 @@ const styles = StyleSheet.create({
   },
 });
 export default codePush(codePushOptions)(App);
+
+// import React from 'react';
+// import {View} from 'react-native';
+// import LottieView from 'lottie-react-native';
+
+// export default class BasicExample extends React.Component {
+//   componentDidMount() {
+//     this.animation.play();
+//     // Or set a specific startFrame and endFrame with:
+//     this.animation.play(30, 1000);
+//   }
+
+//   render() {
+//     return (
+//       <View
+//         style={{
+//           flex: 1,
+//           justifyContent: 'center',
+//           alignItems: 'center',
+//         }}>
+//         <LottieView
+//           style={{height: 150, width: 150}}
+//           ref={(animation) => {
+//             this.animation = animation;
+//           }}
+//           source={require('./assets/Lottie/first.json')}
+//         />
+//       </View>
+//     );
+//   }
+// }
