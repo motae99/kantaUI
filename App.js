@@ -6,6 +6,7 @@ import {
   StatusBar,
   TouchableOpacity,
   Text,
+  FlatList,
 } from 'react-native';
 import PhoneInput from 'react-native-phone-number-input';
 import LinearGradient from 'react-native-linear-gradient';
