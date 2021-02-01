@@ -11,7 +11,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 // eslint-disable-next-line no-unused-vars
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import LottieView from 'lottie-react-native';
 import codePush from 'react-native-code-push';
 
@@ -21,7 +21,7 @@ const codePushOptions = {
   installMode: codePush.InstallMode.IMMEDIATE,
 };
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 const bgs = ['#28abb9', '#6a097d', '#01c5c4', '#B98EFF'];
 const DATA = [
   {
@@ -29,33 +29,33 @@ const DATA = [
     title: 'Multi-lateral intermediate moratorium',
     description:
       "I'll back up the multi-byte XSS matrix, that should feed the SCSI application!",
-    image: require('./assets/Lottie/first.json'),
+    image: require('../../../assets/Lottie/first.json'),
   },
   {
     key: '3571747',
     title: 'Automated radical data-warehouse',
     description:
       'Use the optical SAS system, then you can navigate the auxiliary alarm!',
-    image: require('./assets/Lottie/second.json'),
+    image: require('../../../assets/Lottie/second.json'),
   },
   {
     key: '3571680',
     title: 'Inverse attitude-oriented system engine',
     description:
       'The ADP array is down, compress the online sensor so we can input the HTTP panel!',
-    image: require('./assets/Lottie/first.json'),
+    image: require('../../../assets/Lottie/first.json'),
   },
   {
     key: '3571603',
     title: 'Monitored global data-warehouse',
     description: 'We need to program the open-source IB interface!',
-    image: require('./assets/Lottie/second.json'),
+    image: require('../../../assets/Lottie/second.json'),
   },
 ];
 
-const Indicator = ({ scrollx }) => {
+const Indicator = ({scrollx}) => {
   return (
-    <View style={{ position: 'absolute', bottom: 100, flexDirection: 'row' }}>
+    <View style={{position: 'absolute', bottom: 100, flexDirection: 'row'}}>
       {DATA.map((_, i) => {
         const inputRange = [(i - 1) * width, i * width, (i + 1) * width];
         const scale = scrollx.interpolate({
@@ -79,7 +79,7 @@ const Indicator = ({ scrollx }) => {
               backgroundColor: '#fff',
               opacity,
               margin: 10,
-              transform: [{ scale }],
+              transform: [{scale}],
             }}
           />
         );
@@ -88,7 +88,7 @@ const Indicator = ({ scrollx }) => {
   );
 };
 
-const Backdrop = ({ scrollx }) => {
+const Backdrop = ({scrollx}) => {
   const backgroundColor = scrollx.interpolate({
     inputRange: bgs.map((_, i) => i * width),
     outputRange: bgs.map((bg) => bg),
@@ -105,7 +105,7 @@ const Backdrop = ({ scrollx }) => {
   );
 };
 
-const Square = ({ scrollx }) => {
+const Square = ({scrollx}) => {
   const YOLO = Animated.modulo(
     Animated.divide(Animated.modulo(scrollx, width), new Animated.Value(width)),
     1,
@@ -152,19 +152,19 @@ const App = () => {
       <Animated.FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={{paddingBottom: 100}}
         scrollEventThrottle={32}
         onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { x: scrollx } } }],
-          { useNativeDriver: false },
+          [{nativeEvent: {contentOffset: {x: scrollx}}}],
+          {useNativeDriver: false},
         )}
         pagingEnabled
         data={DATA}
         keyExtractor={(item) => item.key}
-        renderItem={({ item }) => {
+        renderItem={({item}) => {
           return (
-            <View style={{ width, alignItems: 'center', padding: 20 }}>
-              <View style={{ flex: 0.7, justifyContent: 'center' }}>
+            <View style={{width, alignItems: 'center', padding: 20}}>
+              <View style={{flex: 0.7, justifyContent: 'center'}}>
                 {/* <Image
                   source={{uri: item.image}}
                   style={{
@@ -174,13 +174,13 @@ const App = () => {
                   }}
                 /> */}
                 <LottieView
-                  style={{ width: width / 2, height: height / 3 }}
+                  style={{width: width / 2, height: height / 3}}
                   source={item.image}
                   autoPlay
                   loop
                 />
               </View>
-              <View style={{ flex: 0.3 }}>
+              <View style={{flex: 0.3}}>
                 <Text
                   style={{
                     color: '#1a097f',
@@ -190,7 +190,7 @@ const App = () => {
                   }}>
                   {item.title}
                 </Text>
-                <Text style={{ color: '#fff', fontWeight: '300' }}>
+                <Text style={{color: '#fff', fontWeight: '300'}}>
                   {item.description}
                 </Text>
               </View>

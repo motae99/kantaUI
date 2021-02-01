@@ -1,32 +1,3 @@
-// /* eslint-disable react-native/no-inline-styles */
-// import * as React from 'react';
-// import {ScrollView} from 'react-native';
-// import EventCard from './App/components/cards/EventCard';
-// import codePush from 'react-native-code-push';
-
-// const codePushOptions = {
-//   updateDialog: true,
-//   checkFrequency: codePush.CheckFrequency.ON_APP_START,
-//   installMode: codePush.InstallMode.IMMEDIATE,
-// };
-// const App = () => {
-//   return (
-//     <ScrollView
-//       style={{marginTop: 100}}
-//       contentContainerStyle={{marginVertical: 20}}>
-//       <EventCard />
-//       <EventCard />
-//       <EventCard />
-//       <EventCard />
-//       <EventCard />
-//       <EventCard />
-//     </ScrollView>
-//   );
-// };
-// export default codePush(codePushOptions)(App);
-
-// /* eslint-disable react-native/no-inline-styles */
-
 /* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
 import {
@@ -67,8 +38,8 @@ const mymovies = [
   {
     key: '123',
     title: 'BEAUTY',
-    poster: require('./assets/img/beauty.jpeg'),
-    backdrop: require('./assets/img/beauty.jpeg'),
+    poster: require('../../../assets/img/beauty.jpeg'),
+    backdrop: require('../../../assets/img/beauty.jpeg'),
     description:
       ' some text some text some text some text some text some text some text some text some text',
     releaseDate: '12',
@@ -76,8 +47,8 @@ const mymovies = [
   {
     key: '234',
     title: 'HOTELS',
-    poster: require('./assets/img/hotels.jpeg'),
-    backdrop: require('./assets/img/hotels.jpeg'),
+    poster: require('../../../assets/img/hotels.jpeg'),
+    backdrop: require('../../../assets/img/hotels.jpeg'),
     description:
       ' some text some text some text some text some text some text some text some text some text',
     releaseDate: '12',
@@ -85,8 +56,8 @@ const mymovies = [
   {
     key: '345',
     title: 'MAKEUP ARTISTS',
-    poster: require('./assets/img/makeup.jpeg'),
-    backdrop: require('./assets/img/makeup.jpeg'),
+    poster: require('../../../assets/img/makeup.jpeg'),
+    backdrop: require('../../../assets/img/makeup.jpeg'),
     description:
       ' some text some text some text some text some text some text some text some text some text',
     releaseDate: '12',
@@ -94,8 +65,8 @@ const mymovies = [
   {
     key: '456',
     title: 'PHOTOGRAPHY',
-    poster: require('./assets/img/photography.jpeg'),
-    backdrop: require('./assets/img/photography.jpeg'),
+    poster: require('../../../assets/img/photography.jpeg'),
+    backdrop: require('../../../assets/img/photography.jpeg'),
     description:
       ' some text some text some text some text some text some text some text some text some text',
     releaseDate: '12',
@@ -103,7 +74,7 @@ const mymovies = [
   {
     key: '567',
     title: 'EVENTS',
-    poster: require('./assets/img/events.jpeg'),
+    poster: require('../../../assets/img/events.jpeg'),
     backdrop: require('./assets/img/events.jpeg'),
     description:
       ' some text some text some text some text some text some text some text some text some text',

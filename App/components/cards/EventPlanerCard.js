@@ -17,9 +17,14 @@ import LinearGradient from 'react-native-linear-gradient';
 
 const {width, height} = Dimensions.get('window');
 
-const CardWidth = width - 20;
-const CardHight = 200;
+const CardWidth = width - 60;
+const CardHight = 280;
+const ImageHeight = 200;
 const files = [
+  {
+    key: '345',
+    image: require('../../../assets/img/makeup.jpeg'),
+  },
   {
     key: '123',
     image: require('../../../assets/img/beauty.jpeg'),
@@ -28,10 +33,7 @@ const files = [
     key: '234',
     image: require('../../../assets/img/hotels.jpeg'),
   },
-  {
-    key: '345',
-    image: require('../../../assets/img/makeup.jpeg'),
-  },
+
   {
     key: '456',
     image: require('../../../assets/img/photography.jpeg'),
@@ -47,8 +49,8 @@ const Indicator = ({scrollx}) => {
     <View
       style={{
         position: 'absolute',
-        bottom: 20,
-        right: 30,
+        bottom: CardHight - ImageHeight + 10,
+        left: CardWidth / 2 - 30,
         flexDirection: 'row',
       }}>
       {files.map((_, i) => {
@@ -98,17 +100,20 @@ const EventCard = () => {
       style={{
         height: CardHight,
         width: CardWidth,
-        alignSelf: 'center',
-        borderRadius: 16,
+        // alignSelf: 'center',
+        marginRight: 18,
+        borderRadius: 17,
         overflow: 'hidden',
-        marginBottom: 16,
+        backgroundColor: '#FFFFFF',
       }}>
       <Animated.FlatList
         data={files}
         keyExtractor={(item) => item.key}
         pagingEnabled={true}
-        decelerationRate={'fast'}
+        // decelerationRate={'fast'}
+        showsHorizontalScrollIndicator={false}
         horizontal
+        // contentContainerStyle={{height: ImageHeight}}
         onScroll={Animated.event(
           [{nativeEvent: {contentOffset: {x: scrollx}}}],
           {useNativeDriver: false},
@@ -117,28 +122,27 @@ const EventCard = () => {
         renderItem={({item, index}) => {
           return (
             <View
-              style={
-                {
-                  // width: CardWidth,
-                  // height: CardHight,
-                  // borderRadius: 16,
-                  // overflow: 'hidden',
-                }
-              }>
+              style={{
+                width: CardWidth,
+                height: ImageHeight,
+                borderRadius: 16,
+                overflow: 'hidden',
+              }}>
               <Image
                 source={item.image}
                 style={[
                   {
                     width: CardWidth,
-                    height: CardHight,
+                    height: ImageHeight,
+                    borderRadius: 17,
                     resizeMode: 'cover',
                   },
                 ]}
               />
-              <LinearGradient
+              {/* <LinearGradient
                 colors={['rgba(0, 0, 0, 0)', 'black']}
                 style={{
-                  height: 80,
+                  height: 40,
                   position: 'absolute',
                   bottom: 0,
                   left: 0,
@@ -146,32 +150,32 @@ const EventCard = () => {
                   borderBottomRightRadius: 16,
                   borderBottomLeftRadius: 16,
                 }}
-              />
+              /> */}
             </View>
           );
         }}
       />
-      <Indicator scrollx={scrollx} />
+      {/* <Indicator scrollx={scrollx} /> */}
 
       <View
         style={{
           position: 'absolute',
           top: 12,
           right: 22,
-          height: 36,
-          width: 36,
-          backgroundColor: '#fff',
+          height: 28,
+          width: 28,
+          backgroundColor: '#219CAB',
           borderRadius: 36 / 2,
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <AntDesign name="heart" size={24} color="#219CAB" />
+        <AntDesign name="heart" size={18} color="#fff" />
       </View>
 
       <View
         style={{
           position: 'absolute',
-          height: 36,
+          height: 28,
           top: 12,
           left: 22,
           flexDirection: 'row',
@@ -179,20 +183,20 @@ const EventCard = () => {
         }}>
         <View
           style={{
-            height: 36,
-            width: 36,
+            height: 28,
+            width: 28,
             backgroundColor: '#fff',
             borderRadius: 36 / 2,
             marginRight: 12,
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Fontisto name="day-sunny" size={24} color="black" />
+          <Fontisto name="day-sunny" size={20} color="black" />
         </View>
         <View
           style={{
-            height: 36,
-            width: 36,
+            height: 28,
+            width: 28,
             backgroundColor: '#fff',
             borderRadius: 36 / 2,
             justifyContent: 'center',
@@ -200,16 +204,16 @@ const EventCard = () => {
           }}>
           <MaterialCommunityIcons
             name="weather-night"
-            size={24}
+            size={20}
             color="black"
           />
         </View>
       </View>
       <Text
         style={{
-          color: '#fff',
+          color: '#262F56',
           position: 'absolute',
-          bottom: 38,
+          bottom: 40,
           fontSize: 18,
           fontWeight: 'bold',
           letterSpacing: 2,
@@ -222,7 +226,7 @@ const EventCard = () => {
         style={{
           color: '#fff',
           position: 'absolute',
-          bottom: 12,
+          bottom: 16,
           left: 24,
           flexDirection: 'row',
           width: width / 3,
@@ -238,29 +242,19 @@ const EventCard = () => {
             style={{
               marginRight: 12,
             }}>
-            <FontAwesome name="star" size={24} color="#219CAB" />
+            <FontAwesome name="star" size={18} color="#219CAB" />
           </View>
           <Text
             style={{
-              color: '#fff',
+              color: '#262F56',
               fontSize: 16,
               fontWeight: 'bold',
-              letterSpacing: 2,
+              // letterSpacing: 2,
               fontFamily: 'Montserrat',
             }}>
             4.9
           </Text>
         </View>
-        <Text
-          style={{
-            color: '#fff',
-            fontSize: 16,
-            fontWeight: 'bold',
-            letterSpacing: 2,
-            fontFamily: 'Montserrat',
-          }}>
-          $100
-        </Text>
       </View>
     </View>
   );
