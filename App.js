@@ -1,218 +1,281 @@
-import React, {useState, useRef} from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import * as React from 'react';
 import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  StatusBar,
-  TouchableOpacity,
   Text,
-  FlatList,
+  View,
+  StyleSheet,
+  Image,
+  Dimensions,
+  Animated,
+  Platform,
 } from 'react-native';
-import PhoneInput from 'react-native-phone-number-input';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AntDesign from 'react-native-vector-icons/FontAwesome';
 import LinearGradient from 'react-native-linear-gradient';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import codePush from 'react-native-code-push';
-const codePushOptions = {
-  updateDialog: true,
-  checkFrequency: codePush.CheckFrequency.ON_APP_START,
-  installMode: codePush.InstallMode.IMMEDIATE,
-};
+const {width, height} = Dimensions.get('window');
 
-const App = () => {
-  const [value, setValue] = useState('');
-  const [countryCode, setCountryCode] = useState('');
-  const [formattedValue, setFormattedValue] = useState('');
-  const [valid, setValid] = useState(false);
-  const [disabled, setDisabled] = useState(false);
-  const [showMessage, setShowMessage] = useState(false);
-  const phoneInput = useRef(null);
+const files = [
+  {
+    key: '123',
+    image: require('./assets/img/beauty.jpeg'),
+  },
+  {
+    key: '234',
+    image: require('./assets/img/hotels.jpeg'),
+  },
+  {
+    key: '345',
+    image: require('./assets/img/makeup.jpeg'),
+  },
+  {
+    key: '456',
+    image: require('./assets/img/photography.jpeg'),
+  },
+  {
+    key: '567',
+    image: require('./assets/img/events.jpeg'),
+  },
+];
+
+const Indicator = ({scrollx}) => {
   return (
-    <>
-      <StatusBar translucent={true} barStyle="dark-content" />
-      <View style={styles.container}>
-        <View style={styles.backButton}>
-          <Ionicons name="arrow-back" size={20} color="black" />
-        </View>
+    <View
+      style={{
+        position: 'absolute',
+        bottom: 20,
+        right: 30,
+        flexDirection: 'row',
+      }}>
+      {files.map((_, i) => {
+        const inputRange = [
+          (i - 2) * width,
+          (i - 1) * width,
+          i * width,
+          (i + 1) * width,
+          (i + 2) * width,
+        ];
+        const opacity = scrollx.interpolate({
+          inputRange,
+          outputRange: [0, 1, 1, 1, 0],
+          // extrapolate: 'clamp',
+        });
 
-        <SafeAreaView style={styles.wrapper}>
-          {/* {showMessage && (
-            <View style={styles.message}>
-              <Text>Country Code : {countryCode}</Text>
-              <Text>Value : {value}</Text>
-              <Text>Formatted Value : {formattedValue}</Text>
-              <Text>Valid : {valid ? 'true' : 'false'}</Text>
-            </View>
-          )} */}
-
-          <View style={styles.infoContainer}>
-            <Text style={styles.title}>Verify phone</Text>
-            <Text style={styles.subtitle}>
-              Please enter your country & your mobile number
-            </Text>
-          </View>
-          <PhoneInput
-            ref={phoneInput}
-            defaultValue={value}
-            containerStyle={styles.phoneContainer}
-            textContainerStyle={styles.textContainer}
-            flagButtonStyle={styles.flagButton}
-            textInputStyle={styles.textInputStyle}
-            countryPickerButtonStyle={styles.countryPickerButtonStyle}
-            defaultCode="SA"
-            layout="first"
-            onChangeText={(text) => {
-              setValue(text);
+        const color = scrollx.interpolate({
+          inputRange,
+          outputRange: [
+            'rgba(0, 0, 0, 0)',
+            'rgba(0, 0, 0, 0)',
+            '#fff',
+            'rgba(0, 0, 0, 0)',
+            'rgba(0, 0, 0, 0)',
+          ],
+          // extrapolate: 'clamp',
+        });
+        return (
+          <Animated.View
+            key={`indicator-${i}`}
+            style={{
+              height: 8,
+              width: 8,
+              borderRadius: 4,
+              backgroundColor: color,
+              opacity,
+              margin: 4,
+              borderWidth: 1,
+              borderColor: '#fff',
+              borderColorOpacity: opacity,
+              // transform: [{scale}],
             }}
-            onChangeFormattedText={(text) => {
-              setFormattedValue(text);
-              setCountryCode(phoneInput.current?.getCountryCode() || '');
-            }}
-            countryPickerProps={{withAlphaFilter: true}}
-            disabled={disabled}
-            disableArrowIcon
-            withShadow
-            autoFocus
           />
-
-          <TouchableOpacity
-            style={styles.sendCodeButton}
-            onPress={() => {
-              const checkValid = phoneInput.current?.isValidNumber(value);
-              setShowMessage(true);
-              setValid(checkValid ? checkValid : false);
-              setCountryCode(phoneInput.current?.getCountryCode() || '');
-              let getNumberAfterPossiblyEliminatingZero = phoneInput.current?.getNumberAfterPossiblyEliminatingZero();
-              console.log(getNumberAfterPossiblyEliminatingZero);
-            }}>
-            <LinearGradient
-              colors={['#55DAEA', '#219CAB']}
-              style={styles.sendCodeButton}>
-              <Text style={styles.sendCodeText}>SEND CODE</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </SafeAreaView>
-      </View>
-    </>
+        );
+      })}
+    </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#E5E5E5',
-  },
-  wrapper: {
-    flex: 1,
-    marginHorizontal: 28,
-    marginTop: 140,
-  },
-  backButton: {
-    position: 'absolute',
-    top: 59,
-    left: 20,
-    backgroundColor: '#fff',
-    height: 32,
-    width: 32,
-    borderRadius: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: 'rgba(0,0,0,0.1)',
-    shadowOffset: {
-      width: 1,
-      height: 5,
-    },
-    shadowOpacity: 0.34,
-    shadowRadius: 6.27,
-    elevation: 10,
-  },
-  infoContainer: {
-    width: 230,
-  },
-  title: {
-    fontSize: 34,
-    lineHeight: 42,
-    fontWeight: 'bold',
-    fontFamily: 'Montserrat',
-    color: '#3B3C53',
-  },
-  subtitle: {
-    marginVertical: 10,
-    fontSize: 14,
-    lineHeight: 18,
-    fontWeight: 'normal',
-    fontFamily: 'Montserrat',
-    color: '#3B3C53',
-  },
-  phoneContainer: {
-    width: '100%',
-    borderRadius: 15,
-    height: 70,
-    marginTop: 40,
-  },
-  textContainer: {
-    borderRadius: 15,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  flagButton: {
-    borderRightColor: 'rgba(0,0,0,0.1)',
-    borderRightWidth: 1,
-  },
-  textInputStyle: {
-    // justifyContent: 'center',
-    // alignItems: 'center'
-    letterSpacing: 2,
-  },
-  countryPickerButtonStyle: {},
-  sendCodeButton: {
-    height: 65,
-    width: '100%',
-    borderRadius: 100,
-    marginTop: 36,
-    // backgroundColor: '#55DAEA',
-    justifyContent: 'center',
-    alignItems: 'center',
-    // shadowColor: rgba(73, 204, 220, 0.4),
-    // shadowOffset: {width: 1, height: 1},
-    // shadowOpacity: 0.4,
-    // shadowRadius: 3,
-    // elevation: 5,
-  },
-  sendCodeText: {
-    fontSize: 18,
-    lineHeight: 22,
-    fontWeight: 'bold',
-    fontFamily: 'Gilroy',
-    letterSpacing: 3,
-    color: '#FFFFFF',
-  },
-  button: {
-    marginTop: 20,
-    height: 40,
-    width: 300,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#7CDB8A',
-    shadowColor: 'rgba(0,0,0,0.4)',
-    shadowOffset: {
-      width: 1,
-      height: 5,
-    },
-    shadowOpacity: 0.34,
-    shadowRadius: 6.27,
-    elevation: 10,
-  },
+const EventCard = () => {
+  const scrollx = React.useRef(new Animated.Value(0)).current;
 
-  message: {
-    borderWidth: 1,
-    borderRadius: 5,
-    padding: 20,
-    marginBottom: 20,
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-  },
-});
+  return (
+    <View
+      style={{
+        width: width,
+        height: 200,
+        marginBottom: 20,
+        // flex: 1,
+      }}>
+      <Animated.FlatList
+        data={files}
+        keyExtractor={(item) => item.key}
+        showsHorizontalScrollIndicator={false}
+        horizontal
+        bounces={false}
+        // decelerationRate={16}
+        decelerationRate={Platform.OS === 'ios' ? 0 : 0.98}
+        renderToHardwareTextureAndroid
+        // contentContainerStyle={{alignItems: 'center'}}
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {x: scrollx}}}],
+          {useNativeDriver: false},
+        )}
+        snapToInterval={width}
+        renderItem={({item, index}) => {
+          return (
+            <View
+              key={index}
+              style={{
+                // borderRadius: 16,
+                // width: width - 20,
+                // height: 200,
+                marginHorizontal: 10,
+                alignItems: 'center',
+              }}>
+              <Image
+                source={item.image}
+                style={[
+                  // StyleSheet.absoluteFillObject,
+                  {
+                    // flex: 1,
+                    // marginHorizontal: 10,
 
-export default codePush(codePushOptions)(App);
+                    width: width - 20,
+                    height: 200,
+                    resizeMode: 'cover',
+                    borderRadius: 16,
+                  },
+                ]}
+              />
+              <LinearGradient
+                colors={['rgba(0, 0, 0, 0)', 'black']}
+                style={{
+                  height: 80,
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  borderBottomRightRadius: 16,
+                  borderBottomLeftRadius: 16,
+                }}
+              />
+            </View>
+          );
+        }}
+      />
+      <Indicator scrollx={scrollx} />
+
+      <View
+        style={{
+          position: 'absolute',
+          top: 12,
+          right: 22,
+          height: 36,
+          width: 36,
+          backgroundColor: '#fff',
+          borderRadius: 36 / 2,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <AntDesign name="heart" size={24} color="#219CAB" />
+      </View>
+
+      <View
+        style={{
+          position: 'absolute',
+          height: 36,
+          top: 12,
+          left: 22,
+          flexDirection: 'row',
+          marginRight: 22,
+        }}>
+        <View
+          style={{
+            height: 36,
+            width: 36,
+            backgroundColor: '#fff',
+            borderRadius: 36 / 2,
+            marginRight: 12,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Fontisto name="day-sunny" size={24} color="black" />
+        </View>
+        <View
+          style={{
+            height: 36,
+            width: 36,
+            backgroundColor: '#fff',
+            borderRadius: 36 / 2,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <MaterialCommunityIcons
+            name="weather-night"
+            size={24}
+            color="black"
+          />
+        </View>
+      </View>
+      <Text
+        style={{
+          color: '#fff',
+          position: 'absolute',
+          bottom: 38,
+          fontSize: 18,
+          fontWeight: 'bold',
+          letterSpacing: 2,
+          fontFamily: 'Montserrat',
+          left: 24,
+        }}>
+        Royal Palace Party Hall
+      </Text>
+      <View
+        style={{
+          color: '#fff',
+          position: 'absolute',
+          bottom: 12,
+          left: 24,
+          flexDirection: 'row',
+          width: width / 3,
+          justifyContent: 'space-between',
+        }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+          }}>
+          <View
+            style={{
+              marginRight: 12,
+            }}>
+            <FontAwesome name="star" size={24} color="#219CAB" />
+          </View>
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: 16,
+              fontWeight: 'bold',
+              letterSpacing: 2,
+              fontFamily: 'Montserrat',
+            }}>
+            4.9
+          </Text>
+        </View>
+        <Text
+          style={{
+            color: '#fff',
+            fontSize: 16,
+            fontWeight: 'bold',
+            letterSpacing: 2,
+            fontFamily: 'Montserrat',
+          }}>
+          $100
+        </Text>
+      </View>
+    </View>
+  );
+};
+export default EventCard;
