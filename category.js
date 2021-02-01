@@ -13,7 +13,7 @@ import {
   Platform,
 } from 'react-native';
 import codePush from 'react-native-code-push';
-// import {LinearGradient} from 'react-native-linear-gradient';
+import {LinearGradient} from 'react-native-linear-gradient';
 
 const codePushOptions = {
   updateDialog: true,

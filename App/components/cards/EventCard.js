@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
 import {
   Text,
@@ -16,6 +17,8 @@ import LinearGradient from 'react-native-linear-gradient';
 
 const {width, height} = Dimensions.get('window');
 
+const CardWidth = width - 20;
+const CardHight = 200;
 const files = [
   {
     key: '123',
@@ -50,28 +53,20 @@ const Indicator = ({scrollx}) => {
       }}>
       {files.map((_, i) => {
         const inputRange = [
-          (i - 2) * width,
-          (i - 1) * width,
-          i * width,
-          (i + 1) * width,
-          (i + 2) * width,
+          (i - 1) * CardWidth,
+          i * CardWidth,
+          (i + 1) * CardWidth,
         ];
         const opacity = scrollx.interpolate({
           inputRange,
-          outputRange: [0, 1, 1, 1, 0],
-          // extrapolate: 'clamp',
+          outputRange: [1, 1, 1],
+          extrapolate: 'clamp',
         });
 
         const color = scrollx.interpolate({
           inputRange,
-          outputRange: [
-            'rgba(0, 0, 0, 0)',
-            'rgba(0, 0, 0, 0)',
-            '#fff',
-            'rgba(0, 0, 0, 0)',
-            'rgba(0, 0, 0, 0)',
-          ],
-          // extrapolate: 'clamp',
+          outputRange: ['rgba(0, 0, 0, 0)', '#fff', 'rgba(0, 0, 0, 0)'],
+          extrapolate: 'clamp',
         });
         return (
           <Animated.View
@@ -101,49 +96,42 @@ const EventCard = () => {
   return (
     <View
       style={{
-        width: width,
-        height: 200,
-        marginBottom: 20,
-        // flex: 1,
+        height: CardHight,
+        width: CardWidth,
+        marginTop: 200,
+        alignSelf: 'center',
+        borderRadius: 16,
+        overflow: 'hidden',
       }}>
       <Animated.FlatList
         data={files}
         keyExtractor={(item) => item.key}
-        showsHorizontalScrollIndicator={false}
+        pagingEnabled={true}
+        decelerationRate={'fast'}
         horizontal
-        bounces={false}
-        // decelerationRate={16}
-        decelerationRate={Platform.OS === 'ios' ? 0 : 0.98}
-        renderToHardwareTextureAndroid
-        // contentContainerStyle={{alignItems: 'center'}}
         onScroll={Animated.event(
           [{nativeEvent: {contentOffset: {x: scrollx}}}],
           {useNativeDriver: false},
         )}
-        snapToInterval={width}
+        snapToInterval={CardWidth}
         renderItem={({item, index}) => {
           return (
             <View
-              key={index}
-              style={{
-                // borderRadius: 16,
-                // width: width - 20,
-                // height: 200,
-                marginHorizontal: 10,
-                alignItems: 'center',
-              }}>
+              style={
+                {
+                  // width: CardWidth,
+                  // height: CardHight,
+                  // borderRadius: 16,
+                  // overflow: 'hidden',
+                }
+              }>
               <Image
                 source={item.image}
                 style={[
-                  // StyleSheet.absoluteFillObject,
                   {
-                    // flex: 1,
-                    // marginHorizontal: 10,
-
-                    width: width - 20,
-                    height: 200,
+                    width: CardWidth,
+                    height: CardHight,
                     resizeMode: 'cover',
-                    borderRadius: 16,
                   },
                 ]}
               />
