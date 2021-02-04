@@ -242,7 +242,7 @@ const App = () => {
               <Animated.View
                 style={{
                   marginHorizontal: SPACING,
-                  padding: SPACING * 2,
+                  padding: SPACING / 2,
                   alignItems: 'center',
                   transform: [{translateY}],
                   backgroundColor: 'white',
@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
   },
   posterImage: {
     width: '98%',
-    height: ITEM_SIZE,
+    height: ITEM_SIZE + 20,
     resizeMode: 'cover',
     borderRadius: 24,
     margin: 0,

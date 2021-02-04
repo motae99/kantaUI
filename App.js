@@ -1,19 +1,223 @@
+// /* eslint-disable no-unused-vars */
+// /* eslint-disable react-native/no-inline-styles */
+// import * as React from 'react';
+// import {
+// 	Text,
+// 	View,
+// 	StyleSheet,
+// 	ScrollView,
+// 	Dimensions,
+// 	Animated,
+// 	Platform,
+// 	StatusBar,
+// } from 'react-native';
+// import {Searchbar} from 'react-native-paper';
+// import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
+// import LinearGradient from 'react-native-linear-gradient';
+// import Ionicons from 'react-native-vector-icons/Ionicons';
+
+// const {width, height} = Dimensions.get('window');
+
+// const App = () => {
+// 	return (
+// 		<SafeAreaProvider>
+// 			<SafeAreaView style={{backgroundColor: '#E5E5E5', flex: 1}}>
+// 				<StatusBar
+// 					// barStyle={'dark-content'}
+// 					translucent
+// 					backgroundColor="transparent"
+// 				/>
+// 			</SafeAreaView>
+// 		</SafeAreaProvider>
+// 	);
+// };
+
+// export default App;
+// export default codePush(codePushOptions)(App);
+
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
+// import * as React from 'react';
+// import {Text, View, Dimensions, StatusBar, FlatList, Image} from 'react-native';
+// import Ionicons from 'react-native-vector-icons/Ionicons';
+// import Fontisto from 'react-native-vector-icons/Fontisto';
+
+// import MapView, {Marker} from 'react-native-maps';
+
+// const {width, height} = Dimensions.get('window');
+
+// const mymovies = [
+//   {
+//     key: '567',
+//     poster: require('./assets/img/events.jpeg'),
+//   },
+//   {
+//     key: '123',
+//     poster: require('./assets/img/beauty.jpeg'),
+//   },
+//   {
+//     key: '345',
+//     poster: require('./assets/img/makeup.jpeg'),
+//   },
+//   {
+//     key: '234',
+//     poster: require('./assets/img/hotels.jpeg'),
+//   },
+
+//   {
+//     key: '456',
+//     poster: require('./assets/img/photography.jpeg'),
+//   },
+// ];
+
+// const region = {
+//   latitude: 37.78825,
+//   longitude: -122.4324,
+//   latitudeDelta: 0.0922,
+//   longitudeDelta: 0.0421,
+// };
+
+// const headerImageHeight = height * 0.65;
+// const headerHieght = height / 6;
+
+// const HeaderImage = () => {
+//   const [current, setCurrent] = React.useState(1);
+//   const onViewRef = React.useRef(({viewableItems, changed}) => {
+//     // console.log(viewableItems[0].index+1);
+//     // Use viewable items in state or as intended
+//     setCurrent(viewableItems[0].index + 1);
+//   });
+//   const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 60});
+//   return (
+//     <View style={{backgroundColor: '#E5E5E5', flex: 1}}>
+//       <StatusBar
+//         translucent
+//         barStyle={'light-content'}
+//         backgroundColor="transparent"
+//       />
+//       <View
+//         style={{
+//           width,
+//           height: headerImageHeight,
+//           borderBottomRightRadius: 25,
+//           borderBottomLeftRadius: 25,
+//           overflow: 'hidden',
+//         }}>
+//         <FlatList
+//           horizontal
+//           snapToInterval={width}
+//           showsHorizontalScrollIndicator={false}
+//           pagingEnabled={true}
+//           data={mymovies}
+//           keyExtractor={(item) => item.key}
+//           onViewableItemsChanged={onViewRef.current}
+//           viewabilityConfig={viewConfigRef.current}
+//           renderItem={({item, index}) => {
+//             return (
+//               <View>
+//                 <Image
+//                   style={{
+//                     width,
+//                     height: headerImageHeight,
+//                     resizeMode: 'cover',
+//                   }}
+//                   source={item.poster}
+//                 />
+//               </View>
+//             );
+//           }}
+//         />
+//         <View
+//           style={{
+//             position: 'absolute',
+//             bottom: 18,
+//             right: 18,
+//             width: 50,
+//             height: 24,
+//             backgroundColor: 'rgba(34,40,42,.7)',
+//             borderRadius: 8,
+//             justifyContent: 'center',
+//             alignItems: 'center',
+//             // opacity: 0.6,
+//           }}>
+//           <Text style={{color: 'white'}}>
+//             {current}/{mymovies.length}
+//           </Text>
+//         </View>
+//       </View>
+//       <View
+//         style={{
+//           position: 'absolute',
+//           top: 0,
+//           left: 0,
+//           width,
+//           height: headerHieght,
+//           flexDirection: 'row',
+//           justifyContent: 'space-between',
+//           alignItems: 'center',
+//           paddingHorizontal: 18,
+//         }}>
+//         <View
+//           style={{
+//             height: 32,
+//             width: 32,
+//             backgroundColor: 'white',
+//             borderRadius: 16,
+//             alignItems: 'center',
+//             justifyContent: 'center',
+//           }}>
+//           <Ionicons name="arrow-back" size={20} color="#2B3449" />
+//         </View>
+//         <View style={{flexDirection: 'row'}}>
+//           <View
+//             style={{
+//               height: 32,
+//               width: 32,
+//               backgroundColor: 'white',
+//               borderRadius: 16,
+//               alignItems: 'center',
+//               justifyContent: 'center',
+//               marginRight: 8,
+//             }}>
+//             <Ionicons name="heart" size={20} color="#2B3449" />
+//           </View>
+//           <View
+//             style={{
+//               height: 32,
+//               width: 32,
+//               backgroundColor: 'white',
+//               borderRadius: 16,
+//               alignItems: 'center',
+//               justifyContent: 'center',
+//             }}>
+//             <Fontisto name="share-a" size={18} color="#2B3449" />
+//           </View>
+//         </View>
+//       </View>
+//       <View style={{height: 50, width}} />
+//       <MapView
+//         style={{width: '100%', height: 250}}
+//         scrollEnabled={false}
+//         zoomEnabled={false}
+//         pitchEnabled={false}
+//         rotateEnabled={false}
+//         initialRegion={region}>
+//         <Marker
+//           title={'paryHall name'}
+//           description={'partyHall address'}
+//           coordinate={region}
+//         />
+//       </MapView>
+//     </View>
+//   );
+// };
+
+// export default HeaderImage;
+// // // export default codePush(codePushOptions)(App);
+
 import * as React from 'react';
-import {
-  StatusBar,
-  Text,
-  View,
-  StyleSheet,
-  FlatList,
-  Image,
-  Dimensions,
-  Animated,
-  TouchableOpacity,
-  Platform,
-} from 'react-native';
+import Navigator from './App/navigation/Navigator';
 import codePush from 'react-native-code-push';
-import LinearGradient from 'react-native-linear-gradient';
 
 const codePushOptions = {
   updateDialog: true,
@@ -21,318 +225,8 @@ const codePushOptions = {
   installMode: codePush.InstallMode.IMMEDIATE,
 };
 
-const {width, height} = Dimensions.get('window');
-
-const SPACING = 10;
-const ITEM_SIZE = Platform.OS === 'ios' ? width * 0.72 : width * 0.82;
-const EMPTY_ITEM_SIZE = (width - ITEM_SIZE) / 2;
-const BACKDROP_HEIGHT = height * 0.65;
-
-const Loading = () => (
-  <View style={styles.loadingContainer}>
-    <Text style={styles.paragraph}>Loading...</Text>
-  </View>
-);
-
-const mymovies = [
-  {
-    key: '123',
-    title: 'BEAUTY',
-    poster: require('./assets/img/beauty.jpeg'),
-    backdrop: require('./assets/img/beauty.jpeg'),
-    description:
-      ' some text some text some text some text some text some text some text some text some text',
-    releaseDate: '12',
-  },
-  {
-    key: '234',
-    title: 'HOTELS',
-    poster: require('./assets/img/hotels.jpeg'),
-    backdrop: require('./assets/img/hotels.jpeg'),
-    description:
-      ' some text some text some text some text some text some text some text some text some text',
-    releaseDate: '12',
-  },
-  {
-    key: '345',
-    title: 'MAKEUP ARTISTS',
-    poster: require('./assets/img/makeup.jpeg'),
-    backdrop: require('./assets/img/makeup.jpeg'),
-    description:
-      ' some text some text some text some text some text some text some text some text some text',
-    releaseDate: '12',
-  },
-  {
-    key: '456',
-    title: 'PHOTOGRAPHY',
-    poster: require('./assets/img/photography.jpeg'),
-    backdrop: require('./assets/img/photography.jpeg'),
-    description:
-      ' some text some text some text some text some text some text some text some text some text',
-    releaseDate: '12',
-  },
-  {
-    key: '567',
-    title: 'EVENTS',
-    poster: require('./assets/img/events.jpeg'),
-    backdrop: require('./assets/img/events.jpeg'),
-    description:
-      ' some text some text some text some text some text some text some text some text some text',
-    releaseDate: '12',
-  },
-];
-
-const Backdrop = ({movies, scrollX}) => {
-  return (
-    <View style={{height: BACKDROP_HEIGHT, width, position: 'absolute'}}>
-      <FlatList
-        data={movies}
-        keyExtractor={(item) => item.key + '-backdrop'}
-        removeClippedSubviews={false}
-        contentContainerStyle={{width, height: BACKDROP_HEIGHT}}
-        renderItem={({item, index}) => {
-          if (!item.backdrop) {
-            return null;
-          }
-          const translateX = scrollX.interpolate({
-            inputRange: [(index - 2) * ITEM_SIZE, (index - 1) * ITEM_SIZE],
-            outputRange: [0, width],
-            // extrapolate:'clamp'
-          });
-          const opacity = scrollX.interpolate({
-            inputRange: [(index - 2) * ITEM_SIZE, (index - 1) * ITEM_SIZE],
-            outputRange: [0, 1],
-            // extrapolate:'clamp'
-          });
-          // let back = require(item.backdrop)
-          return (
-            <View>
-              <Animated.View
-                removeClippedSubviews={false}
-                style={{
-                  position: 'absolute',
-                  width: translateX,
-                  opacity,
-                  height,
-                  overflow: 'hidden',
-                }}>
-                <Image
-                  source={item.backdrop}
-                  style={{
-                    width,
-                    height: BACKDROP_HEIGHT,
-                    position: 'absolute',
-                  }}
-                />
-                <View
-                  style={{
-                    width: 255,
-                    position: 'absolute',
-                    top: 130,
-                    left: 60,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <Text
-                    style={{fontSize: 45, color: '#fff', textAlign: 'center'}}>
-                    {item.title}
-                  </Text>
-                </View>
-              </Animated.View>
-            </View>
-          );
-        }}
-      />
-      <LinearGradient
-        colors={['rgba(0, 0, 0, 0)', 'white']}
-        style={{
-          height: BACKDROP_HEIGHT / 1.5,
-          width,
-          position: 'absolute',
-          bottom: 0,
-        }}
-      />
-      <View style={{position: 'absolute', top: 50, left: 20}}>
-        <Text style={{fontSize: 25, color: '#fff', textAlign: 'center'}}>
-          KANTA BOOK
-        </Text>
-      </View>
-
-      <View
-        style={{
-          position: 'absolute',
-          top: 50,
-          right: 20,
-          height: 40,
-          width: 40,
-          borderRadius: 20,
-          backgroundColor: 'white',
-        }}>
-        <Image
-          source={{
-            uri:
-              'https://www.flaticon.com/svg/vstatic/svg/4061/4061283.svg?token=exp=1610923650~hmac=1dd0068cddddc21a29b99511cf3ee25c',
-          }}
-          style={{width: width / 2, height: height / 4, resizeMode: 'contain'}}
-        />
-      </View>
-    </View>
-  );
-};
-
 const App = () => {
-  const [movies, setMovies] = React.useState([]);
-  const scrollX = React.useRef(new Animated.Value(0)).current;
-  React.useEffect(() => {
-    const fetchData = async () => {
-      const movies = mymovies; //await getMovies();
-      // Add empty items to create fake space
-      // [empty_item, ...movies, empty_item]
-      setMovies([{key: 'empty-left'}, ...mymovies, {key: 'empty-right'}]);
-    };
-
-    if (movies.length === 0) {
-      fetchData(movies);
-    }
-  }, [movies]);
-
-  if (movies.length === 0) {
-    return <Loading />;
-  }
-
-  return (
-    <View style={styles.container}>
-      <Backdrop movies={movies} scrollX={scrollX} />
-      <StatusBar translucent backgroundColor="transparent" />
-      <Animated.FlatList
-        showsHorizontalScrollIndicator={false}
-        data={movies}
-        keyExtractor={(item) => item.key}
-        horizontal
-        bounces={false}
-        decelerationRate={Platform.OS === 'ios' ? 0 : 0.98}
-        renderToHardwareTextureAndroid
-        contentContainerStyle={{alignItems: 'center'}}
-        snapToInterval={ITEM_SIZE}
-        snapToAlignment="start"
-        onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {x: scrollX}}}],
-          {useNativeDriver: false},
-        )}
-        scrollEventThrottle={16}
-        renderItem={({item, index}) => {
-          if (!item.poster) {
-            return <View style={{width: EMPTY_ITEM_SIZE}} />;
-          }
-
-          const inputRange = [
-            (index - 2) * ITEM_SIZE,
-            (index - 1) * ITEM_SIZE,
-            index * ITEM_SIZE,
-          ];
-
-          const translateY = scrollX.interpolate({
-            inputRange,
-            outputRange: [140, 100, 140],
-            extrapolate: 'clamp',
-          });
-
-          return (
-            <View style={{width: ITEM_SIZE}}>
-              <Animated.View
-                style={{
-                  marginHorizontal: SPACING,
-                  padding: SPACING * 2,
-                  alignItems: 'center',
-                  transform: [{translateY}],
-                  backgroundColor: 'white',
-                  borderRadius: 34,
-                }}>
-                <Image source={item.poster} style={styles.posterImage} />
-
-                <Text
-                  style={{fontSize: 13, textAlign: 'center', color: '#3A4154'}}
-                  numberOfLines={3}>
-                  {item.description}
-                </Text>
-                <TouchableOpacity
-                  style={{
-                    margin: 10,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    height: 60,
-                    width: '95%',
-                    backgroundColor: '#2C3449',
-                    borderRadius: 10,
-                  }}
-                  onPress={() => {}}>
-                  <Text
-                    style={{color: '#fff', fontSize: 28, textAlign: 'center'}}>
-                    See All
-                  </Text>
-                </TouchableOpacity>
-              </Animated.View>
-            </View>
-          );
-        }}
-      />
-    </View>
-  );
+  return <Navigator />;
 };
 
-const styles = StyleSheet.create({
-  loadingContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  container: {
-    flex: 1,
-  },
-  paragraph: {
-    margin: 24,
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  posterImage: {
-    width: '98%',
-    height: ITEM_SIZE,
-    resizeMode: 'cover',
-    borderRadius: 24,
-    margin: 0,
-    marginBottom: 10,
-  },
-});
 export default codePush(codePushOptions)(App);
-
-// import React from 'react';
-// import {View} from 'react-native';
-// import LottieView from 'lottie-react-native';
-
-// export default class BasicExample extends React.Component {
-//   componentDidMount() {
-//     this.animation.play();
-//     // Or set a specific startFrame and endFrame with:
-//     this.animation.play(30, 1000);
-//   }
-
-//   render() {
-//     return (
-//       <View
-//         style={{
-//           flex: 1,
-//           justifyContent: 'center',
-//           alignItems: 'center',
-//         }}>
-//         <LottieView
-//           style={{height: 150, width: 150}}
-//           ref={(animation) => {
-//             this.animation = animation;
-//           }}
-//           source={require('./assets/Lottie/first.json')}
-//         />
-//       </View>
-//     );
-//   }
-// }

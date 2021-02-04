@@ -12,13 +12,13 @@ import {
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import AntDesign from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 
 const {width, height} = Dimensions.get('window');
 
-const CardWidth = width - 20;
-const CardHight = 200;
+const CardWidth = height / 2.15;
+const CardHight = height / 3.8;
 const files = [
   {
     key: '123',
@@ -72,13 +72,13 @@ const Indicator = ({scrollx}) => {
           <Animated.View
             key={`indicator-${i}`}
             style={{
-              height: 8,
-              width: 8,
-              borderRadius: 4,
+              height: 5,
+              width: 5,
+              borderRadius: 2.5,
               backgroundColor: color,
               opacity,
-              margin: 4,
-              borderWidth: 1,
+              margin: 2,
+              borderWidth: 0.5,
               borderColor: '#fff',
               borderColorOpacity: opacity,
               // transform: [{scale}],
@@ -99,9 +99,9 @@ const EventCard = () => {
         height: CardHight,
         width: CardWidth,
         alignSelf: 'center',
-        borderRadius: 16,
+        borderRadius: 12,
         overflow: 'hidden',
-        marginBottom: 16,
+        marginBottom: 18,
       }}>
       <Animated.FlatList
         data={files}
@@ -138,7 +138,7 @@ const EventCard = () => {
               <LinearGradient
                 colors={['rgba(0, 0, 0, 0)', 'black']}
                 style={{
-                  height: 80,
+                  height: CardHight / 3,
                   position: 'absolute',
                   bottom: 0,
                   left: 0,
@@ -157,42 +157,42 @@ const EventCard = () => {
         style={{
           position: 'absolute',
           top: 12,
-          right: 22,
-          height: 36,
-          width: 36,
+          right: 18,
+          height: 28,
+          width: 28,
           backgroundColor: '#fff',
           borderRadius: 36 / 2,
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <AntDesign name="heart" size={24} color="#219CAB" />
+        <Ionicons name="heart" size={18} color="#219CAB" />
       </View>
 
       <View
         style={{
           position: 'absolute',
-          height: 36,
+          height: 28,
           top: 12,
-          left: 22,
+          left: 18,
           flexDirection: 'row',
-          marginRight: 22,
+          marginRight: 12,
         }}>
         <View
           style={{
-            height: 36,
-            width: 36,
+            height: 28,
+            width: 28,
             backgroundColor: '#fff',
             borderRadius: 36 / 2,
-            marginRight: 12,
+            marginRight: 8,
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Fontisto name="day-sunny" size={24} color="black" />
+          <Fontisto name="day-sunny" size={18} color="black" />
         </View>
         <View
           style={{
-            height: 36,
-            width: 36,
+            height: 28,
+            width: 28,
             backgroundColor: '#fff',
             borderRadius: 36 / 2,
             justifyContent: 'center',
@@ -200,7 +200,7 @@ const EventCard = () => {
           }}>
           <MaterialCommunityIcons
             name="weather-night"
-            size={24}
+            size={18}
             color="black"
           />
         </View>
@@ -210,7 +210,7 @@ const EventCard = () => {
           color: '#fff',
           position: 'absolute',
           bottom: 38,
-          fontSize: 18,
+          fontSize: 14,
           fontWeight: 'bold',
           letterSpacing: 2,
           fontFamily: 'Montserrat',
@@ -238,12 +238,12 @@ const EventCard = () => {
             style={{
               marginRight: 12,
             }}>
-            <FontAwesome name="star" size={24} color="#219CAB" />
+            <FontAwesome name="star" size={18} color="#219CAB" />
           </View>
           <Text
             style={{
               color: '#fff',
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: 'bold',
               letterSpacing: 2,
               fontFamily: 'Montserrat',
@@ -254,7 +254,7 @@ const EventCard = () => {
         <Text
           style={{
             color: '#fff',
-            fontSize: 16,
+            fontSize: 14,
             fontWeight: 'bold',
             letterSpacing: 2,
             fontFamily: 'Montserrat',

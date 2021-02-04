@@ -14,13 +14,6 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-import codePush from 'react-native-code-push';
-const codePushOptions = {
-  updateDialog: true,
-  checkFrequency: codePush.CheckFrequency.ON_APP_START,
-  installMode: codePush.InstallMode.IMMEDIATE,
-};
-
 const {width, height} = Dimensions.get('window');
 
 const SPACING = 10;
@@ -36,19 +29,19 @@ const Loading = () => (
 
 const mymovies = [
   {
-    key: '123',
-    title: 'BEAUTY',
-    poster: require('../../../assets/img/beauty.jpeg'),
-    backdrop: require('../../../assets/img/beauty.jpeg'),
+    key: '567',
+    title: 'EVENTS',
+    poster: require('../../../assets/img/events.jpeg'),
+    backdrop: require('../../../assets/img/events.jpeg'),
     description:
       ' some text some text some text some text some text some text some text some text some text',
     releaseDate: '12',
   },
   {
-    key: '234',
-    title: 'HOTELS',
-    poster: require('../../../assets/img/hotels.jpeg'),
-    backdrop: require('../../../assets/img/hotels.jpeg'),
+    key: '123',
+    title: 'BEAUTY',
+    poster: require('../../../assets/img/beauty.jpeg'),
+    backdrop: require('../../../assets/img/beauty.jpeg'),
     description:
       ' some text some text some text some text some text some text some text some text some text',
     releaseDate: '12',
@@ -63,19 +56,20 @@ const mymovies = [
     releaseDate: '12',
   },
   {
-    key: '456',
-    title: 'PHOTOGRAPHY',
-    poster: require('../../../assets/img/photography.jpeg'),
-    backdrop: require('../../../assets/img/photography.jpeg'),
+    key: '234',
+    title: 'HOTELS',
+    poster: require('../../../assets/img/hotels.jpeg'),
+    backdrop: require('../../../assets/img/hotels.jpeg'),
     description:
       ' some text some text some text some text some text some text some text some text some text',
     releaseDate: '12',
   },
+
   {
-    key: '567',
-    title: 'EVENTS',
-    poster: require('../../../assets/img/events.jpeg'),
-    backdrop: require('./assets/img/events.jpeg'),
+    key: '456',
+    title: 'PHOTOGRAPHY',
+    poster: require('../../../assets/img/photography.jpeg'),
+    backdrop: require('../../../assets/img/photography.jpeg'),
     description:
       ' some text some text some text some text some text some text some text some text some text',
     releaseDate: '12',
@@ -89,6 +83,7 @@ const Backdrop = ({movies, scrollX}) => {
         data={movies}
         keyExtractor={(item) => item.key + '-backdrop'}
         removeClippedSubviews={false}
+        pagingEnabled
         contentContainerStyle={{width, height: BACKDROP_HEIGHT}}
         renderItem={({item, index}) => {
           if (!item.backdrop) {
@@ -217,8 +212,13 @@ const App = () => {
 
   return (
     <View style={styles.container}>
+      <StatusBar
+        translucent
+        backgroundColor="transparent"
+        barStyle={'light-content'}
+      />
       <Backdrop movies={movies} scrollX={scrollX} />
-      <StatusBar translucent backgroundColor="transparent" />
+
       <Animated.FlatList
         showsHorizontalScrollIndicator={false}
         data={movies}
@@ -274,13 +274,13 @@ const App = () => {
               <Animated.View
                 style={{
                   marginHorizontal: SPACING,
-                  padding: SPACING * 2,
+                  padding: SPACING * 1.6,
                   alignItems: 'center',
                   // opacity,
                   backgroundColor: '#fff',
                   transform: [{translateY}],
                   borderColor: 'white',
-                  borderRadius: 34,
+                  borderRadius: 24,
                 }}>
                 <View
                   style={{
@@ -288,7 +288,7 @@ const App = () => {
                     height: ITEM_SIZE,
                     overflow: 'hidden',
                     alignItems: 'center',
-                    borderRadius: 34,
+                    borderRadius: 18,
                   }}>
                   <Animated.Image
                     source={item.poster}
@@ -354,12 +354,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   posterImage: {
-    width: ITEM_SIZE + 40,
+    width: ITEM_SIZE + 20,
     height: ITEM_SIZE,
     resizeMode: 'cover',
-    borderRadius: 24,
+    borderRadius: 6,
     margin: 0,
     marginBottom: 10,
   },
 });
-export default codePush(codePushOptions)(App);
+export default App;

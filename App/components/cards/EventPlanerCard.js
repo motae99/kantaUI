@@ -161,7 +161,7 @@ const EventCard = () => {
         style={{
           position: 'absolute',
           top: 12,
-          right: 22,
+          right: 18,
           height: 28,
           width: 28,
           backgroundColor: '#219CAB',

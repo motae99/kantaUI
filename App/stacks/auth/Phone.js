@@ -77,7 +77,7 @@ const App = () => {
               console.log(getNumberAfterPossiblyEliminatingZero);
             }}>
             <LinearGradient
-              colors={['#55DAEA', '#219CAB']}
+              colors={['#00DAEA', '#219CAB']}
               style={styles.sendCodeButton}>
               <Text style={styles.sendCodeText}>SEND CODE</Text>
             </LinearGradient>
@@ -158,9 +158,9 @@ const styles = StyleSheet.create({
   },
   countryPickerButtonStyle: {},
   sendCodeButton: {
-    height: 65,
+    height: 54,
     width: '100%',
-    borderRadius: 100,
+    borderRadius: 12,
     marginTop: 36,
     // backgroundColor: '#55DAEA',
     justifyContent: 'center',

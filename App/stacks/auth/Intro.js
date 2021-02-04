@@ -13,13 +13,6 @@ import {
 // eslint-disable-next-line no-unused-vars
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import LottieView from 'lottie-react-native';
-import codePush from 'react-native-code-push';
-
-const codePushOptions = {
-  updateDialog: true,
-  checkFrequency: codePush.CheckFrequency.ON_APP_START,
-  installMode: codePush.InstallMode.IMMEDIATE,
-};
 
 const {width, height} = Dimensions.get('window');
 const bgs = ['#28abb9', '#6a097d', '#01c5c4', '#B98EFF'];
@@ -219,4 +212,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default codePush(codePushOptions)(App);
+export default App;
