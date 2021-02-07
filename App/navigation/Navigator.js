@@ -47,7 +47,7 @@ import Phone from '../stacks/auth/Phone';
 import Verify from '../stacks/auth/Verify';
 import Intro from '../stacks/auth/Intro';
 import Category from '../stacks/home/Category';
-import EventList from '../stacks/home/EventList';
+import Events from '../stacks/home/Events';
 import Beauty from '../stacks/home/Beauty';
 
 const Tab = createBottomTabNavigator();
@@ -61,7 +61,7 @@ export default function App() {
         <Tab.Screen name="Phone" component={Phone} />
         <Tab.Screen name="Verify" component={Verify} />
         <Tab.Screen name="Category" component={Category} />
-        <Tab.Screen name="EventList" component={EventList} />
+        <Tab.Screen name="Events" component={Events} />
       </Tab.Navigator>
     </NavigationContainer>
   );
