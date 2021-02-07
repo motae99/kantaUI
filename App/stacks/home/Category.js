@@ -274,7 +274,7 @@ const App = () => {
               <Animated.View
                 style={{
                   marginHorizontal: SPACING,
-                  padding: SPACING * 1.6,
+                  padding: SPACING * 2,
                   alignItems: 'center',
                   // opacity,
                   backgroundColor: '#fff',
