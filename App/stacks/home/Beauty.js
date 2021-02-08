@@ -1,8 +1,4 @@
 /* eslint-disable react-native/no-inline-styles */
-/**
- *
- * Inspiration: https:dribbble.com/shots/3731362-Event-cards-iOS-interaction
- */
 
 import * as React from 'react';
 import {
@@ -16,66 +12,17 @@ import {
   StyleSheet,
   SafeAreaView,
 } from 'react-native';
-const {width} = Dimensions.get('screen');
+import {SharedElement} from 'react-navigation-shared-element';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {
   FlingGestureHandler,
   Directions,
   State,
+  TouchableOpacity,
 } from 'react-native-gesture-handler';
+import beautyServices from '../../constants/data/beautyData';
 
-// https://www.creative-flyers.com
-const DATA = [
-  {
-    title: 'Beauty centers',
-    location: 'Mumbai, India',
-    date: 'Nov 17th, 2020',
-    poster:
-      'https://www.creative-flyers.com/wp-content/uploads/2020/07/Afro-vibes-flyer-template.jpg',
-  },
-  {
-    title: 'Medical beauty clinics',
-    location: 'Unknown',
-    date: 'Sept 3rd, 2020',
-    poster:
-      'https://www.creative-flyers.com/wp-content/uploads/2019/11/Jungle-Party-Flyer-Template-1.jpg',
-  },
-  {
-    title: 'Massage and spa',
-    location: 'New York, USA',
-    date: 'Oct 11th, 2020',
-    poster:
-      'https://www.creative-flyers.com/wp-content/uploads/2020/06/4th-Of-July-Invitation.jpg',
-  },
-  {
-    title: 'Moroccan Bath',
-    location: 'Bucharest, Romania',
-    date: 'Aug 17th, 2020',
-    poster:
-      'https://www.creative-flyers.com/wp-content/uploads/2020/07/Summer-Music-Festival-Poster.jpg',
-  },
-  // {
-  //   title: 'BBQ with friends',
-  //   location: 'Prague, Czech Republic',
-  //   date: 'Sept 11th, 2020',
-  //   poster:
-  //     'https://www.creative-flyers.com/wp-content/uploads/2020/06/BBQ-Flyer-Psd-Template.jpg',
-  // },
-  // {
-  //   title: 'Festival music',
-  //   location: 'Berlin, Germany',
-  //   date: 'Apr 21th, 2021',
-  //   poster:
-  //     'https://www.creative-flyers.com/wp-content/uploads/2020/06/Festival-Music-PSD-Template.jpg',
-  // },
-  // {
-  //   title: 'Beach House',
-  //   location: 'Liboa, Portugal',
-  //   date: 'Aug 12th, 2020',
-  //   poster:
-  //     'https://www.creative-flyers.com/wp-content/uploads/2020/06/Summer-Beach-House-Flyer.jpg',
-  // },
-];
+const {width, height} = Dimensions.get('screen');
 
 const OVERFLOW_HEIGHT = 77;
 const SPACING = 10;
@@ -118,8 +65,8 @@ const OverflowItems = ({data, scrollXAnimated}) => {
   );
 };
 
-export default function App() {
-  const [data, setData] = React.useState(DATA);
+export default function App({navigation}) {
+  const [data, setData] = React.useState(beautyServices);
   const scrollXIndex = React.useRef(new Animated.Value(0)).current;
   const scrollXAnimated = React.useRef(new Animated.Value(0)).current;
   const [index, setIndex] = React.useState(0);
@@ -128,14 +75,14 @@ export default function App() {
     setIndex(activeIndex);
   });
 
-  React.useEffect(() => {
-    if (index === data.length - VISIBLE_ITEMS - 1) {
-      // get new data
-      // fetch more data
-      const newData = [...data, ...data];
-      setData(newData);
-    }
-  });
+  // React.useEffect(() => {
+  //   if (index === data.length - VISIBLE_ITEMS - 1) {
+  //     // get new data
+  //     // fetch more data
+  //     const newData = [...data, ...data];
+  //     setData(newData);
+  //   }
+  // });
 
   React.useEffect(() => {
     Animated.spring(scrollXAnimated, {
@@ -175,7 +122,7 @@ export default function App() {
           <OverflowItems data={data} scrollXAnimated={scrollXAnimated} />
           <FlatList
             data={data}
-            keyExtractor={(_, index) => String(index)}
+            keyExtractor={(item) => item.key}
             horizontal
             // inverted
             contentContainerStyle={{
@@ -200,8 +147,8 @@ export default function App() {
                 </View>
               );
             }}
-            renderItem={({item, index}) => {
-              const inputRange = [index - 1, index, index + 1];
+            renderItem={({item, index: i}) => {
+              const inputRange = [i - 1, i, i + 1];
               const translateX = scrollXAnimated.interpolate({
                 inputRange,
                 outputRange: [50, 0, -100],
@@ -228,18 +175,48 @@ export default function App() {
                       {scale},
                     ],
                   }}>
-                  <Image
-                    source={{uri: item.poster}}
-                    style={{
-                      width: ITEM_WIDTH,
-                      height: ITEM_HEIGHT,
-                      borderRadius: 14,
-                    }}
-                  />
+                  <TouchableOpacity
+                    activeOpacity={0.9}
+                    onPress={() => {
+                      navigation.navigate('beautyList', {
+                        item: beautyServices[index],
+                      });
+                    }}>
+                    <SharedElement id={`item.${item.key}.image`}>
+                      <Image
+                        source={{uri: item.poster}}
+                        style={{
+                          width: ITEM_WIDTH,
+                          height: ITEM_HEIGHT,
+                          borderRadius: 14,
+                        }}
+                      />
+                    </SharedElement>
+                  </TouchableOpacity>
                 </Animated.View>
               );
             }}
           />
+          <SharedElement
+            id="general.bg"
+            style={[
+              StyleSheet.absoluteFillObject,
+              {
+                transform: [{translateY: height}],
+              },
+            ]}>
+            <View
+              style={[
+                StyleSheet.absoluteFillObject,
+                {
+                  backgroundColor: '#fff',
+                  padding: SPACING * 2,
+                  borderTopLeftRadius: 16,
+                  borderTopRightRadius: 16,
+                },
+              ]}
+            />
+          </SharedElement>
         </SafeAreaView>
       </FlingGestureHandler>
     </FlingGestureHandler>
