@@ -1,5 +1,7 @@
 import * as React from 'react';
 import Navigator from './App/navigation/Navigator';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+
 // import codePush from 'react-native-code-push';
 
 // const codePushOptions = {
@@ -9,7 +11,11 @@ import Navigator from './App/navigation/Navigator';
 // };
 
 const App = () => {
-  return <Navigator />;
+  return (
+    <SafeAreaProvider>
+      <Navigator />
+    </SafeAreaProvider>
+  );
 };
 
 // export default codePush(codePushOptions)(App);

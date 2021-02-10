@@ -189,6 +189,7 @@ export default function App({navigation}) {
                           width: ITEM_WIDTH,
                           height: ITEM_HEIGHT,
                           borderRadius: 14,
+                          resizeMode: 'cover',
                         }}
                       />
                     </SharedElement>

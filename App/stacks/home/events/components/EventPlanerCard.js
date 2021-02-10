@@ -12,85 +12,16 @@ import {
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/FontAwesome';
 import LinearGradient from 'react-native-linear-gradient';
 
 const {width, height} = Dimensions.get('window');
 
-const CardWidth = height / 2.15;
-const CardHight = height / 3.8;
-const files = [
-  {
-    key: '123',
-    image: require('../../../assets/img/beauty.jpeg'),
-  },
-  {
-    key: '234',
-    image: require('../../../assets/img/hotels.jpeg'),
-  },
-  {
-    key: '345',
-    image: require('../../../assets/img/makeup.jpeg'),
-  },
-  {
-    key: '456',
-    image: require('../../../assets/img/photography.jpeg'),
-  },
-  {
-    key: '567',
-    image: require('../../../assets/img/events.jpeg'),
-  },
-];
+const CardWidth = width - 60;
+const CardHight = 280;
+const ImageHeight = 200;
 
-const Indicator = ({scrollx}) => {
-  return (
-    <View
-      style={{
-        position: 'absolute',
-        bottom: 20,
-        right: 30,
-        flexDirection: 'row',
-      }}>
-      {files.map((_, i) => {
-        const inputRange = [
-          (i - 1) * CardWidth,
-          i * CardWidth,
-          (i + 1) * CardWidth,
-        ];
-        const opacity = scrollx.interpolate({
-          inputRange,
-          outputRange: [1, 1, 1],
-          extrapolate: 'clamp',
-        });
-
-        const color = scrollx.interpolate({
-          inputRange,
-          outputRange: ['rgba(0, 0, 0, 0)', '#fff', 'rgba(0, 0, 0, 0)'],
-          extrapolate: 'clamp',
-        });
-        return (
-          <Animated.View
-            key={`indicator-${i}`}
-            style={{
-              height: 5,
-              width: 5,
-              borderRadius: 2.5,
-              backgroundColor: color,
-              opacity,
-              margin: 2,
-              borderWidth: 0.5,
-              borderColor: '#fff',
-              borderColorOpacity: opacity,
-              // transform: [{scale}],
-            }}
-          />
-        );
-      })}
-    </View>
-  );
-};
-
-const EventCard = () => {
+const EventCard = (data) => {
   const scrollx = React.useRef(new Animated.Value(0)).current;
 
   return (
@@ -98,47 +29,49 @@ const EventCard = () => {
       style={{
         height: CardHight,
         width: CardWidth,
-        alignSelf: 'center',
-        borderRadius: 12,
+        // alignSelf: 'center',
+        marginRight: 18,
+        borderRadius: 17,
         overflow: 'hidden',
-        marginBottom: 18,
+        backgroundColor: '#FFFFFF',
       }}>
       <Animated.FlatList
-        data={files}
+        data={data.files}
         keyExtractor={(item) => item.key}
         pagingEnabled={true}
-        decelerationRate={'fast'}
+        // decelerationRate={'fast'}
+        showsHorizontalScrollIndicator={false}
         horizontal
+        // contentContainerStyle={{height: ImageHeight}}
         onScroll={Animated.event(
           [{nativeEvent: {contentOffset: {x: scrollx}}}],
           {useNativeDriver: false},
         )}
-        snapToInterval={CardWidth}
+        snapToInterval={CardWidth - 36}
         renderItem={({item, index}) => {
           return (
             <View
-              style={
-                {
-                  // width: CardWidth,
-                  // height: CardHight,
-                  // borderRadius: 16,
-                  // overflow: 'hidden',
-                }
-              }>
+              style={{
+                width: CardWidth,
+                height: ImageHeight,
+                borderRadius: 16,
+                overflow: 'hidden',
+              }}>
               <Image
                 source={item.image}
                 style={[
                   {
                     width: CardWidth,
-                    height: CardHight,
+                    height: ImageHeight,
+                    borderRadius: 17,
                     resizeMode: 'cover',
                   },
                 ]}
               />
-              <LinearGradient
+              {/* <LinearGradient
                 colors={['rgba(0, 0, 0, 0)', 'black']}
                 style={{
-                  height: CardHight / 3,
+                  height: 40,
                   position: 'absolute',
                   bottom: 0,
                   left: 0,
@@ -146,12 +79,12 @@ const EventCard = () => {
                   borderBottomRightRadius: 16,
                   borderBottomLeftRadius: 16,
                 }}
-              />
+              /> */}
             </View>
           );
         }}
       />
-      <Indicator scrollx={scrollx} />
+      {/* <Indicator scrollx={scrollx} /> */}
 
       <View
         style={{
@@ -160,12 +93,12 @@ const EventCard = () => {
           right: 18,
           height: 28,
           width: 28,
-          backgroundColor: '#fff',
+          backgroundColor: '#219CAB',
           borderRadius: 36 / 2,
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <Ionicons name="heart" size={18} color="#219CAB" />
+        <AntDesign name="heart" size={18} color="#fff" />
       </View>
 
       <View
@@ -173,9 +106,9 @@ const EventCard = () => {
           position: 'absolute',
           height: 28,
           top: 12,
-          left: 18,
+          left: 22,
           flexDirection: 'row',
-          marginRight: 12,
+          marginRight: 22,
         }}>
         <View
           style={{
@@ -183,11 +116,11 @@ const EventCard = () => {
             width: 28,
             backgroundColor: '#fff',
             borderRadius: 36 / 2,
-            marginRight: 8,
+            marginRight: 12,
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Fontisto name="day-sunny" size={18} color="black" />
+          <Fontisto name="day-sunny" size={20} color="black" />
         </View>
         <View
           style={{
@@ -200,29 +133,29 @@ const EventCard = () => {
           }}>
           <MaterialCommunityIcons
             name="weather-night"
-            size={18}
+            size={20}
             color="black"
           />
         </View>
       </View>
       <Text
         style={{
-          color: '#fff',
+          color: '#262F56',
           position: 'absolute',
-          bottom: 38,
-          fontSize: 14,
+          bottom: 40,
+          fontSize: 18,
           fontWeight: 'bold',
           letterSpacing: 2,
           fontFamily: 'Montserrat',
           left: 24,
         }}>
-        Royal Palace Party Hall
+        {data.name}
       </Text>
       <View
         style={{
           color: '#fff',
           position: 'absolute',
-          bottom: 12,
+          bottom: 16,
           left: 24,
           flexDirection: 'row',
           width: width / 3,
@@ -242,25 +175,15 @@ const EventCard = () => {
           </View>
           <Text
             style={{
-              color: '#fff',
-              fontSize: 14,
+              color: '#262F56',
+              fontSize: 16,
               fontWeight: 'bold',
-              letterSpacing: 2,
+              // letterSpacing: 2,
               fontFamily: 'Montserrat',
             }}>
-            4.9
+            {data.rate}
           </Text>
         </View>
-        <Text
-          style={{
-            color: '#fff',
-            fontSize: 14,
-            fontWeight: 'bold',
-            letterSpacing: 2,
-            fontFamily: 'Montserrat',
-          }}>
-          $100
-        </Text>
       </View>
     </View>
   );

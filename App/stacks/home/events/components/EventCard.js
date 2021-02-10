@@ -3,117 +3,43 @@ import * as React from 'react';
 import {
   Text,
   View,
-  StyleSheet,
   Image,
   Dimensions,
   Animated,
-  Platform,
+  TouchableOpacity,
 } from 'react-native';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import AntDesign from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
+import {SharedElement} from 'react-navigation-shared-element';
+
+import Indicator from '../../../../components/Indicator';
 
 const {width, height} = Dimensions.get('window');
+const CardWidth = height / 2.15;
+const CardHight = height / 3.8;
 
-const CardWidth = width - 60;
-const CardHight = 280;
-const ImageHeight = 200;
-const files = [
-  {
-    key: '345',
-    image: require('../../../assets/img/makeup.jpeg'),
-  },
-  {
-    key: '123',
-    image: require('../../../assets/img/beauty.jpeg'),
-  },
-  {
-    key: '234',
-    image: require('../../../assets/img/hotels.jpeg'),
-  },
-
-  {
-    key: '456',
-    image: require('../../../assets/img/photography.jpeg'),
-  },
-  {
-    key: '567',
-    image: require('../../../assets/img/events.jpeg'),
-  },
-];
-
-const Indicator = ({scrollx}) => {
-  return (
-    <View
-      style={{
-        position: 'absolute',
-        bottom: CardHight - ImageHeight + 10,
-        left: CardWidth / 2 - 30,
-        flexDirection: 'row',
-      }}>
-      {files.map((_, i) => {
-        const inputRange = [
-          (i - 1) * CardWidth,
-          i * CardWidth,
-          (i + 1) * CardWidth,
-        ];
-        const opacity = scrollx.interpolate({
-          inputRange,
-          outputRange: [1, 1, 1],
-          extrapolate: 'clamp',
-        });
-
-        const color = scrollx.interpolate({
-          inputRange,
-          outputRange: ['rgba(0, 0, 0, 0)', '#fff', 'rgba(0, 0, 0, 0)'],
-          extrapolate: 'clamp',
-        });
-        return (
-          <Animated.View
-            key={`indicator-${i}`}
-            style={{
-              height: 8,
-              width: 8,
-              borderRadius: 4,
-              backgroundColor: color,
-              opacity,
-              margin: 4,
-              borderWidth: 1,
-              borderColor: '#fff',
-              borderColorOpacity: opacity,
-              // transform: [{scale}],
-            }}
-          />
-        );
-      })}
-    </View>
-  );
-};
-
-const EventCard = () => {
+const EventCard = ({data, navigation}) => {
   const scrollx = React.useRef(new Animated.Value(0)).current;
-
   return (
     <View
       style={{
         height: CardHight,
         width: CardWidth,
-        // alignSelf: 'center',
-        marginRight: 18,
-        borderRadius: 17,
+        alignSelf: 'center',
+        borderRadius: 12,
         overflow: 'hidden',
-        backgroundColor: '#FFFFFF',
+        marginBottom: 18,
       }}>
       <Animated.FlatList
-        data={files}
+        data={data.files}
+        showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => item.key}
         pagingEnabled={true}
-        // decelerationRate={'fast'}
-        showsHorizontalScrollIndicator={false}
+        decelerationRate={'fast'}
         horizontal
-        // contentContainerStyle={{height: ImageHeight}}
         onScroll={Animated.event(
           [{nativeEvent: {contentOffset: {x: scrollx}}}],
           {useNativeDriver: false},
@@ -122,27 +48,38 @@ const EventCard = () => {
         renderItem={({item, index}) => {
           return (
             <View
-              style={{
-                width: CardWidth,
-                height: ImageHeight,
-                borderRadius: 16,
-                overflow: 'hidden',
-              }}>
-              <Image
-                source={item.image}
-                style={[
-                  {
-                    width: CardWidth,
-                    height: ImageHeight,
-                    borderRadius: 17,
-                    resizeMode: 'cover',
-                  },
-                ]}
-              />
-              {/* <LinearGradient
+              style={
+                {
+                  // width: CardWidth,
+                  // height: CardHight,
+                  // borderRadius: 16,
+                  // overflow: 'hidden',
+                }
+              }>
+              <TouchableOpacity
+                activeOpacity={0.9}
+                onPress={() => {
+                  navigation.navigate('detail', {
+                    selectedItem: item,
+                  });
+                }}>
+                <SharedElement id={`item.${item.key}.image`}>
+                  <Image
+                    source={item.image}
+                    style={[
+                      {
+                        width: CardWidth,
+                        height: CardHight,
+                        resizeMode: 'cover',
+                      },
+                    ]}
+                  />
+                </SharedElement>
+              </TouchableOpacity>
+              <LinearGradient
                 colors={['rgba(0, 0, 0, 0)', 'black']}
                 style={{
-                  height: 40,
+                  height: CardHight / 3,
                   position: 'absolute',
                   bottom: 0,
                   left: 0,
@@ -150,13 +87,25 @@ const EventCard = () => {
                   borderBottomRightRadius: 16,
                   borderBottomLeftRadius: 16,
                 }}
-              /> */}
+              />
             </View>
           );
         }}
       />
-      {/* <Indicator scrollx={scrollx} /> */}
 
+      <View
+        style={{
+          position: 'absolute',
+          bottom: 20,
+          right: 30,
+          flexDirection: 'row',
+        }}>
+        <Indicator
+          scrollx={scrollx}
+          files={data.files}
+          containerWidth={CardWidth}
+        />
+      </View>
       <View
         style={{
           position: 'absolute',
@@ -164,12 +113,12 @@ const EventCard = () => {
           right: 18,
           height: 28,
           width: 28,
-          backgroundColor: '#219CAB',
+          backgroundColor: '#fff',
           borderRadius: 36 / 2,
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <AntDesign name="heart" size={18} color="#fff" />
+        <Ionicons name="heart" size={18} color="#219CAB" />
       </View>
 
       <View
@@ -177,9 +126,9 @@ const EventCard = () => {
           position: 'absolute',
           height: 28,
           top: 12,
-          left: 22,
+          left: 18,
           flexDirection: 'row',
-          marginRight: 22,
+          marginRight: 12,
         }}>
         <View
           style={{
@@ -187,11 +136,11 @@ const EventCard = () => {
             width: 28,
             backgroundColor: '#fff',
             borderRadius: 36 / 2,
-            marginRight: 12,
+            marginRight: 8,
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Fontisto name="day-sunny" size={20} color="black" />
+          <Fontisto name="day-sunny" size={18} color="black" />
         </View>
         <View
           style={{
@@ -204,29 +153,29 @@ const EventCard = () => {
           }}>
           <MaterialCommunityIcons
             name="weather-night"
-            size={20}
+            size={18}
             color="black"
           />
         </View>
       </View>
       <Text
         style={{
-          color: '#262F56',
+          color: '#fff',
           position: 'absolute',
-          bottom: 40,
-          fontSize: 18,
+          bottom: 38,
+          fontSize: 14,
           fontWeight: 'bold',
           letterSpacing: 2,
           fontFamily: 'Montserrat',
           left: 24,
         }}>
-        Royal Palace Party Hall
+        {data.name}
       </Text>
       <View
         style={{
           color: '#fff',
           position: 'absolute',
-          bottom: 16,
+          bottom: 12,
           left: 24,
           flexDirection: 'row',
           width: width / 3,
@@ -246,15 +195,25 @@ const EventCard = () => {
           </View>
           <Text
             style={{
-              color: '#262F56',
-              fontSize: 16,
+              color: '#fff',
+              fontSize: 14,
               fontWeight: 'bold',
-              // letterSpacing: 2,
+              letterSpacing: 2,
               fontFamily: 'Montserrat',
             }}>
-            4.9
+            {data.rate}
           </Text>
         </View>
+        <Text
+          style={{
+            color: '#fff',
+            fontSize: 14,
+            fontWeight: 'bold',
+            letterSpacing: 2,
+            fontFamily: 'Montserrat',
+          }}>
+          ${data.price}
+        </Text>
       </View>
     </View>
   );
