@@ -8,13 +8,14 @@ import {
   StatusBar,
   FlatList,
   Image,
-  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import {SharedElement} from 'react-navigation-shared-element';
 
-// import MapView, {Marker} from 'react-native-maps';
+import MapView, {Marker} from 'react-native-maps';
 
 const {width, height} = Dimensions.get('window');
 
@@ -29,14 +30,20 @@ const headerImageHeight = height * 0.65;
 const headerHieght = height / 6;
 
 const Detail = ({navigation, route}) => {
-  const {selectedItem} = route.params;
+  const {selectedItem, selectedImageIndex} = route.params;
 
-  const [current, setCurrent] = React.useState(1);
+  const [current, setCurrent] = React.useState(selectedImageIndex);
+  const list = React.useRef();
   const onViewRef = React.useRef(({viewableItems, changed}) => {
     setCurrent(viewableItems[0]?.index + 1);
   });
-
   const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 50});
+
+  // React.useEffect(() => {
+  //   if (list.current) {
+  //     list.current.initialScrollIndex({selectedImageIndex});
+  //   }
+  // }, [selectedImageIndex]);
 
   return (
     <View style={{backgroundColor: '#E5E5E5', flex: 1}}>
@@ -54,10 +61,11 @@ const Detail = ({navigation, route}) => {
           overflow: 'hidden',
         }}>
         <FlatList
+          ref={list}
           horizontal
           snapToInterval={width}
           showsHorizontalScrollIndicator={false}
-          pagingEnabled={true}
+          initialScrollIndex={selectedImageIndex}
           data={selectedItem.files}
           keyExtractor={(item) => item.key}
           onViewableItemsChanged={onViewRef.current}
@@ -66,13 +74,18 @@ const Detail = ({navigation, route}) => {
             return (
               <View>
                 <SharedElement
-                  id={`item.${item.key}.image`}
-                  style={{width, height: headerImageHeight}}>
+                  id={`item.${selectedItem.key}.image.${item.key}`}
+                  style={{
+                    width,
+                    height: headerImageHeight,
+                  }}>
                   <Image
                     style={{
                       width,
                       height: headerImageHeight,
                       resizeMode: 'cover',
+                      borderBottomRightRadius: 25,
+                      borderBottomLeftRadius: 25,
                     }}
                     source={item.image}
                   />
@@ -111,17 +124,29 @@ const Detail = ({navigation, route}) => {
           alignItems: 'center',
           paddingHorizontal: 18,
         }}>
-        <View
-          style={{
-            height: 32,
-            width: 32,
-            backgroundColor: 'white',
-            borderRadius: 16,
-            alignItems: 'center',
-            justifyContent: 'center',
+        <TouchableOpacity
+          activeOpacity={0.9}
+          onPress={() => {
+            list.current.scrollToIndex({
+              animated: true,
+              index: selectedImageIndex,
+            });
+            setTimeout(() => {
+              navigation.goBack();
+            }, 300);
           }}>
-          <Ionicons name="arrow-back" size={20} color="#2B3449" />
-        </View>
+          <View
+            style={{
+              height: 32,
+              width: 32,
+              backgroundColor: 'white',
+              borderRadius: 16,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Ionicons name="arrow-back" size={20} color="#2B3449" />
+          </View>
+        </TouchableOpacity>
         <View style={{flexDirection: 'row'}}>
           <View
             style={{
@@ -148,12 +173,12 @@ const Detail = ({navigation, route}) => {
           </View>
         </View>
       </View>
-      {/* <ScrollView
+      <ScrollView
         contentContainerStyle={{alignItems: 'center', marginHorizental: 18}}>
         <View style={{height: 50, width}} />
-        <MapView
+        {/* <MapView
           style={{
-            width: width * 0.9,
+            width: width * 0.95,
             height: 200,
           }}
           scrollEnabled={false}
@@ -166,19 +191,17 @@ const Detail = ({navigation, route}) => {
             description={'partyHall address'}
             coordinate={region}
           />
-        </MapView>
-      </ScrollView> */}
+        </MapView> */}
+      </ScrollView>
     </View>
   );
 };
 
 Detail.sharedElements = (route, otherRoute, showing) => {
   const {selectedItem} = route.params;
-  return [
-    {
-      id: `item.${selectedItem.key}.image`,
-    },
-  ];
+  return selectedItem.files.map(
+    (item) => `item.${selectedItem.key}.image.${item.key}`,
+  );
 };
 
 export default Detail;

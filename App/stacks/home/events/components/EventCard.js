@@ -22,6 +22,12 @@ const CardWidth = height / 2.15;
 const CardHight = height / 3.8;
 
 const EventCard = ({data, navigation}) => {
+  const [current, setCurrent] = React.useState(0);
+  const onViewRef = React.useRef(({viewableItems, changed}) => {
+    setCurrent(viewableItems[0]?.index);
+  });
+  const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 50});
+
   const scrollx = React.useRef(new Animated.Value(0)).current;
   return (
     <View
@@ -40,6 +46,13 @@ const EventCard = ({data, navigation}) => {
         pagingEnabled={true}
         decelerationRate={'fast'}
         horizontal
+        onViewableItemsChanged={onViewRef.current}
+        viewabilityConfig={viewConfigRef.current}
+        // onMomentumScrollEnd={(ev) => {
+        //   const newIndex = Math.floor(ev.nativeEvent.contentOffset.x / width);
+        //   console.log(newIndex + 1);
+        //   setCurrentIndex(newIndex);
+        // }}
         onScroll={Animated.event(
           [{nativeEvent: {contentOffset: {x: scrollx}}}],
           {useNativeDriver: false},
@@ -59,11 +72,19 @@ const EventCard = ({data, navigation}) => {
               <TouchableOpacity
                 activeOpacity={0.9}
                 onPress={() => {
-                  navigation.navigate('detail', {
-                    selectedItem: item,
+                  navigation.navigate('EventDetail', {
+                    selectedItem: data,
+                    selectedImageIndex: current,
                   });
                 }}>
-                <SharedElement id={`item.${item.key}.image`}>
+                <SharedElement
+                  id={`item.${data.key}.image.${item.key}`}
+                  style={[
+                    {
+                      width: CardWidth,
+                      height: CardHight,
+                    },
+                  ]}>
                   <Image
                     source={item.image}
                     style={[
@@ -71,6 +92,7 @@ const EventCard = ({data, navigation}) => {
                         width: CardWidth,
                         height: CardHight,
                         resizeMode: 'cover',
+                        borderRadius: 12,
                       },
                     ]}
                   />

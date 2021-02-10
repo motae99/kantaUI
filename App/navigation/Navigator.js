@@ -40,6 +40,7 @@
 // }
 
 import React from 'react';
+import {Easing} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 // import {enabledScreens} from 'react-native-screens';
@@ -55,6 +56,7 @@ import beautyList from '../stacks/home/beautyList';
 
 import EventList from '../stacks/home/events/list';
 import EventDetail from '../stacks/home/events/detail';
+import EventMap from '../stacks/home/events/eventMap';
 
 // enabledScreens();
 const Tab = createBottomTabNavigator();
@@ -89,8 +91,33 @@ const EventStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator headerMode={'none'}>
-        <Stack.Screen name="EventList" component={EventList} />
-        <Stack.Screen name="EventDetail" component={EventDetail} />
+        {/* <Stack.Screen name="EventList" component={EventList} /> */}
+        <Stack.Screen name="EventMap" component={EventMap} />
+        <Stack.Screen
+          options={() => ({
+            gestureEnabled: false,
+            transitionSpec: {
+              open: {
+                animation: 'timing',
+                config: {duration: 600, easing: Easing.ease},
+                // config: {duration: 500, easing: Eeasing.easingInOut},
+              },
+              close: {
+                animation: 'timing',
+                config: {duration: 300},
+              },
+            },
+            cardStyleInterpolator: ({current: {progress}}) => {
+              return {
+                cardStyle: {
+                  opacity: progress,
+                },
+              };
+            },
+          })}
+          name="EventDetail"
+          component={EventDetail}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

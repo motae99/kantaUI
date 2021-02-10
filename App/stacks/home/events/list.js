@@ -74,7 +74,7 @@ const Header = () => {
     </View>
   );
 };
-const EventList = () => {
+const EventList = ({navigation}) => {
   return (
     <View style={{backgroundColor: '#E5E5E5', flex: 1}}>
       <StatusBar
@@ -109,7 +109,7 @@ const EventList = () => {
             marginBottom: 18,
           }}
           renderItem={({item, index}) => {
-            return <EventCard data={item} />;
+            return <EventCard data={item} navigation={navigation} />;
           }}
         />
       </View>
