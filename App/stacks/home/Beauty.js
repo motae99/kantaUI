@@ -70,6 +70,7 @@ export default function App({navigation}) {
   const scrollXIndex = React.useRef(new Animated.Value(0)).current;
   const scrollXAnimated = React.useRef(new Animated.Value(0)).current;
   const [index, setIndex] = React.useState(0);
+  
   const setActiveIndex = React.useCallback((activeIndex) => {
     scrollXIndex.setValue(activeIndex);
     setIndex(activeIndex);

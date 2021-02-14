@@ -11,6 +11,7 @@ import {
   Platform,
   StatusBar,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
@@ -18,7 +19,7 @@ import EventPlanner from './components/EventPlanerCard';
 import EventCard from './components/EventCard';
 import Searchbar from './components/SearchBar';
 import DATA from './components/eventData';
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
 const {width, height} = Dimensions.get('window');
 
 const Header = () => {
@@ -113,6 +114,23 @@ const EventList = ({navigation}) => {
           }}
         />
       </View>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('EventMap');
+        }}
+        style={{
+          position: 'absolute',
+          bottom: 30,
+          right: 30,
+          height: 34,
+          width: 34,
+          borderRadius: 16,
+          backgroundColor: '#fff',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <Ionicons name="map" size={18} color="#000" />
+      </TouchableOpacity>
     </View>
   );
 };

@@ -26,8 +26,7 @@
     "@react-navigation/material-bottom-tabs": "^5.3.13",
     "@react-navigation/native": "^5.9.2",
     "@react-navigation/stack": "^5.14.2",
-    "react-navigation": "^4.3.7",
-    "react-navigation-stack": "^2.3.11",
+    "faker": "^5.4.0",
     "formik": "^2.2.6",
     "i18n-js": "^3.8.0",
     "lodash": "^4.17.20",
@@ -57,7 +56,9 @@
     "react-native-svg": "^12.1.0",
     "react-native-vector-icons": "^8.0.0",
     "react-native-video": "^5.1.1",
+    "react-navigation": "^4.3.7",
     "react-navigation-shared-element": "^3.0.0",
+    "react-navigation-stack": "^2.3.11",
     "yup": "^0.32.8"
   },
   "devDependencies": {

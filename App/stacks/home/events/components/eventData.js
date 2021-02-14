@@ -2,6 +2,7 @@ export default [
   {
     key: '567',
     name: 'Royal Palace',
+    address: '743 some random address',
     rate: 3.5,
     price: 100,
     files: [
@@ -30,84 +31,87 @@ export default [
   {
     key: '123',
     name: 'Royal Palace',
+    address: '743 some random address',
     rate: 3.5,
     price: 100,
     files: [
       {
         key: '1',
-        poster: require('../../../../../assets/img/events.jpeg'),
+        image: require('../../../../../assets/img/events.jpeg'),
       },
       {
         key: '2',
-        poster: require('../../../../../assets/img/beauty.jpeg'),
+        image: require('../../../../../assets/img/beauty.jpeg'),
       },
       {
         key: '3',
-        poster: require('../../../../../assets/img/makeup.jpeg'),
+        image: require('../../../../../assets/img/makeup.jpeg'),
       },
       {
         key: '4',
-        poster: require('../../../../../assets/img/hotels.jpeg'),
+        image: require('../../../../../assets/img/hotels.jpeg'),
       },
       {
         key: '5',
-        poster: require('../../../../../assets/img/photography.jpeg'),
+        image: require('../../../../../assets/img/photography.jpeg'),
       },
     ],
   },
   {
     key: '345',
     name: 'Royal Palace',
+    address: '743 some random address',
     rate: 3.5,
     price: 100,
     files: [
       {
         key: '1',
-        poster: require('../../../../../assets/img/events.jpeg'),
+        image: require('../../../../../assets/img/events.jpeg'),
       },
       {
         key: '2',
-        poster: require('../../../../../assets/img/beauty.jpeg'),
+        image: require('../../../../../assets/img/beauty.jpeg'),
       },
       {
         key: '3',
-        poster: require('../../../../../assets/img/makeup.jpeg'),
+        image: require('../../../../../assets/img/makeup.jpeg'),
       },
       {
         key: '4',
-        poster: require('../../../../../assets/img/hotels.jpeg'),
+        image: require('../../../../../assets/img/hotels.jpeg'),
       },
       {
         key: '5',
-        poster: require('../../../../../assets/img/photography.jpeg'),
+        image: require('../../../../../assets/img/photography.jpeg'),
       },
     ],
   },
   {
     key: '234',
     name: 'Royal Palace',
+    address: '743 some random address',
     rate: 3.5,
     price: 100,
     files: [
       {
         key: '1',
-        poster: require('../../../../../assets/img/events.jpeg'),
+        image: require('../../../../../assets/img/events.jpeg'),
       },
       {
         key: '2',
-        poster: require('../../../../../assets/img/beauty.jpeg'),
+        image: require('../../../../../assets/img/beauty.jpeg'),
       },
       {
         key: '3',
-        poster: require('../../../../../assets/img/makeup.jpeg'),
+        image: require('../../../../../assets/img/makeup.jpeg'),
       },
       {
         key: '4',
-        poster: require('../../../../../assets/img/hotels.jpeg'),
+        image: require('../../../../../assets/img/hotels.jpeg'),
       },
       {
         key: '5',
-        poster: require('../../../../../assets/img/photography.jpeg'),
+        image: require('../../../../../assets/img/photography.jpeg'),
       },
     ],
   },
@@ -115,28 +119,29 @@ export default [
   {
     key: '456',
     name: 'Royal Palace',
+    address: '743 some random address',
     rate: 3.5,
     price: 100,
     files: [
       {
         key: '1',
-        poster: require('../../../../../assets/img/events.jpeg'),
+        image: require('../../../../../assets/img/events.jpeg'),
       },
       {
         key: '2',
-        poster: require('../../../../../assets/img/beauty.jpeg'),
+        image: require('../../../../../assets/img/beauty.jpeg'),
       },
       {
         key: '3',
-        poster: require('../../../../../assets/img/makeup.jpeg'),
+        image: require('../../../../../assets/img/makeup.jpeg'),
       },
       {
         key: '4',
-        poster: require('../../../../../assets/img/hotels.jpeg'),
+        image: require('../../../../../assets/img/hotels.jpeg'),
       },
       {
         key: '5',
-        poster: require('../../../../../assets/img/photography.jpeg'),
+        image: require('../../../../../assets/img/photography.jpeg'),
       },
     ],
   },

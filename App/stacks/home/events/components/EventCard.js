@@ -22,6 +22,7 @@ const CardWidth = height / 2.15;
 const CardHight = height / 3.8;
 
 const EventCard = ({data, navigation}) => {
+  const list = React.useRef();
   const [current, setCurrent] = React.useState(0);
   const onViewRef = React.useRef(({viewableItems, changed}) => {
     setCurrent(viewableItems[0]?.index);
@@ -41,6 +42,7 @@ const EventCard = ({data, navigation}) => {
       }}>
       <Animated.FlatList
         data={data.files}
+        ref={list}
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => item.key}
         pagingEnabled={true}
@@ -72,10 +74,17 @@ const EventCard = ({data, navigation}) => {
               <TouchableOpacity
                 activeOpacity={0.9}
                 onPress={() => {
-                  navigation.navigate('EventDetail', {
-                    selectedItem: data,
-                    selectedImageIndex: current,
+                  list.current.scrollToIndex({
+                    animated: true,
+                    index: 0,
                   });
+
+                  setTimeout(() => {
+                    navigation.navigate('EventDetail', {
+                      selectedItem: data,
+                      selectedImageIndex: current,
+                    });
+                  }, 100);
                 }}>
                 <SharedElement
                   id={`item.${data.key}.image.${item.key}`}

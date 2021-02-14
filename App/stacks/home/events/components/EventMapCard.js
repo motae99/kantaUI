@@ -13,7 +13,7 @@ import {
 const {width, height} = Dimensions.get('window');
 
 const CARD_HEIGHT = height / 4;
-const CARD_WIDTH = width - 20;
+const CARD_WIDTH = width * 0.9;
 
 const styles = StyleSheet.create({
   card: {
@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
   },
   cardImage: {
     // flex: 1,
-    width: '100%',
-    height: '100%',
+    width: CARD_WIDTH,
+    height: CARD_HEIGHT,
     alignSelf: 'center',
   },
   textContent: {
@@ -54,9 +54,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default memo(({data}) => {
+export default memo(({data, navigation}) => {
   // const {navigate} = useNavigation();
   const [current, setCurrent] = React.useState(0);
+  // console.log(print_r(data.files));
 
   return (
     <View style={styles.card} key={data.key}>
@@ -64,17 +65,17 @@ export default memo(({data}) => {
       <Image
         style={styles.cardImage}
         source={{
-          uri: data.files[0].uri,
+          uri: data.files[0].image,
           resizeMode: 'cover',
         }}
       />
       {/* </SharedElement> */}
       <TouchableWithoutFeedback
         onPress={() => {
-          // navigate('EventDetail', {
-          //   selectedItem: data,
-          //   selectedImageIndex: current,
-          // });
+          navigation.navigate('EventDetail', {
+            selectedItem: data,
+            selectedImageIndex: current,
+          });
         }}>
         <View style={styles.textContent}>
           <Text numberOfLines={1} style={styles.cardtitle}>

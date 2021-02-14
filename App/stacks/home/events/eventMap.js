@@ -23,10 +23,11 @@ import MapView, {
 
 import imagesData from './components/eventData';
 import Card from './components/EventMapCard';
+import EventCard from './components/EventCard';
 
 const {width, height} = Dimensions.get('window');
 const CARD_HEIGHT = height / 3;
-const CARD_WIDTH = width - 40;
+const CARD_WIDTH = width * 0.9;
 
 const DATA = [
   {
@@ -119,37 +120,6 @@ const region = {
 };
 
 const eventMap = ({navigation}) => {
-  // componentDidMount() {
-  //   scrollX.addListener(({value}) => {
-  //     let index = Math.floor(value / CARD_WIDTH); // animate 30% away from landing on the next item
-  //     if (index >= DATA.length) {
-  //       index = DATA.length - 1;
-  //     }
-  //     if (index <= 0) {
-  //       index = 0;
-  //     }
-
-  //     clearTimeout(this.regionTimeout);
-
-  //     this.regionTimeout = setTimeout(() => {
-  //       if (this.index !== index) {
-  //         this.index = index;
-  //         const {coordinate} = DATA[index];
-  //         mapRef.animateToRegion(
-  //           {
-  //             ...coordinate,
-  //             latitudeDelta: 0.00864195044303443,
-  //             longitudeDelta: 0.000142817690068,
-  //           },
-  //           350,
-  //         );
-  //       }
-  //     }, 10);
-  //   });
-  // }
-  // const itemKey = 'NzE0afBtUOfYLg5krWrbVSPoCcB3';
-  // const selectedItemIndex = DATA.findIndex((i) => i.key === iteKey);
-
   const [current, setCurrent] = React.useState(0);
   const mapRef = React.useRef();
   const scrollX = React.useRef(new Animated.Value(0)).current;
@@ -161,11 +131,9 @@ const eventMap = ({navigation}) => {
   const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 50});
 
   React.useEffect(() => {
-    clearTimeout(regionTimeout);
-
-    const regionTimeout = setTimeout(() => {
+    setTimeout(() => {
       const {coordinate} = DATA[current];
-      mapRef.animateToRegion(
+      mapRef.current.animateToRegion(
         {
           ...coordinate,
           latitudeDelta: 0.00864195044303443,
@@ -175,35 +143,6 @@ const eventMap = ({navigation}) => {
       );
     }, 10);
   }, [current]);
-
-  // React.useEffect(() => {
-  //   const currentIndex = Math.floor(scrollX / CARD_WIDTH);
-  //   if (currentIndex >= DATA.length) {
-  //     setIndex(DATA.length - 1);
-  //   }
-  //   if (currentIndex <= 0) {
-  //     setIndex(0);
-  //   }
-
-  //   console.log('index now is ', currentIndex);
-
-  //   // clearTimeout(regionTimeout);
-
-  //   // const regionTimeout = setTimeout(() => {
-  //   //   if (currentIndex !== index) {
-  //   //     setIndex(currentIndex);
-  //   //     const {coordinate} = DATA[index];
-  //   //     mapRef.animateToRegion(
-  //   //       {
-  //   //         ...coordinate,
-  //   //         latitudeDelta: 0.00864195044303443,
-  //   //         longitudeDelta: 0.000142817690068,
-  //   //       },
-  //   //       350,
-  //   //     );
-  //   //   }
-  //   // }, 10);
-  // }, [index, scrollX]);
 
   return (
     <View style={styles.container}>
@@ -223,7 +162,7 @@ const eventMap = ({navigation}) => {
 
           const scale = scrollX.interpolate({
             inputRange,
-            outputRange: [1, 2.5, 1],
+            outputRange: [1, 2, 1],
             extrapolate: 'clamp',
           });
 
@@ -251,12 +190,23 @@ const eventMap = ({navigation}) => {
         onViewableItemsChanged={onViewRef.current}
         viewabilityConfig={viewConfigRef.current}
         data={DATA}
-        renderItem={({item}) => <Card data={item} navigation={navigation} />}
-        keyExtractor={(item) => String(item.key)}
+        renderItem={({item}) => (
+          // <View style={{marginHorizontal: 18}}>
+          <Card data={item} navigation={navigation} />
+          // </View>
+        )}
+        contentContainerStyle={
+          {
+            // alignItems: 'center',
+            // justifyContent: 'center',
+            // marginHorizontal: 18,
+          }
+        }
+        keyExtractor={(item) => item.key}
         horizontal
         scrollEventThrottle={1}
         showsHorizontalScrollIndicator={false}
-        snapToInterval={CARD_WIDTH + 20}
+        snapToInterval={width}
         onScroll={Animated.event(
           [
             {
@@ -299,6 +249,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: 50,
     width: 50,
+    borderRadius: 25,
   },
   marker: {
     position: 'absolute', // <-- moved from ring
@@ -310,7 +261,7 @@ const styles = StyleSheet.create({
   ring: {
     width: 24,
     height: 24,
-    borderRadius: 24,
+    borderRadius: 25,
     backgroundColor: 'rgba(130,4,150, 0.3)',
     borderWidth: 1,
     borderColor: 'rgba(130,4,150, 0.5)',
