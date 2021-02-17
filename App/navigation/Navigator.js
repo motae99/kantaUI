@@ -48,19 +48,19 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 // import {createStackNavigator} from '@react-navigation/stack';
 import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
 
-import Phone from '../stacks/auth/Phone';
-import Verify from '../stacks/auth/Verify';
-// import Intro from '../stacks/auth/Intro';
-import Category from '../stacks/home/Category';
-import Beauty from '../stacks/home/Beauty';
-import beautyList from '../stacks/home/beautyList';
+// import Phone from '../stacks/auth/Phone';
+// import Verify from '../stacks/auth/Verify';
+// // import Intro from '../stacks/auth/Intro';
+// import Category from '../stacks/home/Category';
+// import Beauty from '../stacks/home/Beauty';
+// import beautyList from '../stacks/home/beautyList';
 
 import EventList from '../stacks/home/events/list';
 import EventDetail from '../stacks/home/events/detail';
 import EventMap from '../stacks/home/events/eventMap';
 
 // enabledScreens();
-const Tab = createBottomTabNavigator();
+// const Tab = createBottomTabNavigator();
 const Stack = createSharedElementStackNavigator();
 
 // const bottomTabs = () => {
@@ -88,11 +88,31 @@ const Stack = createSharedElementStackNavigator();
 //   );
 // };
 
+const config = {
+  animation: 'spring',
+  config: {
+    stiffness: 1000,
+    damping: 500,
+    mass: 3,
+    overshootClamping: true,
+    restDisplacementThreshold: 0.01,
+    restSpeedThreshold: 0.01,
+  },
+};
 const EventStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator headerMode={'none'}>
-        <Stack.Screen name="EventList" component={EventList} />
+        <Stack.Screen
+          name="EventList"
+          component={EventList}
+          options={{
+            transitionSpec: {
+              open: config,
+              close: config,
+            },
+          }}
+        />
         <Stack.Screen name="EventMap" component={EventMap} />
         <Stack.Screen
           options={() => ({
@@ -100,12 +120,12 @@ const EventStack = () => {
             transitionSpec: {
               open: {
                 animation: 'timing',
-                config: {duration: 400},
+                config: {duration: 200},
                 // config: {duration: 500, easing: Eeasing.easingInOut},
               },
               close: {
                 animation: 'timing',
-                config: {duration: 400},
+                config: {duration: 200},
               },
             },
             cardStyleInterpolator: ({current: {progress}}) => {

@@ -6,188 +6,96 @@ import {
   View,
   Dimensions,
   StatusBar,
-  FlatList,
-  Image,
+  Animated,
   ScrollView,
-  TouchableOpacity,
+  StyleSheet,
+  Image,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Fontisto from 'react-native-vector-icons/Fontisto';
-import {SharedElement} from 'react-navigation-shared-element';
-
 import MapView, {Marker} from 'react-native-maps';
+import * as Animatable from 'react-native-animatable';
 
-const {width, height} = Dimensions.get('window');
+import HeaderImage from './components/headerImage';
+import Header from './components/Header';
+export const {width, height} = Dimensions.get('window');
 
 const region = {
-  latitude: 37.78825,
-  longitude: -122.4324,
+  latitude: 17.441549,
+  longitude: 78.489381,
   latitudeDelta: 0.0922,
   longitudeDelta: 0.0421,
 };
 
-const headerImageHeight = height * 0.65;
-const headerHieght = height / 6;
+// const headerHieght = height / 6;
+
+export const MIN_HEADER_HEIGHT = 100;
+export const HEADER_IMAGE_HEIGHT = height * 0.65;
+const ICON_SIZE = 20;
+const PADDING = 18;
+const fadeIn = {
+  0: {
+    opacity: 0,
+    translateY: 100,
+  },
+  1: {
+    opacity: 1,
+    translateY: 0,
+  },
+};
 
 const Detail = ({navigation, route}) => {
   const {selectedItem, selectedImageIndex} = route.params;
+  const scrollY = React.useRef(new Animated.Value(0)).current;
 
-  const [current, setCurrent] = React.useState(selectedImageIndex);
-  const list = React.useRef();
-  const onViewRef = React.useRef(({viewableItems, changed}) => {
-    setCurrent(viewableItems[0]?.index + 1);
+  const opacity = scrollY.interpolate({
+    inputRange: [0, HEADER_IMAGE_HEIGHT * 0.7],
+    outputRange: [1, 0],
+    extrapolate: 'clamp',
   });
-  const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 50});
-
-  // React.useEffect(() => {
-  //   if (list.current) {
-  //     list.current.initialScrollIndex({selectedImageIndex});
-  //   }
-  // }, [selectedImageIndex]);
-
   return (
-    <View style={{backgroundColor: '#E5E5E5', flex: 1}}>
+    <View style={{backgroundColor: '#fff', flex: 1}}>
       <StatusBar
-        translucent
+        // translucent
         barStyle={'light-content'}
-        backgroundColor="transparent"
+        // backgroundColor="transparent"
       />
+      {/* <Image
+        source={require('../../../../assets/img/photography.jpeg')}
+        style={[StyleSheet.absoluteFillObject, {resizeMode: 'stretch'}]}
+        blurRadius={90}
+      /> */}
+      <HeaderImage
+        navigation={navigation}
+        route={route}
+        animatedValue={scrollY}
+      />
+      <Header navigation={navigation} route={route} animatedValue={scrollY} />
 
-      <ScrollView contentContainerStyle={{paddingHorizontal: 18}}>
+      <ScrollView
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {y: scrollY}}}],
+          {useNativeDriver: false},
+        )}
+        contentContainerStyle={{paddingHorizontal: 18}}>
         <View
           style={{
-            width,
-            height: headerImageHeight,
-            borderBottomRightRadius: 25,
-            borderBottomLeftRadius: 25,
-            overflow: 'hidden',
-          }}>
-          <FlatList
-            ref={list}
-            horizontal
-            snapToInterval={width}
-            showsHorizontalScrollIndicator={false}
-            // initialScrollIndex={selectedImageIndex}
-            data={selectedItem.files}
-            keyExtractor={(item) => item.key}
-            onViewableItemsChanged={onViewRef.current}
-            viewabilityConfig={viewConfigRef.current}
-            renderItem={({item, index}) => {
-              return (
-                <View>
-                  <SharedElement
-                    id={`item.${selectedItem.key}.image.${item.key}`}
-                    style={{
-                      width,
-                      height: headerImageHeight,
-                    }}>
-                    <Image
-                      style={{
-                        width,
-                        height: headerImageHeight,
-                        resizeMode: 'cover',
-                        borderBottomRightRadius: 25,
-                        borderBottomLeftRadius: 25,
-                      }}
-                      source={item.image}
-                    />
-                  </SharedElement>
-                </View>
-              );
-            }}
-          />
-          <View
-            style={{
-              position: 'absolute',
-              bottom: 18,
-              right: 18,
-              width: 50,
-              height: 24,
-              backgroundColor: 'rgba(34,40,42,.7)',
-              borderRadius: 8,
-              justifyContent: 'center',
-              alignItems: 'center',
-              // opacity: 0.6,
-            }}>
-            <Text style={{color: 'white'}}>
-              {current}/{selectedItem.files.length}
-            </Text>
-          </View>
-        </View>
-        <View
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width,
-            height: headerHieght,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            paddingHorizontal: 18,
-          }}>
-          <TouchableOpacity
-            activeOpacity={0.9}
-            onPress={() => {
-              // list.current.scrollToIndex({
-              //   animated: true,
-              //   index: selectedImageIndex,
-              // });
-              // setTimeout(() => {
-              //   navigation.goBack();
-              // }, 300);
-              navigation.goBack();
-            }}>
-            <View
-              style={{
-                height: 32,
-                width: 32,
-                backgroundColor: 'white',
-                borderRadius: 16,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Ionicons name="arrow-back" size={20} color="#2B3449" />
-            </View>
-          </TouchableOpacity>
-          <View style={{flexDirection: 'row'}}>
-            <View
-              style={{
-                height: 32,
-                width: 32,
-                backgroundColor: 'white',
-                borderRadius: 16,
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginRight: 8,
-              }}>
-              <Ionicons name="heart" size={20} color="#2B3449" />
-            </View>
-            <View
-              style={{
-                height: 32,
-                width: 32,
-                backgroundColor: 'white',
-                borderRadius: 16,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Fontisto name="share-a" size={18} color="#2B3449" />
-            </View>
-          </View>
-        </View>
-        <View style={{marginTop: 24}}>
-          <Text
-            style={{fontFamily: 'Montserrat', fontSize: 18, fontWeight: '800'}}>
-            {selectedItem.name}
-          </Text>
-          <View
+            height: HEADER_IMAGE_HEIGHT,
+            marginBottom: 18,
+          }}
+        />
+        <Animatable.View
+          animation={fadeIn}
+          delay={700}
+          duration={400}
+          useNativeDriver={true}>
+          <Animated.View
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
               // alignItems: 'center',
-              marginTop: 8,
+              opacity,
+              marginTop: PADDING * 2,
               marginBottom: 16,
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -217,18 +125,104 @@ const Detail = ({navigation, route}) => {
                 {selectedItem.rate}(2.2K review)
               </Text>
             </View>
-          </View>
-        </View>
+          </Animated.View>
+        </Animatable.View>
+
         <View>
-          <Text
-            style={{
-              fontFamily: 'Montserrat',
-              fontSize: 14,
-              fontWeight: '500',
-              marginBottom: 18,
-            }}>
-            Get Directions
-          </Text>
+          <Animatable.View
+            animation={'fadeInUp'}
+            delay={1100}
+            duration={400}
+            useNativeDriver={true}>
+            <Text
+              style={{
+                fontFamily: 'Montserrat',
+                fontSize: 14,
+                fontWeight: '500',
+                marginBottom: 18,
+              }}>
+              Get Directions
+            </Text>
+            <View
+              style={{
+                borderRadius: 16,
+                overflow: 'hidden',
+                height: height / 5,
+              }}>
+              <MapView
+                style={{
+                  flex: 1,
+                }}
+                scrollEnabled={false}
+                zoomEnabled={false}
+                pitchEnabled={false}
+                rotateEnabled={false}
+                initialRegion={region}>
+                <Marker
+                  title={'paryHall name'}
+                  description={'partyHall address'}
+                  coordinate={region}
+                />
+              </MapView>
+            </View>
+          </Animatable.View>
+          <View
+            style={{borderRadius: 16, overflow: 'hidden', height: height / 5}}>
+            <MapView
+              style={{
+                flex: 1,
+              }}
+              scrollEnabled={false}
+              zoomEnabled={false}
+              pitchEnabled={false}
+              rotateEnabled={false}
+              initialRegion={region}>
+              <Marker
+                title={'paryHall name'}
+                description={'partyHall address'}
+                coordinate={region}
+              />
+            </MapView>
+          </View>
+
+          <View
+            style={{borderRadius: 16, overflow: 'hidden', height: height / 5}}>
+            <MapView
+              style={{
+                flex: 1,
+              }}
+              scrollEnabled={false}
+              zoomEnabled={false}
+              pitchEnabled={false}
+              rotateEnabled={false}
+              initialRegion={region}>
+              <Marker
+                title={'paryHall name'}
+                description={'partyHall address'}
+                coordinate={region}
+              />
+            </MapView>
+          </View>
+
+          <View
+            style={{borderRadius: 16, overflow: 'hidden', height: height / 5}}>
+            <MapView
+              style={{
+                flex: 1,
+              }}
+              scrollEnabled={false}
+              zoomEnabled={false}
+              pitchEnabled={false}
+              rotateEnabled={false}
+              initialRegion={region}>
+              <Marker
+                title={'paryHall name'}
+                description={'partyHall address'}
+                coordinate={region}
+              />
+            </MapView>
+          </View>
+
           <View
             style={{borderRadius: 16, overflow: 'hidden', height: height / 5}}>
             <MapView

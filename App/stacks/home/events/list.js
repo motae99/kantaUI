@@ -14,6 +14,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import * as Animatable from 'react-native-animatable';
 
 import EventPlanner from './components/EventPlanerCard';
 import EventCard from './components/EventCard';
@@ -30,14 +31,14 @@ const Header = () => {
         style={{
           width,
           marginTop: 24,
-          marginLeft: 18,
+          paddingLeft: 18,
         }}>
         <Text
           style={{
             fontFamily: 'Montserrat',
             fontWeight: '600',
             fontSize: 20,
-            marginLeft: 4,
+            // marginLeft: 4,
             color: 'rgba( 80,39,107,1)',
             marginBottom: 18,
           }}>
@@ -51,7 +52,15 @@ const Header = () => {
           decelerationRate={'fast'}
           horizontal
           renderItem={({item, index}) => {
-            return <EventPlanner data={item} />;
+            return (
+              <Animatable.View
+                animation={'slideInRight'}
+                delay={index * 300}
+                duration={400}
+                useNativeDriver={true}>
+                <EventPlanner data={item} />
+              </Animatable.View>
+            );
           }}
         />
         <View
@@ -60,17 +69,22 @@ const Header = () => {
             marginBottom: 18,
           }}
         />
-        <Text
-          style={{
-            fontFamily: 'Montserrat',
-            fontWeight: '600',
-            fontSize: 20,
-            marginLeft: 18,
-            color: 'rgba( 80,39,107,1)',
-            marginBottom: 18,
-          }}>
-          Event Halls
-        </Text>
+        <Animatable.View
+          animation={'fadeInUp'}
+          delay={200}
+          duration={300}
+          useNativeDriver={true}>
+          <Text
+            style={{
+              fontFamily: 'Montserrat',
+              fontWeight: '600',
+              fontSize: 20,
+              color: 'rgba( 80,39,107,1)',
+              marginBottom: 18,
+            }}>
+            Event Halls
+          </Text>
+        </Animatable.View>
       </View>
     </View>
   );
@@ -102,15 +116,24 @@ const EventList = ({navigation}) => {
         <Animated.FlatList
           data={DATA}
           keyExtractor={(item) => item.key}
-          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
           ListHeaderComponent={<Header />}
+          initialNumToRender={4}
           contentContainerStyle={{
             alignItems: 'center',
             justifyContent: 'center',
             marginBottom: 18,
           }}
           renderItem={({item, index}) => {
-            return <EventCard data={item} navigation={navigation} />;
+            return (
+              <Animatable.View
+                animation={'fadeInUp'}
+                delay={index * 400}
+                duration={400}
+                useNativeDriver={true}>
+                <EventCard data={item} navigation={navigation} />
+              </Animatable.View>
+            );
           }}
         />
       </View>
