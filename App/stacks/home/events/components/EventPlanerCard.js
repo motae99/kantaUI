@@ -7,7 +7,8 @@ import {
   Image,
   Dimensions,
   Animated,
-  Platform,
+  TouchableOpacity,
+  FlatList,
 } from 'react-native';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -20,73 +21,69 @@ const {width, height} = Dimensions.get('window');
 const CardWidth = width - 60;
 const CardHight = 280;
 const ImageHeight = 200;
+const SIZE = 64;
+const ICON_SIZE = SIZE * 0.6;
+const SPACING = 12;
+const s = width * 0.68;
+const ITEM_WIDTH = s;
+const ITEM_HEIGHT = s * 1.5;
+const RADIUS = 18;
+const FULL_SIZE = s * SPACING * 2;
 
-const EventCard = (data) => {
+const EventPlannerCard = (data) => {
   const scrollx = React.useRef(new Animated.Value(0)).current;
 
   return (
     <View
       style={{
-        height: CardHight,
-        width: CardWidth,
-        // alignSelf: 'center',
-        marginRight: 18,
-        borderRadius: 17,
-        overflow: 'hidden',
-        backgroundColor: '#FFFFFF',
+        height: 500,
+        width: width,
+        // // alignSelf: 'center',
+        // marginRight: 18,
+        // borderRadius: 17,
+        // overflow: 'hidden',
+        backgroundColor: 'green',
+        flex: 1,
       }}>
-      <Animated.FlatList
+      <FlatList
         data={data.files}
         keyExtractor={(item) => item.key}
-        pagingEnabled={true}
-        // decelerationRate={'fast'}
+        snapToInterval={FULL_SIZE}
         showsHorizontalScrollIndicator={false}
         horizontal
-        // contentContainerStyle={{height: ImageHeight}}
-        onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {x: scrollx}}}],
-          {useNativeDriver: false},
-        )}
-        snapToInterval={CardWidth - 36}
+        decelerationRate="fast"
+        // onScroll={Animated.event(
+        //   [{nativeEvent: {contentOffset: {x: scrollx}}}],
+        //   {useNativeDriver: false},
+        // )}
         renderItem={({item, index}) => {
           return (
-            <View
-              style={{
-                width: CardWidth,
-                height: ImageHeight,
-                borderRadius: 16,
-                overflow: 'hidden',
-              }}>
-              <Image
-                source={item.image}
-                style={[
-                  {
-                    width: CardWidth,
-                    height: ImageHeight,
-                    borderRadius: 17,
-                    resizeMode: 'cover',
-                  },
-                ]}
-              />
-              {/* <LinearGradient
-                colors={['rgba(0, 0, 0, 0)', 'black']}
-                style={{
-                  height: 40,
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  borderBottomRightRadius: 16,
-                  borderBottomLeftRadius: 16,
-                }}
-              /> */}
-            </View>
+            // <TouchableOpacity onPress={() => {}} style={styles.itemContainer}>
+            //   <Image
+            //     source={item.image}
+            //     style={[
+            //       StyleSheet.absoluteFillObject,
+            //       {
+            //         width: 200,
+            //         height: 200,
+            //         backgroundColor: '#f00',
+            //         resizeMode: 'cover',
+            //       },
+            //     ]}
+            //   />
+            //   <Text style={styles.location}>{item.name}</Text>
+            //   <View style={styles.days}>
+            //     <Text style={styles.daysValue}>{item.rate}</Text>
+            //     <Text style={styles.daysLabel}>Rate</Text>
+            //   </View>
+            // </TouchableOpacity>
+            <View style={{backgroundColor: '#E55', width: 300, height: 300}} />
           );
         }}
       />
       {/* <Indicator scrollx={scrollx} /> */}
 
-      <View
+      {/* <View
         style={{
           position: 'absolute',
           top: 12,
@@ -184,8 +181,29 @@ const EventCard = (data) => {
             {data.rate}
           </Text>
         </View>
-      </View>
+      </View> */}
     </View>
   );
 };
-export default EventCard;
+const styles = StyleSheet.create({
+  itemContainer: {
+    width: ITEM_WIDTH,
+    height: ITEM_HEIGHT,
+    margin: SPACING,
+    borderRadius: RADIUS,
+    backgroundColor: '#ffd',
+  },
+  location: {
+    fontSize: 30,
+    color: '#fff',
+    width: ITEM_WIDTH * 0.8,
+    textTransform: 'uppercase',
+    position: 'absolute',
+    top: SPACING,
+    left: SPACING,
+  },
+  days: {},
+  daysLabel: {},
+  daysValue: {},
+});
+export default EventPlannerCard;

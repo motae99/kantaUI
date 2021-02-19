@@ -10,7 +10,7 @@ import {width, height, HEADER_IMAGE_HEIGHT, MIN_HEADER_HEIGHT} from '../detail';
 const ICON_SIZE = 20;
 const PADDING = 18;
 
-const Header = ({navigation, route, animatedValue}) => {
+const Header = ({navigation, route, animatedValue, name, list}) => {
   const opacity = animatedValue.interpolate({
     inputRange: [0, HEADER_IMAGE_HEIGHT, HEADER_IMAGE_HEIGHT + 40],
     outputRange: [0, 0, 1],
@@ -68,10 +68,10 @@ const Header = ({navigation, route, animatedValue}) => {
         <TouchableOpacity
           activeOpacity={0.9}
           onPress={() => {
-            // list.current.scrollToIndex({
-            //   animated: true,
-            //   index: 0,
-            // });
+            list.current.scrollToIndex({
+              animated: true,
+              index: 0,
+            });
             setTimeout(() => {
               navigation.goBack();
             }, 100);
@@ -102,7 +102,7 @@ const Header = ({navigation, route, animatedValue}) => {
                 fontSize: 18,
                 fontWeight: '800',
               }}>
-              Miss Miu Europaallee
+              {name}
             </Text>
           </Animatable.View>
         </Animated.View>

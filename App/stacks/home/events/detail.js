@@ -17,7 +17,7 @@ import MapView, {Marker} from 'react-native-maps';
 import * as Animatable from 'react-native-animatable';
 
 import HeaderImage from './components/headerImage';
-import Header from './components/Header';
+import Header from './components/detailHeader';
 export const {width, height} = Dimensions.get('window');
 
 const region = {
@@ -47,7 +47,14 @@ const fadeIn = {
 const Detail = ({navigation, route}) => {
   const {selectedItem, selectedImageIndex} = route.params;
   const scrollY = React.useRef(new Animated.Value(0)).current;
+  const list = React.useRef();
 
+  const scrollBack = () => {
+    list.current.scrollToIndex({
+      animated: true,
+      index: 0,
+    });
+  };
   const opacity = scrollY.interpolate({
     inputRange: [0, HEADER_IMAGE_HEIGHT * 0.7],
     outputRange: [1, 0],
@@ -69,8 +76,15 @@ const Detail = ({navigation, route}) => {
         navigation={navigation}
         route={route}
         animatedValue={scrollY}
+        {...{list}}
       />
-      <Header navigation={navigation} route={route} animatedValue={scrollY} />
+      <Header
+        navigation={navigation}
+        route={route}
+        animatedValue={scrollY}
+        name={selectedItem.name}
+        list={list}
+      />
 
       <ScrollView
         onScroll={Animated.event(

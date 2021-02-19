@@ -14,11 +14,11 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {width, height, HEADER_IMAGE_HEIGHT, MIN_HEADER_HEIGHT} from '../detail';
 
-const Header = ({navigation, route, animatedValue}) => {
+const Header = ({navigation, route, animatedValue, list}) => {
   const {selectedItem, selectedImageIndex} = route.params;
 
   const [current, setCurrent] = React.useState(selectedImageIndex);
-  const list = React.useRef();
+  // const list = React.useRef();
   const onViewRef = React.useRef(({viewableItems, changed}) => {
     setCurrent(viewableItems[0]?.index + 1);
   });
@@ -103,7 +103,6 @@ const Header = ({navigation, route, animatedValue}) => {
           borderRadius: 8,
           justifyContent: 'center',
           alignItems: 'center',
-          // opacity: 0.6,
         }}>
         <Text style={{color: 'white'}}>
           {current}/{selectedItem.files.length}

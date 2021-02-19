@@ -42,7 +42,7 @@
 
 import React from 'react';
 import {Easing} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, TransitionPresets} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 // import {enabledScreens} from 'react-native-screens';
 // import {createStackNavigator} from '@react-navigation/stack';
@@ -55,9 +55,10 @@ import {createSharedElementStackNavigator} from 'react-navigation-shared-element
 // import Beauty from '../stacks/home/Beauty';
 // import beautyList from '../stacks/home/beautyList';
 
-import EventList from '../stacks/home/events/list';
-import EventDetail from '../stacks/home/events/detail';
-import EventMap from '../stacks/home/events/eventMap';
+import EventList from 'events/list';
+import EventDetail from 'events/detail';
+import EventMap from 'events/eventMap';
+import PlannerDetail from 'events/plannerDetail';
 
 // enabledScreens();
 // const Tab = createBottomTabNavigator();
@@ -99,21 +100,54 @@ const config = {
     restSpeedThreshold: 0.01,
   },
 };
+
+const forSlide = ({current, next, inverted, layouts: {screen}}) => {
+  const progress = Animated.add(
+    current.progress.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, 1],
+      extrapolate: 'clamp',
+    }),
+    next
+      ? next.progress.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, 1],
+          extrapolate: 'clamp',
+        })
+      : 0,
+  );
+
+  return {
+    cardStyle: {
+      transform: [
+        {
+          translateX: Animated.multiply(
+            progress.interpolate({
+              inputRange: [0, 1, 2],
+              outputRange: [
+                screen.width, // Focused, but offscreen in the beginning
+                0, // Fully focused
+                screen.width * -0.3, // Fully unfocused
+              ],
+              extrapolate: 'clamp',
+            }),
+            inverted,
+          ),
+        },
+      ],
+    },
+  };
+};
 const EventStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator headerMode={'none'}>
+        <Stack.Screen name="EventList" component={EventList} />
         <Stack.Screen
-          name="EventList"
-          component={EventList}
-          options={{
-            transitionSpec: {
-              open: config,
-              close: config,
-            },
-          }}
+          name="EventMap"
+          component={EventMap}
+          // options={{...TransitionPresets.SlideFromRightIOS}}
         />
-        <Stack.Screen name="EventMap" component={EventMap} />
         <Stack.Screen
           options={() => ({
             gestureEnabled: false,
@@ -138,6 +172,31 @@ const EventStack = () => {
           })}
           name="EventDetail"
           component={EventDetail}
+        />
+        <Stack.Screen
+          options={() => ({
+            gestureEnabled: false,
+            transitionSpec: {
+              open: {
+                animation: 'timing',
+                config: {duration: 200},
+                // config: {duration: 500, easing: Eeasing.easingInOut},
+              },
+              close: {
+                animation: 'timing',
+                config: {duration: 200},
+              },
+            },
+            cardStyleInterpolator: ({current: {progress}}) => {
+              return {
+                cardStyle: {
+                  opacity: progress,
+                },
+              };
+            },
+          })}
+          name="PlannerDetail"
+          component={PlannerDetail}
         />
       </Stack.Navigator>
     </NavigationContainer>

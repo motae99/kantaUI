@@ -2,93 +2,20 @@
 /* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
 import {
-  Text,
   View,
-  StyleSheet,
-  ScrollView,
   Dimensions,
   Animated,
-  Platform,
   StatusBar,
-  Image,
   TouchableOpacity,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import * as Animatable from 'react-native-animatable';
-
-import EventPlanner from './components/EventPlanerCard';
-import EventCard from './components/EventCard';
-import Searchbar from './components/SearchBar';
-import DATA from './components/eventData';
+import ListHeader from 'eventsComponents/listHeader';
+import EventCard from 'eventsComponents/EventCard';
+import DATA from 'eventsComponents/eventData';
+// import DATA from '_events/components/eventData';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 const {width, height} = Dimensions.get('window');
 
-const Header = () => {
-  return (
-    <View style={{marginTop: 87}}>
-      <Searchbar />
-      <View
-        style={{
-          width,
-          marginTop: 24,
-          paddingLeft: 18,
-        }}>
-        <Text
-          style={{
-            fontFamily: 'Montserrat',
-            fontWeight: '600',
-            fontSize: 20,
-            // marginLeft: 4,
-            color: 'rgba( 80,39,107,1)',
-            marginBottom: 18,
-          }}>
-          Event Planners
-        </Text>
-        <Animated.FlatList
-          data={DATA}
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item) => item.key}
-          pagingEnabled={true}
-          decelerationRate={'fast'}
-          horizontal
-          renderItem={({item, index}) => {
-            return (
-              <Animatable.View
-                animation={'slideInRight'}
-                delay={index * 300}
-                duration={400}
-                useNativeDriver={true}>
-                <EventPlanner data={item} />
-              </Animatable.View>
-            );
-          }}
-        />
-        <View
-          style={{
-            marginTop: 24,
-            marginBottom: 18,
-          }}
-        />
-        <Animatable.View
-          animation={'fadeInUp'}
-          delay={200}
-          duration={300}
-          useNativeDriver={true}>
-          <Text
-            style={{
-              fontFamily: 'Montserrat',
-              fontWeight: '600',
-              fontSize: 20,
-              color: 'rgba( 80,39,107,1)',
-              marginBottom: 18,
-            }}>
-            Event Halls
-          </Text>
-        </Animatable.View>
-      </View>
-    </View>
-  );
-};
 const EventList = ({navigation}) => {
   return (
     <View style={{backgroundColor: '#E5E5E5', flex: 1}}>
@@ -106,19 +33,16 @@ const EventList = ({navigation}) => {
 
       <View
         style={{
-          // height: 300,
           width,
-          // backgroundColor: 'gray',
           marginTop: 24,
           marginBottom: 18,
-          // marginLeft: 18,
         }}>
         <Animated.FlatList
           data={DATA}
           keyExtractor={(item) => item.key}
           showsVerticalScrollIndicator={false}
-          ListHeaderComponent={<Header />}
-          initialNumToRender={4}
+          ListHeaderComponent={<ListHeader navigation={navigation} />}
+          initialNumToRender={3}
           contentContainerStyle={{
             alignItems: 'center',
             justifyContent: 'center',

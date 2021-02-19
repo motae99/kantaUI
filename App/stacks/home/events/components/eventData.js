@@ -8,23 +8,23 @@ export default [
     files: [
       {
         key: '1',
-        image: require('../../../../../assets/img/events.jpeg'),
+        image: require('img/events.jpeg'),
       },
       {
         key: '2',
-        image: require('../../../../../assets/img/beauty.jpeg'),
+        image: require('img/beauty.jpeg'),
       },
       {
         key: '3',
-        image: require('../../../../../assets/img/makeup.jpeg'),
+        image: require('img/makeup.jpeg'),
       },
       {
         key: '4',
-        image: require('../../../../../assets/img/hotels.jpeg'),
+        image: require('img/hotels.jpeg'),
       },
       {
         key: '5',
-        image: require('../../../../../assets/img/photography.jpeg'),
+        image: require('img/photography.jpeg'),
       },
     ],
   },
@@ -37,23 +37,23 @@ export default [
     files: [
       {
         key: '1',
-        image: require('../../../../../assets/img/events.jpeg'),
+        image: require('img/events.jpeg'),
       },
       {
         key: '2',
-        image: require('../../../../../assets/img/beauty.jpeg'),
+        image: require('img/beauty.jpeg'),
       },
       {
         key: '3',
-        image: require('../../../../../assets/img/makeup.jpeg'),
+        image: require('img/makeup.jpeg'),
       },
       {
         key: '4',
-        image: require('../../../../../assets/img/hotels.jpeg'),
+        image: require('img/hotels.jpeg'),
       },
       {
         key: '5',
-        image: require('../../../../../assets/img/photography.jpeg'),
+        image: require('img/photography.jpeg'),
       },
     ],
   },
@@ -66,23 +66,23 @@ export default [
     files: [
       {
         key: '1',
-        image: require('../../../../../assets/img/events.jpeg'),
+        image: require('img/events.jpeg'),
       },
       {
         key: '2',
-        image: require('../../../../../assets/img/beauty.jpeg'),
+        image: require('img/beauty.jpeg'),
       },
       {
         key: '3',
-        image: require('../../../../../assets/img/makeup.jpeg'),
+        image: require('img/makeup.jpeg'),
       },
       {
         key: '4',
-        image: require('../../../../../assets/img/hotels.jpeg'),
+        image: require('img/hotels.jpeg'),
       },
       {
         key: '5',
-        image: require('../../../../../assets/img/photography.jpeg'),
+        image: require('img/photography.jpeg'),
       },
     ],
   },
@@ -95,23 +95,23 @@ export default [
     files: [
       {
         key: '1',
-        image: require('../../../../../assets/img/events.jpeg'),
+        image: require('img/events.jpeg'),
       },
       {
         key: '2',
-        image: require('../../../../../assets/img/beauty.jpeg'),
+        image: require('img/beauty.jpeg'),
       },
       {
         key: '3',
-        image: require('../../../../../assets/img/makeup.jpeg'),
+        image: require('img/makeup.jpeg'),
       },
       {
         key: '4',
-        image: require('../../../../../assets/img/hotels.jpeg'),
+        image: require('img/hotels.jpeg'),
       },
       {
         key: '5',
-        image: require('../../../../../assets/img/photography.jpeg'),
+        image: require('img/photography.jpeg'),
       },
     ],
   },
@@ -125,23 +125,23 @@ export default [
     files: [
       {
         key: '1',
-        image: require('../../../../../assets/img/events.jpeg'),
+        image: require('img/events.jpeg'),
       },
       {
         key: '2',
-        image: require('../../../../../assets/img/beauty.jpeg'),
+        image: require('img/beauty.jpeg'),
       },
       {
         key: '3',
-        image: require('../../../../../assets/img/makeup.jpeg'),
+        image: require('img/makeup.jpeg'),
       },
       {
         key: '4',
-        image: require('../../../../../assets/img/hotels.jpeg'),
+        image: require('img/hotels.jpeg'),
       },
       {
         key: '5',
-        image: require('../../../../../assets/img/photography.jpeg'),
+        image: require('img/photography.jpeg'),
       },
     ],
   },
