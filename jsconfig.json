@@ -11,7 +11,7 @@
     //  "@cards": ["App/components/cards/*"],
      "@constants": ["App/constants/*"],
      "@navigation": ["App/navigation/*"],
-    //  "@stacks": ["App/stacks/*"],
+     "@stacks": ["App/stacks/*"],
      "@events": ["App/stacks/events/*"],
      "@eventsComponents": ["App/stacks/events/components/*"],
      "@reducers": ["App/reducers/*"],

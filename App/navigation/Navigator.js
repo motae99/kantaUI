@@ -55,6 +55,8 @@ import {createSharedElementStackNavigator} from 'react-navigation-shared-element
 // import Beauty from '../stacks/home/Beauty';
 // import beautyList from '../stacks/home/beautyList';
 
+import Category from 'stacks/home';
+
 import EventList from 'events/list';
 import EventDetail from 'events/detail';
 import EventMap from 'events/eventMap';
@@ -142,6 +144,7 @@ const EventStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator headerMode={'none'}>
+        <Stack.Screen name="Category" component={Category} />
         <Stack.Screen name="EventList" component={EventList} />
         <Stack.Screen
           name="EventMap"

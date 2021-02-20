@@ -13,18 +13,19 @@ import {
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {SharedElement} from 'react-navigation-shared-element';
+import {Sizing, Typography, Outlines, Colors, Buttons} from 'styles';
 
-import EventPlanner from './EventPlanerCard';
+// import EventPlanner from './EventPlanerCard';
 import Searchbar from './SearchBar';
 import DATA from './eventData';
 const {width, height} = Dimensions.get('window');
 
-const SIZE = 64;
+const SIZE = Sizing.x30;
 const ICON_SIZE = SIZE * 0.6;
-const SPACING = 12;
+const SPACING = Sizing.x10;
 const s = width * 0.64;
 const ITEM_WIDTH = s;
-const ITEM_HEIGHT = s * 1.4;
+const ITEM_HEIGHT = s * 1.5;
 const RADIUS = 18;
 const FULL_SIZE = s + SPACING * 2;
 
@@ -32,26 +33,37 @@ const listHeader = ({navigation}) => {
   const scrollx = React.useRef(new Animated.Value(0)).current;
 
   return (
-    <View style={{marginTop: 87}}>
+    <View
+      style={{
+        marginTop: Sizing.x80,
+        // paddingLeft: 18,
+        // flex: 1,
+      }}>
       <Searchbar />
       <View
         style={{
           width,
-          marginTop: 24,
+          marginTop: Sizing.x30,
           // paddingLeft: 18,
           // flex: 1,
         }}>
-        <Text
-          style={{
-            fontFamily: 'Montserrat',
-            fontWeight: '600',
-            fontSize: 20,
-            paddingLeft: SPACING,
-            color: 'rgba( 80,39,107,1)',
-            marginBottom: 18,
-          }}>
-          Event Planners
-        </Text>
+        <Animatable.View
+          animation={'fadeInUp'}
+          delay={200}
+          duration={300}
+          useNativeDriver={true}>
+          <Text
+            style={[
+              {
+                ...Typography.header.x40,
+                paddingLeft: Sizing.x20,
+                color: Colors.secondary.brand,
+                marginBottom: Sizing.x10,
+              },
+            ]}>
+            Event Planners
+          </Text>
+        </Animatable.View>
         <Animated.FlatList
           data={DATA}
           keyExtractor={(item) => item.key}
@@ -95,7 +107,10 @@ const listHeader = ({navigation}) => {
                     <View
                       style={[
                         StyleSheet.absoluteFillObject,
-                        {overflow: 'hidden', borderRadius: RADIUS},
+                        {
+                          overflow: 'hidden',
+                          borderRadius: Outlines.borderRadius.large,
+                        },
                       ]}>
                       <Animated.Image
                         source={item.files[index].image}
@@ -130,8 +145,8 @@ const listHeader = ({navigation}) => {
         />
         <View
           style={{
-            marginTop: SPACING,
-            marginBottom: SPACING,
+            marginTop: Sizing.x10,
+            marginBottom: Sizing.x10,
           }}
         />
         <Animatable.View
@@ -139,17 +154,7 @@ const listHeader = ({navigation}) => {
           delay={200}
           duration={300}
           useNativeDriver={true}>
-          <Text
-            style={{
-              fontFamily: 'Montserrat',
-              fontWeight: '600',
-              fontSize: 20,
-              color: 'rgba( 80,39,107,1)',
-              marginBottom: SPACING,
-              paddingLeft: SPACING,
-            }}>
-            Event Halls
-          </Text>
+          <Text style={styles.eventTitle}>Event Halls</Text>
         </Animatable.View>
       </View>
     </View>
@@ -163,9 +168,15 @@ const styles = StyleSheet.create({
     margin: SPACING,
     // overflow: 'hidden',
   },
+  eventTitle: {
+    ...Typography.header.x40,
+    paddingLeft: Sizing.x20,
+    color: Colors.secondary.brand,
+    marginBottom: Sizing.x10,
+  },
   location: {
     fontSize: 30,
-    color: '#fff',
+    color: Colors.neutral.white,
     width: ITEM_WIDTH * 0.8,
     textTransform: 'uppercase',
     position: 'absolute',
@@ -176,21 +187,20 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: SPACING,
     bottom: SPACING,
-    width: 52,
-    height: 52,
-    borderRadius: 26,
+    width: Sizing.icons.x50,
+    height: Sizing.icons.x50,
+    borderRadius: Outlines.borderRadius.max,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#219CAB',
+    backgroundColor: Colors.primary.brand,
   },
   daysLabel: {
-    fontWeight: '800',
-    color: '#fff',
-    fontSize: 18,
+    color: Colors.neutral.white,
+    ...Typography.header.x10,
   },
   daysValue: {
-    color: '#fff',
-    fontSize: 10,
+    color: Colors.neutral.white,
+    ...Typography.header.x10,
   },
 });
 

@@ -2,13 +2,13 @@ import * as React from 'react';
 import Navigator from './App/navigation/Navigator';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 
-// import codePush from 'react-native-code-push';
+import codePush from 'react-native-code-push';
 
-// const codePushOptions = {
-//   updateDialog: true,
-//   checkFrequency: codePush.CheckFrequency.ON_APP_START,
-//   installMode: codePush.InstallMode.IMMEDIATE,
-// };
+const codePushOptions = {
+  updateDialog: true,
+  checkFrequency: codePush.CheckFrequency.ON_APP_START,
+  installMode: codePush.InstallMode.IMMEDIATE,
+};
 
 const App = () => {
   return (
@@ -18,5 +18,5 @@ const App = () => {
   );
 };
 
-// export default codePush(codePushOptions)(App);
-export default App;
+export default codePush(codePushOptions)(App);
+// export default App;

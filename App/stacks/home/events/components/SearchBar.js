@@ -4,8 +4,11 @@ import {View, StyleSheet} from 'react-native';
 import {Searchbar} from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import * as Animatable from 'react-native-animatable';
+import {Sizing, Outlines, Colors} from 'styles';
 
-const SearchBarHieght = 54;
+const SearchBarHieght = 50;
+
 const SearchBar = () => {
   const [searchQuery, setSearchQuery] = React.useState('');
   const onChangeSearch = (query) => setSearchQuery(query);
@@ -14,51 +17,51 @@ const SearchBar = () => {
     <View
       style={{
         flexDirection: 'row',
-        marginHorizontal: 18,
+        marginHorizontal: Sizing.x20,
         height: SearchBarHieght,
       }}>
-      {/* <View
-            style={{
-              flex: 5,
-              flexDirection: 'row',
-              backgroundColor: '#fff',
-              borderRadius: 15,
-              marginRight: 12,
-              padding: 16,
-              justifyContent: 'center',
-            }}> */}
-      <Searchbar
-        style={{
-          flex: 5,
-          flexDirection: 'row',
-          backgroundColor: '#fff',
-          borderRadius: 15,
-          marginRight: 12,
-          // padding: 16,
-          justifyContent: 'center',
-          borderWidth: 0,
-        }}
-        placeholder="Search"
-        onChangeText={onChangeSearch}
-        value={searchQuery}
-      />
-      {/* <Ionicons name="filter" size={24} color="#000" style={{flex: 4}} /> */}
-      {/* <Text style={{paddingLeft: 16, flex: 4}}>Search Events</Text> */}
-      {/* </View> */}
-      <View
-        style={{
-          flex: 1,
-          borderRadius: 15,
-          overflow: 'hidden',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <LinearGradient
-          colors={['#55DAEA', '#219CAB']}
-          style={StyleSheet.absoluteFillObject}
+      <Animatable.View
+        animation={'fadeIn'}
+        delay={100}
+        duration={400}
+        useNativeDriver={true}
+        style={{flex: 5}}>
+        <Searchbar
+          style={{
+            flexDirection: 'row',
+            backgroundColor: '#fff',
+            borderRadius: Outlines.borderRadius.base,
+            marginRight: Sizing.x10,
+            justifyContent: 'center',
+            borderWidth: 0,
+          }}
+          placeholder="Search"
+          onChangeText={onChangeSearch}
+          value={searchQuery}
         />
-        <Ionicons name="filter" size={24} color="#fff" />
-      </View>
+      </Animatable.View>
+
+      <Animatable.View
+        animation={'fadeIn'}
+        delay={400}
+        duration={300}
+        useNativeDriver={true}
+        style={{flex: 1}}>
+        <View
+          style={{
+            flex: 1,
+            borderRadius: Outlines.borderRadius.base,
+            overflow: 'hidden',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <LinearGradient
+            colors={[Colors.primary.s200, Colors.primary.brand]}
+            style={StyleSheet.absoluteFillObject}
+          />
+          <Ionicons name="filter" size={24} color={Colors.neutral.white} />
+        </View>
+      </Animatable.View>
     </View>
   );
 };

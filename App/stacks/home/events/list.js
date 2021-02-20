@@ -7,36 +7,37 @@ import {
   Animated,
   StatusBar,
   TouchableOpacity,
+  StyleSheet,
+  Image,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import ListHeader from 'eventsComponents/listHeader';
 import EventCard from 'eventsComponents/EventCard';
 import DATA from 'eventsComponents/eventData';
-// import DATA from '_events/components/eventData';
+import {Sizing, Outlines, Colors, Typography} from 'styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 const {width, height} = Dimensions.get('window');
 
 const EventList = ({navigation}) => {
   return (
-    <View style={{backgroundColor: '#E5E5E5', flex: 1}}>
+    <View style={{flex: 1}}>
       <StatusBar
         barStyle={'dark-content'}
         translucent
         backgroundColor="transparent"
       />
       {/* <Image
-        source={require('../../../../assets/img/EventBack.jpg')}
-        blurRadius={8}
-        // style={{height: '100%', width: '100%', resizeMode: 'cover'}}
-        style={StyleSheet.absoluteFillObject}
+        source={require('img/events.jpeg')}
+        blurRadius={9}
+        style={[StyleSheet.absoluteFillObject, {resizeMode: 'cover'}]}
       /> */}
 
       <View
-        style={{
-          width,
-          marginTop: 24,
-          marginBottom: 18,
-        }}>
+        style={
+          {
+            // marginTop: Sizing.x80,
+          }
+        }>
         <Animated.FlatList
           data={DATA}
           keyExtractor={(item) => item.key}
@@ -46,7 +47,7 @@ const EventList = ({navigation}) => {
           contentContainerStyle={{
             alignItems: 'center',
             justifyContent: 'center',
-            marginBottom: 18,
+            marginBottom: Sizing.x20,
           }}
           renderItem={({item, index}) => {
             return (
@@ -67,16 +68,20 @@ const EventList = ({navigation}) => {
         }}
         style={{
           position: 'absolute',
-          bottom: 30,
-          right: 30,
-          height: 34,
-          width: 34,
-          borderRadius: 16,
-          backgroundColor: '#fff',
+          bottom: Sizing.x30,
+          right: Sizing.x30,
+          height: Sizing.icons.x40,
+          width: Sizing.icons.x40,
+          borderRadius: Outlines.borderRadius.large,
+          backgroundColor: Colors.neutral.white,
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <Ionicons name="map" size={18} color="#000" />
+        <Ionicons
+          name="map"
+          size={Sizing.icons.x20}
+          color={Colors.secondary.brand}
+        />
       </TouchableOpacity>
     </View>
   );

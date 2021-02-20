@@ -9,14 +9,15 @@ import {
   Image,
   Dimensions,
   Animated,
-  TouchableOpacity,
   Platform,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {Sizing, Outlines, Colors, Typography} from 'styles';
 
 const {width, height} = Dimensions.get('window');
 
-const SPACING = 10;
+const SPACING = Sizing.x10;
 const ITEM_SIZE = Platform.OS === 'ios' ? width * 0.72 : width * 0.82;
 const EMPTY_ITEM_SIZE = (width - ITEM_SIZE) / 2;
 const BACKDROP_HEIGHT = height * 0.65;
@@ -31,8 +32,8 @@ const mymovies = [
   {
     key: '567',
     title: 'EVENTS',
-    poster: require('../../../assets/img/events.jpeg'),
-    backdrop: require('../../../assets/img/events.jpeg'),
+    poster: require('img/events.jpeg'),
+    backdrop: require('img/events.jpeg'),
     description:
       ' some text some text some text some text some text some text some text some text some text',
     releaseDate: '12',
@@ -40,8 +41,8 @@ const mymovies = [
   {
     key: '123',
     title: 'BEAUTY',
-    poster: require('../../../assets/img/beauty.jpeg'),
-    backdrop: require('../../../assets/img/beauty.jpeg'),
+    poster: require('img/beauty.jpeg'),
+    backdrop: require('img/beauty.jpeg'),
     description:
       ' some text some text some text some text some text some text some text some text some text',
     releaseDate: '12',
@@ -49,8 +50,8 @@ const mymovies = [
   {
     key: '345',
     title: 'MAKEUP ARTISTS',
-    poster: require('../../../assets/img/makeup.jpeg'),
-    backdrop: require('../../../assets/img/makeup.jpeg'),
+    poster: require('img/makeup.jpeg'),
+    backdrop: require('img/makeup.jpeg'),
     description:
       ' some text some text some text some text some text some text some text some text some text',
     releaseDate: '12',
@@ -58,8 +59,8 @@ const mymovies = [
   {
     key: '234',
     title: 'HOTELS',
-    poster: require('../../../assets/img/hotels.jpeg'),
-    backdrop: require('../../../assets/img/hotels.jpeg'),
+    poster: require('img/hotels.jpeg'),
+    backdrop: require('img/hotels.jpeg'),
     description:
       ' some text some text some text some text some text some text some text some text some text',
     releaseDate: '12',
@@ -68,8 +69,8 @@ const mymovies = [
   {
     key: '456',
     title: 'PHOTOGRAPHY',
-    poster: require('../../../assets/img/photography.jpeg'),
-    backdrop: require('../../../assets/img/photography.jpeg'),
+    poster: require('img/photography.jpeg'),
+    backdrop: require('img/photography.jpeg'),
     description:
       ' some text some text some text some text some text some text some text some text some text',
     releaseDate: '12',
@@ -120,7 +121,11 @@ const Backdrop = ({movies, scrollX}) => {
                   }}
                 />
                 <LinearGradient
-                  colors={['black', 'rgba(0, 0, 0, 0)', 'white']}
+                  colors={[
+                    Colors.neutral.black,
+                    'rgba(0, 0, 0, 0)',
+                    Colors.neutral.white,
+                  ]}
                   style={{
                     height: BACKDROP_HEIGHT,
                     width,
@@ -132,18 +137,16 @@ const Backdrop = ({movies, scrollX}) => {
                   style={{
                     width: 255,
                     position: 'absolute',
-                    top: 130,
-                    left: 60,
+                    top: Sizing.x80 * 2,
+                    left: Sizing.x60,
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}>
                   <Text
                     style={{
-                      fontFamily: 'Montserrat',
-                      fontWeight: '600',
+                      ...Typography.header.x50,
                       textAlign: 'center',
-                      fontSize: 34,
-                      color: '#fff',
+                      color: Colors.neutral.white,
                     }}>
                     {item.title}
                   </Text>
@@ -154,14 +157,13 @@ const Backdrop = ({movies, scrollX}) => {
         }}
       />
 
-      <View style={{position: 'absolute', top: 50, left: 20}}>
+      <View style={{position: 'absolute', top: Sizing.x50, left: Sizing.x20}}>
         <Text
           style={{
-            fontFamily: 'Montserrat',
-            fontWeight: 'bold',
+            ...Typography.header.x40,
             textAlign: 'center',
-            fontSize: 18,
-            color: '#fff',
+            fontSize: Sizing.x20,
+            color: Colors.neutral.white,
             letterSpacing: 3,
           }}>
           KANTA BOOK
@@ -171,12 +173,12 @@ const Backdrop = ({movies, scrollX}) => {
       <View
         style={{
           position: 'absolute',
-          top: 50,
-          right: 20,
-          height: 40,
-          width: 40,
-          borderRadius: 20,
-          backgroundColor: 'white',
+          top: Sizing.x50,
+          right: Sizing.x50,
+          height: Sizing.icons.x40,
+          width: Sizing.icons.x40,
+          borderRadius: Sizing.x50,
+          backgroundColor: Colors.neutral.white,
         }}>
         <Image
           source={{
@@ -190,7 +192,7 @@ const Backdrop = ({movies, scrollX}) => {
   );
 };
 
-const App = () => {
+const App = ({navigation}) => {
   const [movies, setMovies] = React.useState([]);
   const scrollX = React.useRef(new Animated.Value(0)).current;
   React.useEffect(() => {
@@ -273,14 +275,14 @@ const App = () => {
               }}>
               <Animated.View
                 style={{
-                  marginHorizontal: SPACING,
-                  padding: SPACING * 2,
+                  marginHorizontal: Sizing.x10,
+                  padding: Sizing.x20,
                   alignItems: 'center',
                   // opacity,
-                  backgroundColor: '#fff',
+                  backgroundColor: Colors.neutral.white,
                   transform: [{translateY}],
-                  borderColor: 'white',
-                  borderRadius: 24,
+                  borderColor: Colors.neutral.white,
+                  borderRadius: Outlines.borderRadius.large,
                 }}>
                 <View
                   style={{
@@ -288,7 +290,7 @@ const App = () => {
                     height: ITEM_SIZE,
                     overflow: 'hidden',
                     alignItems: 'center',
-                    borderRadius: 18,
+                    borderRadius: Outlines.borderRadius.large,
                   }}>
                   <Animated.Image
                     source={item.poster}
@@ -302,12 +304,11 @@ const App = () => {
                 <Genres genres={item.genres} /> */}
                 <Text
                   style={{
-                    fontFamily: 'Montserrat',
-                    fontSize: 12,
+                    ...Typography.header.x20,
                     textAlign: 'center',
-                    color: '#3A4154',
-                    lineHeight: 18,
-                    marginVertical: 10,
+                    color: Colors.neutral.s400,
+                    lineHeight: Sizing.x20,
+                    marginVertical: Sizing.x10,
                     width: ITEM_SIZE * 0.7,
                   }}
                   numberOfLines={3}>
@@ -315,17 +316,25 @@ const App = () => {
                 </Text>
                 <TouchableOpacity
                   style={{
-                    margin: 10,
+                    margin: Sizing.x10,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    height: 60,
-                    width: '95%',
-                    backgroundColor: '#2C3449',
-                    borderRadius: 10,
+                    height: 54,
+                    width: ITEM_SIZE * 0.85,
+                    backgroundColor: Colors.secondary.s600,
+                    borderRadius: Sizing.x10,
                   }}
-                  onPress={() => {}}>
+                  onPress={() => {
+                    console.log('pressed');
+                    navigation.navigate('EventList');
+                  }}>
                   <Text
-                    style={{color: '#fff', fontSize: 28, textAlign: 'center'}}>
+                    style={{
+                      ...Typography.header.x40,
+                      textTransform: 'uppercase',
+                      color: Colors.neutral.white,
+                      textAlign: 'center',
+                    }}>
                     See All
                   </Text>
                 </TouchableOpacity>
@@ -348,8 +357,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   paragraph: {
-    margin: 24,
-    fontSize: 18,
+    margin: Sizing.x20,
+    fontSize: Sizing.x20,
     fontWeight: 'bold',
     textAlign: 'center',
   },
@@ -357,9 +366,8 @@ const styles = StyleSheet.create({
     width: ITEM_SIZE + 20,
     height: ITEM_SIZE,
     resizeMode: 'cover',
-    borderRadius: 6,
-    margin: 0,
-    marginBottom: 10,
+    borderRadius: Outlines.borderRadius.small,
+    marginBottom: Sizing.x10,
   },
 });
 export default App;

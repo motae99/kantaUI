@@ -18,6 +18,7 @@ import * as Animatable from 'react-native-animatable';
 
 import HeaderImage from './components/headerImage';
 import Header from './components/detailHeader';
+
 export const {width, height} = Dimensions.get('window');
 
 const region = {

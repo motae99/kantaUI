@@ -39,10 +39,11 @@ export const x60 = layout.x60
 export const x70 = layout.x70
 export const x80 = layout.x80
 
-type Icons = "x10" | "x20" | "x30" | "x40"
+type Icons = "x10" | "x20" | "x30" | "x40" | "x50"
 export const icons: Record<Icons, number> = {
   x10: 14,
   x20: 20,
   x30: 30,
   x40: 40,
+  x50: 50,
 }

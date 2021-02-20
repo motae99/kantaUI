@@ -25,11 +25,11 @@ const PlannerDetail = ({route}) => {
     <View style={{flex: 1}}>
       <SharedElement
         id={`item.${item.key}.image`}
-        style={StyleSheet.absoluteFillObject}>
+        style={{width: width, height: height}}>
         <View style={[StyleSheet.absoluteFillObject, {borderRadius: 0}]}>
           <Image
             source={item.files[index].image}
-            style={{height: '100%', width: '100%', resizeMode: 'cover'}}
+            style={[{height: height, width: width, resizeMode: 'cover'}]}
           />
         </View>
       </SharedElement>
