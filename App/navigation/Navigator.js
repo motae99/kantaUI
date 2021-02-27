@@ -57,40 +57,29 @@ import {createSharedElementStackNavigator} from 'react-navigation-shared-element
 
 import Category from 'stacks/home';
 
+import Beauty from 'beauty/index';
+import BeautyList from 'beauty/beautyList';
+
+import Photo from 'photo/index';
+import Social from 'social/index';
+
 import EventList from 'events/list';
 import EventDetail from 'events/detail';
 import EventMap from 'events/eventMap';
 import PlannerDetail from 'events/plannerDetail';
 
 // enabledScreens();
-// const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 const Stack = createSharedElementStackNavigator();
 
-// const bottomTabs = () => {
-//   return (
-//     <NavigationContainer>
-//       <Tab.Navigator>
-//         <Tab.Screen name="Beauty" component={Beauty} />
-//         <Tab.Screen name="Intro" component={Intro} />
-//         <Tab.Screen name="Phone" component={Phone} />
-//         <Tab.Screen name="Verify" component={Verify} />
-//         <Tab.Screen name="Category" component={Category} />
-//       </Tab.Navigator>
-//     </NavigationContainer>
-//   );
-// };
-
-// const BeautyStack = () => {
-//   return (
-//     <NavigationContainer>
-//       <Stack.Navigator headerMode={'none'}>
-//         <Stack.Screen name="Home" component={Beauty} />
-//         <Stack.Screen name="beautyList" component={beautyList} />
-//       </Stack.Navigator>
-//     </NavigationContainer>
-//   );
-// };
-
+const BottomTabs = () => {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Category" component={Category} />
+      <Tab.Screen name="Social" component={Social} />
+    </Tab.Navigator>
+  );
+};
 const config = {
   animation: 'spring',
   config: {
@@ -140,12 +129,16 @@ const forSlide = ({current, next, inverted, layouts: {screen}}) => {
     },
   };
 };
-const EventStack = () => {
+const HomeStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator headerMode={'none'}>
-        <Stack.Screen name="Category" component={Category} />
+        <Stack.Screen name="BottomTabs" component={BottomTabs} />
         <Stack.Screen name="EventList" component={EventList} />
+        <Stack.Screen name="Beauty" component={Beauty} />
+        <Stack.Screen name="BeautyList" component={BeautyList} />
+        <Stack.Screen name="Photo" component={Photo} />
+
         <Stack.Screen
           name="EventMap"
           component={EventMap}
@@ -206,4 +199,15 @@ const EventStack = () => {
   );
 };
 
-export default EventStack;
+// const BeautyStack = () => {
+//   return (
+//     <NavigationContainer>
+//       <Stack.Navigator headerMode={'none'}>
+//         <Stack.Screen name="Beauty" component={Beauty} />
+//         <Stack.Screen name="BeautyList" component={BeautyList} />
+//       </Stack.Navigator>
+//     </NavigationContainer>
+//   );
+// };
+
+export default HomeStack;

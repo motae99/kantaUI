@@ -47,6 +47,16 @@ const mymovies = [
       ' some text some text some text some text some text some text some text some text some text',
     releaseDate: '12',
   },
+
+  {
+    key: '456',
+    title: 'PHOTOGRAPHY',
+    poster: require('img/photography.jpeg'),
+    backdrop: require('img/photography.jpeg'),
+    description:
+      ' some text some text some text some text some text some text some text some text some text',
+    releaseDate: '12',
+  },
   {
     key: '345',
     title: 'MAKEUP ARTISTS',
@@ -61,16 +71,6 @@ const mymovies = [
     title: 'HOTELS',
     poster: require('img/hotels.jpeg'),
     backdrop: require('img/hotels.jpeg'),
-    description:
-      ' some text some text some text some text some text some text some text some text some text',
-    releaseDate: '12',
-  },
-
-  {
-    key: '456',
-    title: 'PHOTOGRAPHY',
-    poster: require('img/photography.jpeg'),
-    backdrop: require('img/photography.jpeg'),
     description:
       ' some text some text some text some text some text some text some text some text some text',
     releaseDate: '12',
@@ -325,8 +325,15 @@ const App = ({navigation}) => {
                     borderRadius: Sizing.x10,
                   }}
                   onPress={() => {
-                    console.log('pressed');
-                    navigation.navigate('EventList');
+                    if (item.key === '567') {
+                      navigation.navigate('EventList');
+                    }
+                    if (item.key === '123') {
+                      navigation.navigate('Beauty');
+                    }
+                    if (item.key === '456') {
+                      navigation.navigate('Photo');
+                    }
                   }}>
                   <Text
                     style={{

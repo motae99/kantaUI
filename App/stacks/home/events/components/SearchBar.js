@@ -21,9 +21,9 @@ const SearchBar = () => {
         height: SearchBarHieght,
       }}>
       <Animatable.View
-        animation={'fadeIn'}
+        animation={'rubberBand'}
         delay={100}
-        duration={400}
+        duration={500}
         useNativeDriver={true}
         style={{flex: 5}}>
         <Searchbar
@@ -42,9 +42,9 @@ const SearchBar = () => {
       </Animatable.View>
 
       <Animatable.View
-        animation={'fadeIn'}
-        delay={400}
-        duration={300}
+        animation={'pulse'}
+        delay={100}
+        duration={400}
         useNativeDriver={true}
         style={{flex: 1}}>
         <View

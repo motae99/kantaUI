@@ -20,7 +20,7 @@ import {
   State,
   TouchableOpacity,
 } from 'react-native-gesture-handler';
-import beautyServices from '../../constants/data/beautyData';
+import beautyServices from './components/beautyData';
 
 const {width, height} = Dimensions.get('screen');
 
@@ -70,7 +70,7 @@ export default function App({navigation}) {
   const scrollXIndex = React.useRef(new Animated.Value(0)).current;
   const scrollXAnimated = React.useRef(new Animated.Value(0)).current;
   const [index, setIndex] = React.useState(0);
-  
+
   const setActiveIndex = React.useCallback((activeIndex) => {
     scrollXIndex.setValue(activeIndex);
     setIndex(activeIndex);
@@ -179,7 +179,7 @@ export default function App({navigation}) {
                   <TouchableOpacity
                     activeOpacity={0.9}
                     onPress={() => {
-                      navigation.navigate('beautyList', {
+                      navigation.navigate('BeautyList', {
                         item: beautyServices[index],
                       });
                     }}>
