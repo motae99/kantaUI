@@ -6,7 +6,7 @@ import {View, StatusBar, ScrollView} from 'react-native';
 import PhotoCard from 'photo/photoCard';
 const PhotoList = ({navigation, route}) => {
   return (
-    <View style={{backgroundColor: '#d2d2', flex: 1}}>
+    <View style={{backgroundColor: '#fd34', flex: 1}}>
       <StatusBar
         // translucent
         barStyle={'light-content'}
