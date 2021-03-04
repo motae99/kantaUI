@@ -1,5 +1,5 @@
 import React, {createContext, useState, useEffect} from 'react';
-import AsyncStorage from '@react-native-community/async-storage';
+// import AsyncStorage from '@react-native-community/async-storage';
 import auth from '@react-native-firebase/auth';
 import {LoginManager, AccessToken} from 'react-native-fbsdk';
 import {GoogleSignin} from '@react-native-community/google-signin';
@@ -42,8 +42,7 @@ const AuthContextProvider = (props) => {
     // We will also need to handle errors if sign in failed
     // After getting token, we need to persist the token using `AsyncStorage`
     // In the example, we'll use a dummy token
-
-    dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
+    // dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
   };
 
   const googleSign = async () => {
@@ -133,8 +132,7 @@ const AuthContextProvider = (props) => {
     // We will also need to handle errors if sign up failed
     // After getting token, we need to persist the token using `AsyncStorage`
     // In the example, we'll use a dummy token
-
-    dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
+    // dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
   };
 
   // const verifyNumber = async (number) => {

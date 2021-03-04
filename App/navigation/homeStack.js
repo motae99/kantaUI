@@ -5,10 +5,10 @@ import {createSharedElementStackNavigator} from 'react-navigation-shared-element
 
 import Tabs from './tabs';
 
-import Beauty from 'beauty/index';
+import Beauty from 'beauty';
 import BeautyList from 'beauty/beautyList';
 
-import Photo from 'photo/index';
+import Photo from 'photo';
 
 import EventList from 'events/list';
 import EventDetail from 'events/detail';
@@ -18,55 +18,55 @@ import PlannerDetail from 'events/plannerDetail';
 // enabledScreens();
 const Stack = createSharedElementStackNavigator();
 
-const config = {
-  animation: 'spring',
-  config: {
-    stiffness: 1000,
-    damping: 500,
-    mass: 3,
-    overshootClamping: true,
-    restDisplacementThreshold: 0.01,
-    restSpeedThreshold: 0.01,
-  },
-};
+// const config = {
+//   animation: 'spring',
+//   config: {
+//     stiffness: 1000,
+//     damping: 500,
+//     mass: 3,
+//     overshootClamping: true,
+//     restDisplacementThreshold: 0.01,
+//     restSpeedThreshold: 0.01,
+//   },
+// };
 
-const forSlide = ({current, next, inverted, layouts: {screen}}) => {
-  const progress = Animated.add(
-    current.progress.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0, 1],
-      extrapolate: 'clamp',
-    }),
-    next
-      ? next.progress.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, 1],
-          extrapolate: 'clamp',
-        })
-      : 0,
-  );
+// const forSlide = ({current, next, inverted, layouts: {screen}}) => {
+//   const progress = Animated.add(
+//     current.progress.interpolate({
+//       inputRange: [0, 1],
+//       outputRange: [0, 1],
+//       extrapolate: 'clamp',
+//     }),
+//     next
+//       ? next.progress.interpolate({
+//           inputRange: [0, 1],
+//           outputRange: [0, 1],
+//           extrapolate: 'clamp',
+//         })
+//       : 0,
+//   );
 
-  return {
-    cardStyle: {
-      transform: [
-        {
-          translateX: Animated.multiply(
-            progress.interpolate({
-              inputRange: [0, 1, 2],
-              outputRange: [
-                screen.width, // Focused, but offscreen in the beginning
-                0, // Fully focused
-                screen.width * -0.3, // Fully unfocused
-              ],
-              extrapolate: 'clamp',
-            }),
-            inverted,
-          ),
-        },
-      ],
-    },
-  };
-};
+//   return {
+//     cardStyle: {
+//       transform: [
+//         {
+//           translateX: Animated.multiply(
+//             progress.interpolate({
+//               inputRange: [0, 1, 2],
+//               outputRange: [
+//                 screen.width, // Focused, but offscreen in the beginning
+//                 0, // Fully focused
+//                 screen.width * -0.3, // Fully unfocused
+//               ],
+//               extrapolate: 'clamp',
+//             }),
+//             inverted,
+//           ),
+//         },
+//       ],
+//     },
+//   };
+// };
 const HomeStack = () => {
   return (
     <Stack.Navigator headerMode={'none'}>
