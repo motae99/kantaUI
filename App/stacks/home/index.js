@@ -77,7 +77,7 @@ const mymovies = [
   },
 ];
 
-const Backdrop = ({movies, scrollX}) => {
+const Backdrop = ({movies, scrollX, navigation}) => {
   return (
     <View style={{height: BACKDROP_HEIGHT, width, position: 'absolute'}}>
       <FlatList
@@ -169,7 +169,6 @@ const Backdrop = ({movies, scrollX}) => {
           KANTA BOOK
         </Text>
       </View>
-
       <View
         style={{
           position: 'absolute',
@@ -180,13 +179,19 @@ const Backdrop = ({movies, scrollX}) => {
           borderRadius: Sizing.x50,
           backgroundColor: Colors.neutral.white,
         }}>
-        <Image
-          source={{
-            uri:
-              'https://www.flaticon.com/svg/vstatic/svg/4061/4061283.svg?token=exp=1610923650~hmac=1dd0068cddddc21a29b99511cf3ee25c',
-          }}
-          style={{width: width / 2, height: height / 4, resizeMode: 'cover'}}
-        />
+        <TouchableOpacity
+          onPress={() => {
+            // console.log('pressed');
+            navigation.toggleDrawer();
+          }}>
+          <Image
+            source={{
+              uri:
+                'https://www.flaticon.com/svg/vstatic/svg/4061/4061283.svg?token=exp=1610923650~hmac=1dd0068cddddc21a29b99511cf3ee25c',
+            }}
+            style={{width: width / 2, height: height / 4, resizeMode: 'cover'}}
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -219,7 +224,7 @@ const App = ({navigation}) => {
         backgroundColor="transparent"
         barStyle={'light-content'}
       />
-      <Backdrop movies={movies} scrollX={scrollX} />
+      <Backdrop movies={movies} scrollX={scrollX} navigation={navigation} />
 
       <Animated.FlatList
         showsHorizontalScrollIndicator={false}

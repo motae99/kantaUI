@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Navigator from './App/navigation/Navigator';
+import Navigator from './App/navigation/';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 import codePush from 'react-native-code-push';
