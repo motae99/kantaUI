@@ -1,27 +1,23 @@
 {
- "compilerOptions": {
-   "baseUrl": ".",
-   "paths": {
-     "@assets": ["App/assets/*"],
-     "@img": ["App/assets/img/*"],
-     "@lottie": ["App/assets/lottie/*"],
-     "@api": ["App/api/*"],
-     "@components": ["App/components/*"],
-    //  "@buttons": ["App/components/buttons/*"],
-    //  "@cards": ["App/components/cards/*"],
-     "@constants": ["App/constants/*"],
-     "@navigation": ["App/navigation/*"],
-     "@stacks": ["App/stacks/*"],
-     "@events": ["App/stacks/home/events/*"],
-     "@eventsComponents": ["App/stacks/home/events/components/*"],
-     "@beauty": ["App/stacks/home/beauty/*"],
-     "@photo": ["App/stacks/home/photo/*"],
-     "@social": ["App/stacks/social/*"],
-     "@reducers": ["App/reducers/*"],
-     "@styles": ["App/styles/*"],
-     "@utils": ["App/utils/*"],
-   }
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@assets": ["App/assets/*"],
+      "@img": ["App/assets/img/*"],
+      "@lottie": ["App/assets/lottie/*"],
+      "@api": ["App/api/*"],
+      "@components": ["App/components/*"],
+     //  "@buttons": ["App/components/buttons/*"],
+     //  "@cards": ["App/components/cards/*"],
+      "@constants": ["App/constants/*"],
+      "@navigation": ["App/navigation/*"],
+      "@stacks": ["App/stacks/*"],
+      "@events": ["App/stacks/events/*"],
+      "@eventsComponents": ["App/stacks/events/components/*"],
+      "@reducers": ["App/reducers/*"],
+      "@styles": ["App/styles/*"],
+      "@utils": ["App/utils/*"],
+    }
+  }
  }
-}
-
-         
+ 

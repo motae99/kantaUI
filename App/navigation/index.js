@@ -3,7 +3,7 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import {View, Text} from 'react-native';
-import AuthStack from './authStack';
+// import AuthStack from './authStack';
 import DrawerStack from './drawerStack';
 
 import AuthContextProvider from '../context/authContext';
@@ -50,7 +50,8 @@ const AppStack = () => {
   return (
     <AuthContextProvider>
       <NavigationContainer>
-        {User ? <DrawerStack /> : <AuthStack />}
+        {/* {User ? <DrawerStack /> : <AuthStack />} */}
+        <DrawerStack />
       </NavigationContainer>
     </AuthContextProvider>
   );

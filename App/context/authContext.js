@@ -19,8 +19,34 @@ const AuthContextProvider = (props) => {
     // facebook.com
     // phone
 
-    // console.log(user);
+    // console.log(user.providerData[0].displayName);
     setUser(user);
+
+    //       const userData =  {
+    //         uid: user.uid,
+    //         timestamp: Date.now(),
+    //         displayName: user.displayName,
+    //         email: user.email,
+    //         phoneNumber: user.phoneNumber,
+    //         photoURL: user.photoURL,
+    //       };
+    //     try{
+    //       await firestore()
+    //       .collection('users')
+    //       .doc(user.uid)
+    //       .update(userData)
+    //       setTimeout(() => { this.props.navigation.navigate('Initial') }, 1000)
+    //     }
+    //     catch(error){
+    //       await firestore()
+    //       .collection('users')
+    //       .doc(user.uid)
+    //       .set(userData)
+    //       setTimeout(() => { this.props.navigation.navigate('Initial') }, 1000)
+    //     }
+
+    //   }
+    // });
   }
 
   useEffect(() => {
