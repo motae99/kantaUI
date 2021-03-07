@@ -1,4 +1,4 @@
 export default {
-  Hello: 'مرحبا',
-  Book: 'احجز الان',
+  phoneNumber: 'رقم الهاتف',
+  Book: 'Book',
 };
