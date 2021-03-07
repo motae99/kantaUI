@@ -1,0 +1,31 @@
+const plugins = [
+	[
+		require.resolve('babel-plugin-module-resolver'),
+		{
+			root: ['./App'],
+			alias: {
+				api: './App/api',
+				assets: './App/assets',
+				img: './App/assets/img',
+				lottie: './App/assets/lottie',
+				components: './App/components',
+				navigation: './App/navigation',
+				constants: './App/constants',
+				context: './App/context',
+				reducers: './App/reducers',
+				stacks: './App/stacks',
+				auth: './App/stacks/auth',
+				home: './App/stacks/home',
+				events: './App/stacks/events',
+				beauty: './App/stacks/beauty',
+				phone: './App/stacks/phone',
+				offer: './App/stacks/offer',
+				profile: './App/stacks/profile',
+				social: './App/stacks/social',
+				styles: './App/styles',
+				theme: './App/theme',
+				utils: './App/utils',
+			},
+		},
+	],
+];

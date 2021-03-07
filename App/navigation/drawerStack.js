@@ -9,8 +9,8 @@ import {
 } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon2 from 'react-native-vector-icons/FontAwesome';
-import Icon3 from 'react-native-vector-icons/AntDesign';
-// import Facebook from 'components/buttons/facebook';
+import Facebook from 'components/buttons/facebook';
+import Phone from 'components/buttons/phone';
 import Animated from 'react-native-reanimated';
 
 import HomeStack from './homeStack';
@@ -71,7 +71,8 @@ function CustomDrawerContent({progress, ...rest}) {
         label="Privacy & Policy"
         onPress={() => Linking.openURL('https://mywebsite.com/help')}
       /> */}
-        {/* <Facebook /> */}
+        <Facebook />
+        <Phone {...rest} />
         <View
           // elevation={6}
           style={{
@@ -88,7 +89,7 @@ function CustomDrawerContent({progress, ...rest}) {
                   height: 20,
                   marginRight: 15,
                 }}
-                source={require('assets/img/googleBlack.png')}
+                source={require('img/googleColor.png')}
               />
               <Text style={{color: 'black', fontFamily: 'sans-serif-medium'}}>
                 Google
@@ -97,29 +98,6 @@ function CustomDrawerContent({progress, ...rest}) {
           </TouchableNativeFeedback>
         </View>
 
-        <View
-          // elevation={6}
-          style={{
-            backgroundColor: '#ffffff',
-            marginHorizontal: 12,
-            marginVertical: 5,
-            borderRadius: 10,
-          }}>
-          <TouchableNativeFeedback background={ripple}>
-            <View style={{flexDirection: 'row', padding: 15}}>
-              <Icon3
-                name="mobile1"
-                type="simple-line-icon"
-                size={20}
-                color={'black'}
-                style={{marginRight: 20}}
-              />
-              <Text style={{color: 'black', fontFamily: 'sans-serif-medium'}}>
-                Phone Number
-              </Text>
-            </View>
-          </TouchableNativeFeedback>
-        </View>
         <View
           // elevation={6}
           style={{

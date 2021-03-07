@@ -85,6 +85,12 @@ const AuthContextProvider = (props) => {
     // dispatch({type: 'GOOGLE_SIGN', token: googleCredential});
   };
 
+  const connectGoogle = async () => {
+    const {idToken} = await GoogleSignin.signIn();
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+    return auth().currentUser.linkWithCredential(googleCredential);
+  };
+
   const facebookSign = async () => {
     // Attempt login with permissions
     const result = await LoginManager.logInWithPermissions([
@@ -113,6 +119,61 @@ const AuthContextProvider = (props) => {
     // dispatch({type: 'FACEBOOK_SIGN', token: facebookCredential});
   };
 
+  const connectFacebook = async () => {
+    const result = await LoginManager.logInWithPermissions([
+      'public_profile',
+      'email',
+    ]);
+
+    if (result.isCancelled) {
+      throw 'User cancelled the login process';
+    }
+    const data = await AccessToken.getCurrentAccessToken();
+
+    if (!data) {
+      throw 'Something went wrong obtaining access token';
+    }
+
+    const facebookCredential = auth.FacebookAuthProvider.credential(
+      data.accessToken,
+    );
+
+    return auth().currentUser.linkWithCredential(facebookCredential);
+  };
+
+  const connectPhone = async ({phoneNumber}) => {
+    const snapshot = await auth()
+      .verifyPhoneNumber(phoneNumber)
+      .on(
+        'state_changed',
+        (phoneAuthSnapshot) => {
+          console.log('State: ', phoneAuthSnapshot.state);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+
+    setConfirm(snapshot);
+  };
+
+  const verifyConnectPhone = async ({userCode}) => {
+    const credential = auth.PhoneAuthProvider.credential(
+      confirm.verificationId,
+      userCode,
+    );
+
+    try {
+      await auth().currentUser.updatePhoneNumber(credential);
+      setTimeout(() => {
+        setConfirm(null);
+        setPhoneNo('');
+      }, 1000);
+    } catch (error) {
+      console.log('Invalid code.');
+    }
+  };
+
   const phoneSign = async (phoneNumber) => {
     setPhoneNo(phoneNumber);
 
@@ -125,8 +186,10 @@ const AuthContextProvider = (props) => {
     // console.log('Verifying', userCode);
     try {
       await confirm.confirm(userCode);
-      setConfirm(null);
-      setPhoneNo('');
+      setTimeout(() => {
+        setConfirm(null);
+        setPhoneNo('');
+      }, 1000);
     } catch (error) {
       console.log('Invalid code.');
     }
@@ -214,9 +277,13 @@ const AuthContextProvider = (props) => {
         confirm,
         signIn,
         googleSign,
+        connectGoogle,
         facebookSign,
+        connectFacebook,
         phoneSign,
         phoneVerify,
+        connectPhone,
+        verifyConnectPhone,
         signUp,
         signOut,
         setConfirm,

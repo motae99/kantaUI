@@ -15,6 +15,7 @@ import EventDetail from 'events/detail';
 import EventMap from 'events/eventMap';
 import PlannerDetail from 'events/plannerDetail';
 
+import Phone from 'auth/phone';
 // enabledScreens();
 const Stack = createSharedElementStackNavigator();
 
@@ -71,6 +72,7 @@ const HomeStack = () => {
   return (
     <Stack.Navigator headerMode={'none'}>
       <Stack.Screen name="Tabs" component={Tabs} />
+      <Stack.Screen name="Phone" component={Phone} />
 
       <Stack.Screen name="EventList" component={EventList} />
       <Stack.Screen name="Beauty" component={Beauty} />

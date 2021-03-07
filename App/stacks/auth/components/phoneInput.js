@@ -7,7 +7,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {AuthContext} from '../../../context/authContext';
 
 const App = () => {
-  const {phoneSign} = React.useContext(AuthContext);
+  const {phoneSign, User, connectPhone} = React.useContext(AuthContext);
 
   const [value, setValue] = useState('');
   const [countryCode, setCountryCode] = useState('');
@@ -62,8 +62,13 @@ const App = () => {
           let getNumberAfterPossiblyEliminatingZero = phoneInput.current?.getNumberAfterPossiblyEliminatingZero();
           // console.log(getNumberAfterPossiblyEliminatingZero);
           if (valid) {
-            // console.log(getNumberAfterPossiblyEliminatingZero.formattedNumber);
-            phoneSign(getNumberAfterPossiblyEliminatingZero.formattedNumber);
+            User
+              ? connectPhone(
+                  getNumberAfterPossiblyEliminatingZero.formattedNumber,
+                )
+              : phoneSign(
+                  getNumberAfterPossiblyEliminatingZero.formattedNumber,
+                );
           }
         }}>
         <LinearGradient

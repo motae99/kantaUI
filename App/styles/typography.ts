@@ -87,9 +87,10 @@ export const header: Record<Header, TextStyle> = {
   },
 }
 
-type Body = "x10"
+type Body = "x10" | "x15"
 export const body: Record<Body, TextStyle> = {
   x10: {
     ...fontSize.x10,
   },
+
 }

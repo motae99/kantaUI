@@ -7,7 +7,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {AuthContext} from '../../../context/authContext';
 
 const App = () => {
-  const {phoneVerify} = React.useContext(AuthContext);
+  const {phoneVerify, verifyConnectPhone, User} = React.useContext(AuthContext);
 
   const [code, setCode] = useState('');
 
@@ -34,9 +34,10 @@ const App = () => {
     // }
   };
 
-  const onFinishCheckingCode = (isValid, code) => {
+  const onFinishCheckingCode = (isValid) => {
     console.log('onFinish Validity', isValid);
-    phoneVerify(isValid);
+    User ? verifyConnectPhone(isValid) : phoneVerify(isValid);
+
     // if (!isValid) {
     //   Alert.alert('Confirmation Code', 'Code not match!', [{text: 'OK'}], {
     //     cancelable: false,

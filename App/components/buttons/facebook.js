@@ -1,34 +1,49 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {View, Image, Text, TouchableNativeFeedback} from 'react-native';
-// import {AuthContext} from '../../context/authContext';
+import {AuthContext} from 'context/authContext';
+import {Sizing, Outlines, Colors, Typography} from 'styles';
+
 export default function () {
-	const ripple = TouchableNativeFeedback.Ripple('#55DAEA', false);
-	// const {signOut, User} = React.useContext(AuthContext);
-	return (
-		<View
-			// elevation={6}
-			style={{
-				backgroundColor: '#ffffff',
-				marginHorizontal: 12,
-				marginVertical: 5,
-				borderRadius: 10,
-			}}>
-			<TouchableNativeFeedback background={ripple} onPress={}>
-				<View style={{flexDirection: 'row', padding: 15}}>
-					<Image
-						style={{
-							width: 20,
-							height: 20,
-							marginRight: 15,
-							backgroundColor: 'red',
-						}}
-						source={require('assets/img/facebookColor.png')}
-					/>
-					<Text style={{color: 'black', fontFamily: 'sans-serif-medium'}}>
-						Facebook
-					</Text>
-				</View>
-			</TouchableNativeFeedback>
-		</View>
-	);
+  const ripple = TouchableNativeFeedback.Ripple(Colors.secondary.s200, false);
+  const {User, connectFacebook} = React.useContext(AuthContext);
+
+  console.log('User ', User);
+  console.log('Provider ID', User?.providerData[1]);
+  let connected = User?.providerData[1].providerId === 'facebook.com';
+  let displayName = User?.providerData[1].displayName || 'Facebook';
+
+  return (
+    <View
+      // elevation={6}
+      style={{
+        backgroundColor: Colors.neutral.white,
+        marginHorizontal: Sizing.x10,
+        marginVertical: Sizing.x5,
+        borderRadius: Outlines.borderRadius.base,
+      }}>
+      <TouchableNativeFeedback
+        background={ripple}
+        onPress={() => (connected ? null : connectFacebook())}>
+        <View style={{flexDirection: 'row', padding: Sizing.x10 + Sizing.x5}}>
+          <Image
+            style={{
+              width: Sizing.x20,
+              height: Sizing.x20,
+              marginRight: Sizing.x10 + Sizing.x5,
+              resizeMode: 'contain',
+            }}
+            source={
+              connected
+                ? require('img/facebookColor.png')
+                : require('img/facebookBlack.png')
+            }
+          />
+          <Text style={{...Typography.body.x10, color: Colors.neutral.black}}>
+            {displayName}
+          </Text>
+        </View>
+      </TouchableNativeFeedback>
+    </View>
+  );
 }

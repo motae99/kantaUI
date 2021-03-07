@@ -1,4 +1,4 @@
 export default {
-  Hello: 'Hello',
+  phoneNumber: 'Phone Number',
   Book: 'Book',
 };

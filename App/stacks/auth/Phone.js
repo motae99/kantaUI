@@ -13,7 +13,7 @@ import PhoneInput from './components/phoneInput';
 import CodeInput from './components/codeInput';
 
 const App = ({navigation}) => {
-  const {setCode, confirm, setConfirm, phoneNo} = React.useContext(AuthContext);
+  const {confirm, setConfirm, phoneNo} = React.useContext(AuthContext);
 
   return (
     <SafeAreaView style={styles.container}>
