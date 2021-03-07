@@ -2,7 +2,7 @@ import React from 'react';
 // import {createStackNavigator} from '@react-navigation/stack';
 import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
 
-import Phone from 'auth/phone';
+import Phone from 'auth/phone.js';
 import Login from 'auth/login';
 import Introd from 'auth/introd';
 
