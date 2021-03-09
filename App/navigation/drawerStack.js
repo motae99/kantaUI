@@ -8,13 +8,12 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Icon2 from 'react-native-vector-icons/FontAwesome';
 import Facebook from 'components/buttons/facebook';
 import Phone from 'components/buttons/phone';
 import Animated from 'react-native-reanimated';
 
-import HomeStack from './homeStack';
-import {AuthContext} from '../context/authContext';
+import HomeStack from 'navigation/homeStack';
+import {AuthContext} from 'context/authContext';
 
 function Language() {
   return (

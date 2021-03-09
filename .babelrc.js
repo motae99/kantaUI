@@ -1,6 +1,8 @@
-const plugins = [
+plugins = [
 	[
+		require.resolve('metro-react-native-babel-preset'),
 		require.resolve('babel-plugin-module-resolver'),
+
 		{
 			// root: ["./src/"],
 			alias: {
