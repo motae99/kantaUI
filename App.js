@@ -1,24 +1,33 @@
 import * as React from 'react';
-import Navigator from './App/navigation/';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 
-// import codePush from 'react-native-code-push';
+import {View, Text} from 'react-native';
+// import Navigator from './App/navigation/';
 
-// const codePushOptions = {
-//   updateDialog: true,
-//   checkFrequency: codePush.CheckFrequency.ON_APP_START,
-//   installMode: codePush.InstallMode.IMMEDIATE,
-// };
+import codePush from 'react-native-code-push';
+const codePushOptions = {
+  updateDialog: true,
+  checkFrequency: codePush.CheckFrequency.ON_APP_START,
+  installMode: codePush.InstallMode.IMMEDIATE,
+};
 
 const App = ({props}) => {
   return (
     <SafeAreaProvider>
-      <Navigator />
+      {/* <Navigator /> */}
+      <View
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'green',
+        }}>
+        <Text>Update Now this is a simple fix for now</Text>
+      </View>
       <Toast ref={(ref) => Toast.setRef(ref)} />
     </SafeAreaProvider>
   );
 };
 
-// export default codePush(codePushOptions)(App);
-export default App;
+export default codePush(codePushOptions)(App);
+// export default App;
