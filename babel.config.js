@@ -1,14 +1,14 @@
 module.exports = {
   presets: [
     'module:metro-react-native-babel-preset',
-    'module:babel-plugin-module-resolver',
+    // 'module:babel-plugin-module-resolver',
     // 'module:react-native-dotenv',
   ],
   plugins: [
     [
       'module-resolver',
       {
-        // root: ['./'],
+        root: ['.'],
         extensions: [
           '.ios.ts',
           '.android.ts',

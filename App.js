@@ -21,8 +21,11 @@ const App = ({props}) => {
           justifyContent: 'center',
           alignItems: 'center',
           backgroundColor: 'green',
+          flex: 1,
         }}>
-        <Text>Update Now this is a simple fix for now</Text>
+        <Text style={{color: 'white'}}>
+          Update Now this is a simple fix for now
+        </Text>
       </View>
       <Toast ref={(ref) => Toast.setRef(ref)} />
     </SafeAreaProvider>
