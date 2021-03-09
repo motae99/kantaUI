@@ -8,10 +8,12 @@ export default function () {
   const ripple = TouchableNativeFeedback.Ripple(Colors.secondary.s200, false);
   const {User, connectFacebook} = React.useContext(AuthContext);
 
-  console.log('User ', User);
-  console.log('Provider ID', User?.providerData[1]);
-  let connected = User?.providerData[1].providerId === 'facebook.com';
-  let displayName = User?.providerData[1].displayName || 'Facebook';
+  // console.log('User ', User);
+  // console.log('Provider ID', User.providerData);
+  // let connected = User?.providerData[1].providerId === 'facebook.com';
+  // let displayName = User?.providerData[1].displayName || 'Facebook';
+  let connected = false;
+  let displayName = 'Facebook';
 
   return (
     <View

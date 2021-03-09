@@ -4,7 +4,8 @@ import React, {useState, useRef} from 'react';
 import {StyleSheet, View, TouchableOpacity, Text, Alert} from 'react-native';
 import CodeInput from 'react-native-confirmation-code-input';
 import LinearGradient from 'react-native-linear-gradient';
-import {AuthContext} from '../../../context/authContext';
+import {AuthContext} from 'context/authContext';
+import I18n from 'utils/i18n';
 
 const App = () => {
   const {phoneVerify, verifyConnectPhone, User} = React.useContext(AuthContext);
@@ -84,7 +85,7 @@ const App = () => {
         <LinearGradient
           colors={['#55DAEA', '#219CAB']}
           style={styles.sendCodeButton}>
-          <Text style={styles.sendCodeText}>VERIFY</Text>
+          <Text style={styles.sendCodeText}>{I18n.t('CodeInputVerify')}</Text>
         </LinearGradient>
       </TouchableOpacity>
       <View
@@ -94,7 +95,7 @@ const App = () => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <Text style={styles.subtitle}>if you didn't recieve a code</Text>
+        <Text style={styles.subtitle}>{I18n.t('CodeInputNoCode')}</Text>
         <Text
           style={{
             marginLeft: 10,
@@ -106,7 +107,7 @@ const App = () => {
             fontFamily: 'Montserrat',
             fontWeight: 'bold',
           }}>
-          Resend
+          {I18n.t('CodeInputResend')}
         </Text>
       </View>
     </>

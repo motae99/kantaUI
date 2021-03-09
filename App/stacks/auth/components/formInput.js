@@ -15,22 +15,40 @@ const FormInput = ({
   <View style={styles.inputContainer}>
     <Input
       {...rest}
-      leftIcon={<Ionicons name={iconName} size={28} color={iconColor} />}
+      leftIcon={<Ionicons name={iconName} size={20} color={iconColor} />}
       leftIconContainerStyle={styles.iconStyle}
-      placeholderTextColor="grey"
+      placeholderTextColor="rgba(0, 0, 0, 0.5)"
+      keyboardType={keyboardType}
       name={name}
       placeholder={placeholder}
       style={styles.input}
+      inputContainerStyle={{borderBottomWidth: 0}}
     />
   </View>
 );
 
 const styles = StyleSheet.create({
-  inputContainer: {
-    margin: 15,
+  // inputContainer: {
+  //   margin: 15
+  // },
+  // iconStyle: {
+  //   marginRight: 10
+  // }
+  input: {
+    borderBottomWidth: 0,
   },
-  iconStyle: {
-    marginRight: 10,
+  inputContainer: {
+    marginHorizontal: 0,
+    marginTop: 5,
+    height: 45,
+    backgroundColor: '#FFFFFF',
+    // borderWidth: 1,
+    borderRadius: 5,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
   },
 });
 

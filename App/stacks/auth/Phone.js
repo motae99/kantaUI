@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React from 'react';
 import {
   StyleSheet,
   View,
@@ -8,9 +8,10 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {AuthContext} from '../../context/authContext';
-import PhoneInput from './components/phoneInput';
-import CodeInput from './components/codeInput';
+import {AuthContext} from 'context/authContext';
+import PhoneInput from 'auth/components/phoneInput';
+import CodeInput from 'auth/components/codeInput';
+import I18n from 'utils/i18n';
 
 const App = ({navigation}) => {
   const {confirm, setConfirm, phoneNo} = React.useContext(AuthContext);
@@ -31,9 +32,9 @@ const App = ({navigation}) => {
           {confirm ? (
             <>
               <View style={styles.infoContainer}>
-                <Text style={styles.title}>Verify phone</Text>
+                <Text style={styles.title}>{I18n.t('VerifyScreenTitle')}</Text>
                 <Text style={styles.subtitle}>
-                  Please enter 4-digit code sent to
+                  {I18n.t('VerifyScreenSubTitle')}
                 </Text>
                 <TouchableOpacity onPress={() => setConfirm(null)}>
                   <Text style={{color: '#219CAB'}}>{phoneNo}</Text>
@@ -44,9 +45,9 @@ const App = ({navigation}) => {
           ) : (
             <>
               <View style={styles.infoContainer}>
-                <Text style={styles.title}>Verify phone</Text>
+                <Text style={styles.title}>{I18n.t('PhoneScreenTitle')}</Text>
                 <Text style={styles.subtitle}>
-                  Please enter your country & your mobile number
+                  {I18n.t('PhoneScreenSubTitle')}
                 </Text>
               </View>
               <PhoneInput />

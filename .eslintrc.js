@@ -11,7 +11,7 @@ module.exports = {
   settings: {
     'import/resolver': {
       node: {
-        paths: ['App'],
+        // paths: ['App'],
         alias: {
           assets: './App/assets',
           img: './App/assets/img',

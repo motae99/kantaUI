@@ -1,83 +1,74 @@
-import React, {Component, Fragment} from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useContext, useState, Fragment} from 'react';
 import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
   View,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
-import {Button, CheckBox} from 'react-native-elements';
+import {Button, CheckBox, ButtonGroup} from 'react-native-elements';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import FormInput from 'auth/components/formInput';
 import FormButton from 'auth/components/formButton';
-import ErrorMessage from 'auth/components/ErrorMessage';
+import ErrorMessage from 'auth/components/errorMessage';
+import {AuthContext} from 'context/authContext';
+import I18n from 'utils/i18n';
 
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
-
+const {width, height} = Dimensions.get('window');
 const validationSchema = Yup.object().shape({
   name: Yup.string()
-    .label('Name')
-    .required()
-    .min(2, 'Must have at least 2 characters'),
+    .label(I18n.t('signUpNameLabel'))
+    .required(I18n.t('signUpNameRequiredError'))
+    .min(2, I18n.t('signUpNameError')),
   email: Yup.string()
-    .label('Email')
-    .email('Enter a valid email')
-    .required('Please enter a registered email'),
+    .label(I18n.t('signUpEmailLabel'))
+    .email(I18n.t('signUpEmailError'))
+    .required(I18n.t('signUpEmailRequiredError')),
   password: Yup.string()
     .label('Password')
-    .required()
-    .min(6, 'Password should be at least 6 characters '),
+    .required(I18n.t('signUpPasswordRequiredError'))
+    .min(6, I18n.t('signUpPasswordError')),
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref('password')], 'Confirm Password must matched Password')
-    .required('Confirm Password is required'),
-  check: Yup.boolean().oneOf([true], 'Please check the agreement'),
+    .oneOf([Yup.ref('password')], I18n.t('signUpconfirmPasswordError'))
+    .required(I18n.t('signUpconfirmPasswordRequiredError')),
+  check: Yup.boolean().oneOf([true], I18n.t('signUpCheckBoxError')),
 });
 
-export default class Signup extends Component {
-  state = {
-    passwordVisibility: true,
-    confirmPasswordVisibility: true,
-    passwordIcon: 'ios-eye',
-    confirmPasswordIcon: 'ios-eye',
+const SignUp = ({navigation}) => {
+  const {signUp} = useContext(AuthContext);
+
+  const [passwordVisibility, setPasswordVisibility] = useState(true);
+  const [confirmPasswordVisibility, setConfirmPasswordVisibility] = useState(
+    true,
+  );
+  const [passwordIcon, setPasswordIcon] = useState('ios-eye');
+  const [confirmPasswordIcon, setConfirmPasswordIcon] = useState('ios-eye');
+  const [index, setIndex] = useState(0);
+  const genders = ['Male', 'Female'];
+
+  const handlePasswordVisibility = () => {
+    passwordIcon === 'ios-eye'
+      ? setPasswordIcon('ios-eye-off')
+      : setPasswordIcon('ios-eye');
+    setPasswordVisibility(!passwordVisibility);
   };
 
-  goToLogin = () => this.props.navigation.navigate('Login');
-
-  handlePasswordVisibility = () => {
-    this.setState((prevState) => ({
-      passwordIcon:
-        prevState.passwordIcon === 'ios-eye' ? 'ios-eye-off' : 'ios-eye',
-      passwordVisibility: !prevState.passwordVisibility,
-    }));
+  const handleConfirmPasswordVisibility = () => {
+    confirmPasswordIcon === 'ios-eye'
+      ? setConfirmPasswordIcon('ios-eye-off')
+      : setConfirmPasswordIcon('ios-eye');
+    setConfirmPasswordVisibility(!confirmPasswordVisibility);
   };
 
-  handleConfirmPasswordVisibility = () => {
-    this.setState((prevState) => ({
-      confirmPasswordIcon:
-        prevState.confirmPasswordIcon === 'ios-eye' ? 'ios-eye-off' : 'ios-eye',
-      confirmPasswordVisibility: !prevState.confirmPasswordVisibility,
-    }));
-  };
-
-  handleOnSignup = async (values, actions) => {
+  const handleOnSignup = async (values, actions) => {
     const {name, email, password} = values;
-
+    const gender = genders[index];
     try {
-      const response = await auth().createUserWithEmailAndPassword(
-        email,
-        password,
-      );
-
-      if (response.user.uid) {
-        const {uid} = response.user;
-        response.user.updateProfile({desplayName: name});
-        const userData = {email, name, uid};
-        await firestore().collection('users').doc(uid).set(userData);
-        this.props.navigation.navigate('App');
-      }
+      await signUp({name, email, password, gender});
     } catch (error) {
       // console.error(error)
       actions.setFieldError('general', error.message);
@@ -86,151 +77,185 @@ export default class Signup extends Component {
     }
   };
 
-  render() {
-    const {
-      passwordVisibility,
-      confirmPasswordVisibility,
-      passwordIcon,
-      confirmPasswordIcon,
-    } = this.state;
-    return (
-      <ScrollView style={styles.container}>
-        <Formik
-          initialValues={{
-            name: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
-            check: false,
+  return (
+    <ScrollView style={styles.container}>
+      <View
+        style={{
+          height: height / 3.8,
+          // backgroundColor: 'red',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <View
+          elevation={50}
+          style={{
+            height: height / 5,
+            width: height / 5,
+            borderRadius: height / 5,
+            backgroundColor: 'green',
+            borderStyle: 'dotted',
+            borderWidth: 2,
+            borderColor: 'red',
+            // borderRadius: 1,
           }}
-          onSubmit={(values, actions) => {
-            this.handleOnSignup(values, actions);
-          }}
-          validationSchema={validationSchema}>
-          {({
-            handleChange,
-            values,
-            handleSubmit,
-            errors,
-            isValid,
-            touched,
-            handleBlur,
-            isSubmitting,
-            setFieldValue,
-          }) => (
-            <Fragment>
-              <FormInput
-                name="name"
-                value={values.name}
-                onChangeText={handleChange('name')}
-                placeholder="Enter your full name"
-                iconName="md-person"
-                iconColor="#2C384A"
-                onBlur={handleBlur('name')}
-              />
-              <ErrorMessage errorValue={touched.name && errors.name} />
-              <FormInput
-                name="email"
-                value={values.email}
-                onChangeText={handleChange('email')}
-                placeholder="Enter email"
-                autoCapitalize="none"
-                iconName="ios-mail"
-                iconColor="#2C384A"
-                onBlur={handleBlur('email')}
-              />
-              <ErrorMessage errorValue={touched.email && errors.email} />
-              <FormInput
-                name="password"
-                value={values.password}
-                onChangeText={handleChange('password')}
-                placeholder="Enter password"
-                iconName="ios-lock"
-                iconColor="#2C384A"
-                onBlur={handleBlur('password')}
-                secureTextEntry={passwordVisibility}
-                rightIcon={
-                  <TouchableOpacity onPress={this.handlePasswordVisibility}>
-                    <Ionicon name={passwordIcon} size={28} color="grey" />
-                  </TouchableOpacity>
-                }
-              />
-              <ErrorMessage errorValue={touched.password && errors.password} />
-              <FormInput
-                name="password"
-                value={values.confirmPassword}
-                onChangeText={handleChange('confirmPassword')}
-                placeholder="Confirm password"
-                iconName="ios-lock"
-                iconColor="#2C384A"
-                onBlur={handleBlur('confirmPassword')}
-                secureTextEntry={confirmPasswordVisibility}
-                rightIcon={
-                  <TouchableOpacity
-                    onPress={this.handleConfirmPasswordVisibility}>
-                    <Ionicon
-                      name={confirmPasswordIcon}
-                      size={28}
-                      color="grey"
-                    />
-                  </TouchableOpacity>
-                }
-              />
-              <ErrorMessage
-                errorValue={touched.confirmPassword && errors.confirmPassword}
-              />
-              <CheckBox
-                containerStyle={styles.checkBoxContainer}
-                checkedIcon="check-box"
-                iconType="material"
-                uncheckedIcon="check-box-outline-blank"
-                title="Agree to terms and conditions"
-                checkedTitle="You agreed to our terms and conditions"
-                checked={values.check}
-                onPress={() => setFieldValue('check', !values.check)}
-              />
-              <View style={styles.buttonContainer}>
-                <FormButton
-                  buttonType="outline"
-                  onPress={handleSubmit}
-                  title="SIGNUP"
-                  buttonColor="#F57C00"
-                  disabled={!isValid || isSubmitting}
-                  loading={isSubmitting}
-                />
-              </View>
-              <ErrorMessage errorValue={errors.general} />
-            </Fragment>
-          )}
-        </Formik>
-        <Button
-          title="Have an account? Login"
-          onPress={this.goToLogin}
-          titleStyle={{
-            color: '#039BE5',
-          }}
-          type="clear"
         />
-      </ScrollView>
-    );
-  }
-}
+        <View
+          elevation={60}
+          style={{
+            height: 40,
+            width: 40,
+            borderRadius: 5,
+            position: 'absolute',
+            bottom: 0,
+            backgroundColor: 'white',
+          }}
+        />
+      </View>
+      <Formik
+        initialValues={{
+          name: '',
+          email: '',
+          password: '',
+          confirmPassword: '',
+          check: false,
+        }}
+        onSubmit={(values, actions) => {
+          handleOnSignup(values, actions);
+        }}
+        validationSchema={validationSchema}>
+        {({
+          handleChange,
+          values,
+          handleSubmit,
+          errors,
+          isValid,
+          touched,
+          handleBlur,
+          isSubmitting,
+          setFieldValue,
+        }) => (
+          <Fragment>
+            <FormInput
+              name="name"
+              value={values.name}
+              onChangeText={handleChange('name')}
+              placeholder={I18n.t('signUpNamePlaceHolder')}
+              iconName="md-person"
+              iconColor="#2C384A"
+              onBlur={handleBlur('name')}
+            />
+            <ErrorMessage errorValue={touched.name && errors.name} />
+
+            <ButtonGroup
+              onPress={(selectedIndex) => setIndex(selectedIndex)}
+              selectedIndex={index}
+              buttons={genders}
+              buttonContainerStyle={{margin: 0}}
+              containerStyle={{
+                borderWidth: 1,
+                borderRightWidth: 0,
+              }}
+              innerBorderStyle={{borderWidth: 0}}
+              buttonStyle={{borderRadius: 5}}
+              selectedButtonStyle={{
+                borderRadius: 5,
+                // padding: 20,
+              }}
+              selectedTextStyle={{}}
+              textStyle={{}}
+            />
+
+            <FormInput
+              name="email"
+              value={values.email}
+              onChangeText={handleChange('email')}
+              placeholder={I18n.t('signUpEmailPlaceHolder')}
+              autoCapitalize="none"
+              iconName="ios-mail"
+              iconColor="#2C384A"
+              onBlur={handleBlur('email')}
+            />
+            <ErrorMessage errorValue={touched.email && errors.email} />
+            <FormInput
+              name="password"
+              value={values.password}
+              onChangeText={handleChange('password')}
+              placeholder={I18n.t('signUpPasswordPlaceHolder')}
+              iconName="lock-closed"
+              iconColor="#2C384A"
+              onBlur={handleBlur('password')}
+              secureTextEntry={passwordVisibility}
+              rightIcon={
+                <TouchableOpacity onPress={handlePasswordVisibility}>
+                  <Ionicon name={passwordIcon} size={28} color="grey" />
+                </TouchableOpacity>
+              }
+            />
+            <ErrorMessage errorValue={touched.password && errors.password} />
+            <FormInput
+              name="password"
+              value={values.confirmPassword}
+              onChangeText={handleChange('confirmPassword')}
+              placeholder={I18n.t('signUpConfirmPasswordPlaceHolder')}
+              iconName="lock-closed"
+              iconColor="#2C384A"
+              onBlur={handleBlur('confirmPassword')}
+              secureTextEntry={confirmPasswordVisibility}
+              rightIcon={
+                <TouchableOpacity onPress={handleConfirmPasswordVisibility}>
+                  <Ionicon name={confirmPasswordIcon} size={28} color="grey" />
+                </TouchableOpacity>
+              }
+            />
+            <ErrorMessage
+              errorValue={touched.confirmPassword && errors.confirmPassword}
+            />
+            <CheckBox
+              containerStyle={styles.checkBoxContainer}
+              checkedIcon="check-box"
+              iconType="material"
+              uncheckedIcon="check-box-outline-blank"
+              title="Agree to terms and conditions"
+              checkedTitle={I18n.t('signUpCheckedTitle')}
+              checked={values.check}
+              onPress={() => setFieldValue('check', !values.check)}
+            />
+            <View style={styles.buttonContainer}>
+              <FormButton
+                // buttonType="outline"
+                onPress={handleSubmit}
+                title={I18n.t('signUpSubmitButtonTitle')}
+                buttonColor="#F57C00"
+                disabled={!isValid || isSubmitting}
+                loading={isSubmitting}
+              />
+            </View>
+            <ErrorMessage errorValue={errors.general} />
+          </Fragment>
+        )}
+      </Formik>
+      <Button
+        title={I18n.t('signUpHaveAccountTitle')}
+        onPress={() => navigation.navigate('Login')}
+        titleStyle={{
+          color: '#039BE5',
+        }}
+        type="clear"
+      />
+    </ScrollView>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
     marginTop: 50,
-  },
-  logoContainer: {
-    marginBottom: 15,
-    alignItems: 'center',
-  },
-  buttonContainer: {
-    margin: 25,
+    padding: 20,
   },
   checkBoxContainer: {
     backgroundColor: '#fff',
     borderColor: '#fff',
   },
 });
+export default SignUp;

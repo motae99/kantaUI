@@ -4,7 +4,8 @@ import React, {useState, useRef} from 'react';
 import {StyleSheet, TouchableOpacity, Text, View} from 'react-native';
 import PhoneInput from 'react-native-phone-number-input';
 import LinearGradient from 'react-native-linear-gradient';
-import {AuthContext} from '../../../context/authContext';
+import {AuthContext} from 'context/authContext';
+import I18n from 'utils/i18n';
 
 const App = () => {
   const {phoneSign, User, connectPhone} = React.useContext(AuthContext);
@@ -30,7 +31,7 @@ const App = () => {
       <PhoneInput
         ref={phoneInput}
         defaultValue={value}
-        placeholder="----------"
+        placeholder={I18n.t('phoneInputPlaceHolder')}
         containerStyle={styles.phoneContainer}
         textContainerStyle={styles.textContainer}
         flagButtonStyle={styles.flagButton}
@@ -54,27 +55,24 @@ const App = () => {
 
       <TouchableOpacity
         style={styles.sendCodeButton}
-        onPress={() => {
+        onPress={async () => {
           const checkValid = phoneInput.current?.isValidNumber(value);
           // setShowMessage(true);
           setValid(checkValid ? checkValid : false);
           setCountryCode(phoneInput.current?.getCountryCode() || '');
-          let getNumberAfterPossiblyEliminatingZero = phoneInput.current?.getNumberAfterPossiblyEliminatingZero();
+          let getNumberAfterPossiblyEliminatingZero = await phoneInput.current?.getNumberAfterPossiblyEliminatingZero();
           // console.log(getNumberAfterPossiblyEliminatingZero);
+          let number = getNumberAfterPossiblyEliminatingZero.formattedNumber;
           if (valid) {
-            User
-              ? connectPhone(
-                  getNumberAfterPossiblyEliminatingZero.formattedNumber,
-                )
-              : phoneSign(
-                  getNumberAfterPossiblyEliminatingZero.formattedNumber,
-                );
+            User ? connectPhone(number) : phoneSign(number);
           }
         }}>
         <LinearGradient
           colors={['#00DAEA', '#219CAB']}
           style={styles.sendCodeButton}>
-          <Text style={styles.sendCodeText}>GET CODE</Text>
+          <Text style={styles.sendCodeText}>
+            {I18n.t('phoneGetCodeButton')}
+          </Text>
         </LinearGradient>
       </TouchableOpacity>
     </>

@@ -6,8 +6,13 @@ const FormButton = ({title, buttonType, buttonColor, ...rest}) => (
     {...rest}
     type={buttonType}
     title={title}
-    buttonStyle={{borderColor: buttonColor, borderRadius: 20}}
+    buttonStyle={{
+      borderColor: buttonColor,
+      backgroundColor: 'rgba(0, 0, 0, .1)',
+      borderRadius: 5,
+    }}
     titleStyle={{color: buttonColor}}
+    containerStyle={{}}
   />
 );
 

@@ -270,7 +270,7 @@ export default function App({navigation}) {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('Phone');
+              navigation.navigate('SignUp');
             }}
             style={{
               height: '100%',

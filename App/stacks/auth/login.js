@@ -380,7 +380,7 @@ import {Button, View, StyleSheet, StatusBar, Dimensions} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Video from 'react-native-video';
 import InkinWater from 'assets/InkinWater.mp4';
-import {AuthContext} from '../../context/authContext';
+import {AuthContext} from 'context/authContext';
 import {Sizing, Outlines, Colors, Typography} from 'styles';
 const {width, height} = Dimensions.get('window');
 

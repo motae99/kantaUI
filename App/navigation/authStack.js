@@ -5,6 +5,7 @@ import {createSharedElementStackNavigator} from 'react-navigation-shared-element
 import Phone from 'auth/phone.js';
 import Login from 'auth/login';
 import Introd from 'auth/introd';
+import SignUp from 'auth/signUp';
 
 const Stack = createSharedElementStackNavigator();
 
@@ -14,6 +15,7 @@ const AuthStack = () => {
       <Stack.Screen name="Introd" component={Introd} />
       <Stack.Screen name="Phone" component={Phone} />
       <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="SignUp" component={SignUp} />
     </Stack.Navigator>
   );
 };

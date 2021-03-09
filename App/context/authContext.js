@@ -1,52 +1,81 @@
 import React, {createContext, useState, useEffect} from 'react';
 // import AsyncStorage from '@react-native-community/async-storage';
+import firebase from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import {LoginManager, AccessToken} from 'react-native-fbsdk';
 import {GoogleSignin} from '@react-native-community/google-signin';
+import Toast from 'react-native-toast-message';
+import I18n from 'utils/i18n';
 
 export const AuthContext = createContext();
+
+GoogleSignin.configure({
+  scopes: ['email', 'profile'], // what API you want to access on behalf of the user, default is email and profile
+  webClientId:
+    '337309192499-n2cu8ljihpaim2lnjc074hdhtu5rojh1.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+  offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+});
 
 const AuthContextProvider = (props) => {
   const [confirm, setConfirm] = useState(null);
   const [phoneNo, setPhoneNo] = useState('');
   const [User, setUser] = React.useState(null);
+  const [dbUser, setDbUser] = React.useState(null);
+  const [providerId, setProviderId] = React.useState(null);
+  const [providerData, setProviderData] = React.useState(null);
+  const [signUpData, setSignUpData] = React.useState(null);
+  // const [signUp, setSignUp] = React.useState(false);
+
+  function updateUserInfo(info) {
+    console.log(info);
+    // firestore()
+    //       .collection('users')
+    //       .doc(User.uid)
+    //       .update(User)
+  }
+
+  async function createNewUser() {
+    // switch (User) {
+    //   case User.providerData[0].providerId === 'facebook.com':
+    //     console.log('logged in with facebook');
+    //     break;
+    //   case User.providerData[0].providerId === 'google.com':
+    //     console.log('logged in with google');
+    //     break;
+    //   case User.providerData[0].providerId === 'phone':
+    //     console.log('logged in with phone');
+    //     break;
+    //   default:
+    //     break;
+    // }
+    // userData={
+    //   displayName: User.displayName,
+    //   email: User.email,
+    //   emailVerified: User.emailVerified,
+    //   phoneNumber: User.phoneNumber,
+    //   photoURL
+    // }
+    // firestore().collection('users').doc(User.uid).set(User);
+  }
 
   // Handle user state changes
   function onAuthStateChanged(user) {
-    // get Provider ID
-    // user.providerData[0].providerId
-    // google.com
-    // facebook.com
-    // phone
+    firestore()
+      .collection('users')
+      .doc(user.uid)
+      .get()
+      .then((documentSnapshot) => {
+        if (documentSnapshot.exists) {
+          console.log('User data: ', documentSnapshot.data());
+          updateUserInfo(documentSnapshot.data());
+          setUser(user);
+        } else {
+          createNewUser();
+        }
+      });
 
-    // console.log(user.providerData[0].displayName);
-    setUser(user);
-
-    //       const userData =  {
-    //         uid: user.uid,
-    //         timestamp: Date.now(),
-    //         displayName: user.displayName,
-    //         email: user.email,
-    //         phoneNumber: user.phoneNumber,
-    //         photoURL: user.photoURL,
-    //       };
-    //     try{
-    //       await firestore()
-    //       .collection('users')
-    //       .doc(user.uid)
-    //       .update(userData)
-    //       setTimeout(() => { this.props.navigation.navigate('Initial') }, 1000)
-    //     }
-    //     catch(error){
-    //       await firestore()
-    //       .collection('users')
-    //       .doc(user.uid)
-    //       .set(userData)
-    //       setTimeout(() => { this.props.navigation.navigate('Initial') }, 1000)
-    //     }
-
-    //   }
-    // });
+    // setUser(user);
   }
 
   useEffect(() => {
@@ -54,28 +83,40 @@ const AuthContextProvider = (props) => {
     return subscriber; // unsubscribe on unmount
   }, []);
 
-  useEffect(() => {
-    GoogleSignin.configure({
-      // scopes: ['email'], // what API you want to access on behalf of the user, default is email and profile
-      webClientId:
-        '337309192499-n2cu8ljihpaim2lnjc074hdhtu5rojh1.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
-      offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-    });
-  }, []);
+  // useEffect(() => {
+  //   GoogleSignin.configure({
+  //     scopes: ['email', 'profile'], // what API you want to access on behalf of the user, default is email and profile
+  //     webClientId:
+  //       '337309192499-n2cu8ljihpaim2lnjc074hdhtu5rojh1.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+  //     offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+  //   });
+  //   console.log('running every');
+  // }, []);
 
-  const signIn = async (data) => {
-    // In a production app, we need to send some data (usually username, password) to server and get a token
-    // We will also need to handle errors if sign in failed
-    // After getting token, we need to persist the token using `AsyncStorage`
-    // In the example, we'll use a dummy token
-    // dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
+  const signIn = async ({data}) => {
+    // try {
+    //   // const response =
+    //   await auth().createUserWithEmailAndPassword(email, password);
+    //   // if (response.user.uid) {
+    //   //   const {uid} = response.user;
+    //   //   response.user.updateProfile({desplayName: name});
+    //   //   const userData = {email, name, uid};
+    //   //   await firestore().collection('users').doc(uid).set(userData);
+    //   //   // this.props.navigation.navigate('App');
+    //   // }
+    // } catch (error) {
+    //   console.error(error);
+    // }
   };
 
   const googleSign = async () => {
     // Get the users ID token
-    const {idToken} = await GoogleSignin.signIn();
+    const GoogleUser = await GoogleSignin.signIn();
+
+    console.log(GoogleUser);
 
     // Create a Google credential with the token
+    const {idToken} = GoogleUser;
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
     // console.log(googleCredential);
@@ -141,36 +182,97 @@ const AuthContextProvider = (props) => {
     return auth().currentUser.linkWithCredential(facebookCredential);
   };
 
-  const connectPhone = async ({phoneNumber}) => {
-    const snapshot = await auth()
+  const connectPhone = async (phoneNumber) => {
+    return auth()
       .verifyPhoneNumber(phoneNumber)
       .on(
         'state_changed',
         (phoneAuthSnapshot) => {
-          console.log('State: ', phoneAuthSnapshot.state);
+          switch (phoneAuthSnapshot.state) {
+            case firebase.auth.PhoneAuthState.CODE_SENT: // or 'sent'
+              console.log('code sent');
+              setConfirm(phoneAuthSnapshot);
+              Toast.show({
+                text1: I18n.t('ToastSuccessCodeSentTitle'),
+                text2: I18n.t('ToastSuccessCodeSentSubTitle'),
+                // position: 'top | bottom',
+                visibilityTime: 8000,
+                autoHide: true,
+                topOffset: 60,
+                // bottomOffset: 40,
+              });
+
+              break;
+            case firebase.auth.PhoneAuthState.ERROR: // or 'error'
+              console.log('verification error');
+
+              break;
+
+            // ---------------------
+            // ANDROID ONLY EVENTS
+            // ---------------------
+            case firebase.auth.PhoneAuthState.AUTO_VERIFY_TIMEOUT: // or 'timeout'
+              console.log('auto verify on android timed out');
+
+              break;
+            case firebase.auth.PhoneAuthState.AUTO_VERIFIED: // or 'verified'
+              console.log('auto verified on android');
+              console.log(phoneAuthSnapshot);
+
+              break;
+          }
         },
         (error) => {
           console.log(error);
+          Toast.show({
+            type: 'error',
+            text1: I18n.t('ToastErrorCodeSentTitle'),
+            text2: error.message,
+            // position: 'top | bottom',
+            visibilityTime: 8000,
+            autoHide: true,
+            topOffset: 60,
+            // bottomOffset: 40,
+          });
+        },
+        (phoneAuthSnapshot) => {
+          console.log(phoneAuthSnapshot);
+          setConfirm(phoneAuthSnapshot);
         },
       );
 
-    setConfirm(snapshot);
+    // setConfirm(snapshot);
   };
 
-  const verifyConnectPhone = async ({userCode}) => {
-    const credential = auth.PhoneAuthProvider.credential(
+  const verifyConnectPhone = async (userCode) => {
+    const credential = firebase.auth.PhoneAuthProvider.credential(
       confirm.verificationId,
       userCode,
     );
 
     try {
       await auth().currentUser.updatePhoneNumber(credential);
+      Toast.show({
+        text1: I18n.t('ToastSuccessNumberConnectedTitle'),
+        text2: I18n.t('ToastSuccessNumberConnectedSubTitle'),
+        visibilityTime: 8000,
+        autoHide: true,
+        topOffset: 60,
+      });
+
       setTimeout(() => {
         setConfirm(null);
         setPhoneNo('');
       }, 1000);
     } catch (error) {
-      console.log('Invalid code.');
+      Toast.show({
+        type: 'error',
+        text1: I18n.t('ToastErrorNumberConnectedTitle'),
+        text2: error.message,
+        visibilityTime: 8000,
+        autoHide: true,
+        topOffset: 60,
+      });
     }
   };
 
@@ -179,6 +281,13 @@ const AuthContextProvider = (props) => {
 
     const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
     // console.log('confirmation', confirmation);
+    Toast.show({
+      text1: I18n.t('ToastSuccessNumberConnectedTitle'),
+      text2: I18n.t('ToastSuccessNumberConnectedSubTitle'),
+      visibilityTime: 8000,
+      autoHide: true,
+      topOffset: 60,
+    });
     setConfirm(confirmation);
   };
 
@@ -186,12 +295,20 @@ const AuthContextProvider = (props) => {
     // console.log('Verifying', userCode);
     try {
       await confirm.confirm(userCode);
+
       setTimeout(() => {
         setConfirm(null);
         setPhoneNo('');
       }, 1000);
     } catch (error) {
-      console.log('Invalid code.');
+      Toast.show({
+        type: 'error',
+        text1: I18n.t('ToastErrorNumberConnectedTitle'),
+        text2: error.message,
+        visibilityTime: 8000,
+        autoHide: true,
+        topOffset: 60,
+      });
     }
   };
 
@@ -216,12 +333,43 @@ const AuthContextProvider = (props) => {
     // dispatch({type: 'SIGN_OUT'});
   };
 
-  const signUp = async (data) => {
-    // In a production app, we need to send user data to server and get a token
-    // We will also need to handle errors if sign up failed
-    // After getting token, we need to persist the token using `AsyncStorage`
-    // In the example, we'll use a dummy token
-    // dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
+  const signUp = async ({email, password, name, gender}) => {
+    // return await auth().createUserWithEmailAndPassword(email, password);
+
+    try {
+      const response = await auth().createUserWithEmailAndPassword(
+        email,
+        password,
+      );
+
+      if (response.user) {
+        const {uid} = response.user;
+        response.user.updateProfile({displayName: name});
+        const userData = {email, name, uid, gender};
+        setSignUpData(userData);
+        // await firestore().collection('users').doc(uid).set(userData);
+        // this.props.navigation.navigate('App');
+        Toast.show({
+          text1: I18n.t('ToastSuccessSignUpTitle'),
+          text2: I18n.t('ToastSuccessSignUpSubTitle'),
+          visibilityTime: 8000,
+          autoHide: true,
+          topOffset: 60,
+        });
+      }
+    } catch (error) {
+      // console.log(error.message);
+      Toast.show({
+        type: 'error',
+        text1: I18n.t('ToastErrorSignUpTitle'),
+        text2: error.message,
+        // position: 'top | bottom',
+        visibilityTime: 8000,
+        autoHide: true,
+        topOffset: 60,
+        // bottomOffset: 40,
+      });
+    }
   };
 
   // const verifyNumber = async (number) => {

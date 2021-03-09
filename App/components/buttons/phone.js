@@ -8,10 +8,10 @@ import I18n from 'utils/i18n';
 
 export default function ({navigation}) {
   const ripple = TouchableNativeFeedback.Ripple(Colors.secondary.s200, false);
-  const {User} = React.useContext(AuthContext);
+  const {User, connectPhone} = React.useContext(AuthContext);
 
-  console.log('User ', User);
-  let connected = User?.phoneNumber;
+  // console.log('User ', User);
+  let connected = false;
   // let Number = User?.providerData[1].displayName || 'Facebook';
 
   return (
@@ -25,8 +25,12 @@ export default function ({navigation}) {
       }}>
       <TouchableNativeFeedback
         background={ripple}
-        onPress={() =>
-          connected ? null : navigation.navigate('HomeStack', {screen: 'Phone'})
+        onPress={
+          // () => connectPhone('+249999099148')
+          () =>
+            connected
+              ? null
+              : navigation.navigate('HomeStack', {screen: 'Phone'})
         }>
         <View style={{flexDirection: 'row', padding: Sizing.x10 + Sizing.x5}}>
           <Icon
@@ -42,7 +46,7 @@ export default function ({navigation}) {
               color: Colors.neutral.black,
               letterSpacing: 2,
             }}>
-            {connected ? connected : I18n.t('phoneNumber')}
+            {connected ? connected : I18n.t('drawerPhoneNumber')}
           </Text>
         </View>
       </TouchableNativeFeedback>
