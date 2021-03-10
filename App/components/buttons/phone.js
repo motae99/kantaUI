@@ -8,11 +8,7 @@ import I18n from 'utils/i18n';
 
 export default function ({navigation}) {
   const ripple = TouchableNativeFeedback.Ripple(Colors.secondary.s200, false);
-  const {User, connectPhone} = React.useContext(AuthContext);
-
-  // console.log('User ', User);
-  let connected = false;
-  // let Number = User?.providerData[1].displayName || 'Facebook';
+  const {dbUser, connectPhone} = React.useContext(AuthContext);
 
   return (
     <View
@@ -28,7 +24,7 @@ export default function ({navigation}) {
         onPress={
           // () => connectPhone('+249999099148')
           () =>
-            connected
+            dbUser?.phoneNumber
               ? null
               : navigation.navigate('HomeStack', {screen: 'Phone'})
         }>
@@ -37,7 +33,9 @@ export default function ({navigation}) {
             name="mobile1"
             type="simple-line-icon"
             size={Sizing.x20}
-            color={connected ? Colors.primary.s200 : Colors.neutral.black}
+            color={
+              dbUser?.phoneNumber ? Colors.primary.s200 : Colors.neutral.black
+            }
             style={{marginRight: Sizing.x10 + Sizing.x5}}
           />
           <Text
@@ -46,7 +44,9 @@ export default function ({navigation}) {
               color: Colors.neutral.black,
               letterSpacing: 2,
             }}>
-            {connected ? connected : I18n.t('drawerPhoneNumber')}
+            {dbUser?.phoneNumber
+              ? dbUser?.phoneNumber
+              : I18n.t('drawerPhoneNumber')}
           </Text>
         </View>
       </TouchableNativeFeedback>

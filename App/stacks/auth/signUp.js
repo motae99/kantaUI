@@ -17,6 +17,7 @@ import FormButton from 'auth/components/formButton';
 import ErrorMessage from 'auth/components/errorMessage';
 import {AuthContext} from 'context/authContext';
 import I18n from 'utils/i18n';
+import {Sizing, Outlines, Colors, Typography} from 'styles';
 
 const {width, height} = Dimensions.get('window');
 const validationSchema = Yup.object().shape({
@@ -96,20 +97,21 @@ const SignUp = ({navigation}) => {
             borderStyle: 'dotted',
             borderWidth: 2,
             borderColor: 'red',
+            alignItems: 'center',
             // borderRadius: 1,
-          }}
-        />
-        <View
-          elevation={60}
-          style={{
-            height: 40,
-            width: 40,
-            borderRadius: 5,
-            position: 'absolute',
-            bottom: 0,
-            backgroundColor: 'white',
-          }}
-        />
+          }}>
+          <View
+            elevation={60}
+            style={{
+              height: 40,
+              width: 40,
+              borderRadius: 5,
+              position: 'absolute',
+              bottom: -20,
+              backgroundColor: 'white',
+            }}
+          />
+        </View>
       </View>
       <Formik
         initialValues={{
@@ -225,7 +227,7 @@ const SignUp = ({navigation}) => {
                 // buttonType="outline"
                 onPress={handleSubmit}
                 title={I18n.t('signUpSubmitButtonTitle')}
-                buttonColor="#F57C00"
+                buttonColor={Colors.primary.brand}
                 disabled={!isValid || isSubmitting}
                 loading={isSubmitting}
               />

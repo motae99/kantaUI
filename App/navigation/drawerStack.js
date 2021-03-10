@@ -9,6 +9,7 @@ import {
 } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Facebook from 'components/buttons/facebook';
+import Google from 'components/buttons/google';
 import Phone from 'components/buttons/phone';
 import Animated from 'react-native-reanimated';
 
@@ -62,40 +63,14 @@ function CustomDrawerContent({progress, ...rest}) {
       <Animated.View style={{transform: [{translateX}]}}>
         <View style={{height: 200, backgroundColor: 'green'}} />
         <DrawerItemList {...rest} />
-        {/* <DrawerItem label={google({googleLable})} onPress={() => signOut()} /> */}
-        <DrawerItem label="Connect Facebook" onPress={() => signOut()} />
-        <DrawerItem label="Verify Number" onPress={() => signOut()} />
-        <DrawerItem label="SignOut" onPress={() => signOut()} />
+
         {/* <DrawerItem
         label="Privacy & Policy"
         onPress={() => Linking.openURL('https://mywebsite.com/help')}
       /> */}
         <Facebook />
+        <Google />
         <Phone {...rest} />
-        <View
-          // elevation={6}
-          style={{
-            backgroundColor: '#ffffff',
-            marginHorizontal: 12,
-            marginVertical: 5,
-            borderRadius: 10,
-          }}>
-          <TouchableNativeFeedback background={ripple}>
-            <View style={{flexDirection: 'row', padding: 15}}>
-              <Image
-                style={{
-                  width: 20,
-                  height: 20,
-                  marginRight: 15,
-                }}
-                source={require('img/googleColor.png')}
-              />
-              <Text style={{color: 'black', fontFamily: 'sans-serif-medium'}}>
-                Google
-              </Text>
-            </View>
-          </TouchableNativeFeedback>
-        </View>
 
         <View
           // elevation={6}
@@ -105,53 +80,9 @@ function CustomDrawerContent({progress, ...rest}) {
             marginVertical: 5,
             borderRadius: 10,
           }}>
-          <TouchableNativeFeedback background={ripple}>
-            <View style={{flexDirection: 'row', padding: 15}}>
-              <Icon
-                name="logout"
-                type="simple-line-icon"
-                size={24}
-                color={'black'}
-                style={{marginRight: 20}}
-              />
-              <Text style={{color: 'black', fontFamily: 'sans-serif-medium'}}>
-                Logout
-              </Text>
-            </View>
-          </TouchableNativeFeedback>
-        </View>
-        <View
-          // elevation={6}
-          style={{
-            backgroundColor: '#ffffff',
-            marginHorizontal: 12,
-            marginVertical: 5,
-            borderRadius: 10,
-          }}>
-          <TouchableNativeFeedback background={ripple}>
-            <View style={{flexDirection: 'row', padding: 15}}>
-              <Icon
-                name="logout"
-                type="simple-line-icon"
-                size={24}
-                color={'black'}
-                style={{marginRight: 20}}
-              />
-              <Text style={{color: 'black', fontFamily: 'sans-serif-medium'}}>
-                Logout
-              </Text>
-            </View>
-          </TouchableNativeFeedback>
-        </View>
-        <View
-          // elevation={6}
-          style={{
-            backgroundColor: '#ffffff',
-            marginHorizontal: 12,
-            marginVertical: 5,
-            borderRadius: 10,
-          }}>
-          <TouchableNativeFeedback background={ripple}>
+          <TouchableNativeFeedback
+            background={ripple}
+            onPress={() => signOut()}>
             <View style={{flexDirection: 'row', padding: 15}}>
               <Icon
                 name="logout"

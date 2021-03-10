@@ -6,14 +6,12 @@ import {Sizing, Outlines, Colors, Typography} from 'styles';
 
 export default function () {
   const ripple = TouchableNativeFeedback.Ripple(Colors.secondary.s200, false);
-  const {User, connectFacebook} = React.useContext(AuthContext);
+  const {connectFacebook, dbUser} = React.useContext(AuthContext);
 
   // console.log('User ', User);
   // console.log('Provider ID', User.providerData);
   // let connected = User?.providerData[1].providerId === 'facebook.com';
   // let displayName = User?.providerData[1].displayName || 'Facebook';
-  let connected = false;
-  let displayName = 'Facebook';
 
   return (
     <View
@@ -26,7 +24,7 @@ export default function () {
       }}>
       <TouchableNativeFeedback
         background={ripple}
-        onPress={() => (connected ? null : connectFacebook())}>
+        onPress={() => (dbUser?.facebook ? null : connectFacebook())}>
         <View style={{flexDirection: 'row', padding: Sizing.x10 + Sizing.x5}}>
           <Image
             style={{
@@ -36,13 +34,15 @@ export default function () {
               resizeMode: 'contain',
             }}
             source={
-              connected
+              dbUser?.facebook
                 ? require('img/facebookColor.png')
                 : require('img/facebookBlack.png')
             }
           />
           <Text style={{...Typography.body.x10, color: Colors.neutral.black}}>
-            {displayName}
+            {dbUser?.facebook
+              ? dbUser?.facebookProfile.name
+              : 'Connect Facebook'}
           </Text>
         </View>
       </TouchableNativeFeedback>

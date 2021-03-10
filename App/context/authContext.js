@@ -21,20 +21,8 @@ const AuthContextProvider = (props) => {
   const [confirm, setConfirm] = useState(null);
   const [phoneNo, setPhoneNo] = useState('');
   const [User, setUser] = React.useState(null);
-  const [userData, setUserData] = React.useState(null);
   const [dbUser, setDbUser] = React.useState(null);
-  const [providerId, setProviderId] = React.useState(null);
-  const [providerData, setProviderData] = React.useState(null);
-  const [signUpData, setSignUpData] = React.useState(null);
   // const [signUp, setSignUp] = React.useState(false);
-
-  function updateUserInfo(info) {
-    console.log(info);
-    // firestore()
-    //       .collection('users')
-    //       .doc(User.uid)
-    //       .update(User)
-  }
 
   function createNewUser(userInfo) {
     return firestore().collection('users').doc(userInfo.uid).set(userInfo);
@@ -42,12 +30,10 @@ const AuthContextProvider = (props) => {
 
   function connectProvider(newData) {
     console.log('it should be PhoneNumber now', newData);
-    // const updatedUser = {...dbUser, ...newData};
-    // return firestore().collection('users').doc(dbUser.uid).update(updatedUser);
+    const updatedUser = {...dbUser, ...newData};
+    return firestore().collection('users').doc(dbUser.uid).update(updatedUser);
   }
 
-  // function createGoogleUser
-  // Handle user state changes
   function onAuthStateChanged(user) {
     setUser(user);
     firestore()
@@ -71,16 +57,6 @@ const AuthContextProvider = (props) => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
   }, []);
-
-  // useEffect(() => {
-  //   GoogleSignin.configure({
-  //     scopes: ['email', 'profile'], // what API you want to access on behalf of the user, default is email and profile
-  //     webClientId:
-  //       '337309192499-n2cu8ljihpaim2lnjc074hdhtu5rojh1.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
-  //     offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-  //   });
-  //   console.log('running every');
-  // }, []);
 
   const signIn = async ({data}) => {
     // try {
@@ -145,24 +121,6 @@ const AuthContextProvider = (props) => {
         console.error(error);
       });
   };
-
-  //   Toast.show({
-  //     text1: I18n.t('ToastSuccessSignUpTitle'),
-  //     text2: I18n.t('ToastSuccessSignUpSubTitle'),
-  //     visibilityTime: 8000,
-  //     autoHide: true,
-  //     topOffset: 60,
-  //   });
-  // Toast.show({
-  //   type: 'error',
-  //   text1: I18n.t('ToastErrorSignUpTitle'),
-  //   text2: error.message,
-  //   // position: 'top | bottom',
-  //   visibilityTime: 8000,
-  //   autoHide: true,
-  //   topOffset: 60,
-  //   // bottomOffset: 40,
-  // });
 
   const googleSign = async () => {
     // Get the users ID token
@@ -331,6 +289,7 @@ const AuthContextProvider = (props) => {
   };
 
   const connectPhone = async (phoneNumber) => {
+    setPhoneNo(phoneNumber);
     return auth()
       .verifyPhoneNumber(phoneNumber)
       .on(
@@ -419,7 +378,7 @@ const AuthContextProvider = (props) => {
 
       setTimeout(() => {
         setConfirm(null);
-        // setPhoneNo('');
+        setPhoneNo('');
       }, 1000);
     } catch (error) {
       Toast.show({
@@ -470,72 +429,23 @@ const AuthContextProvider = (props) => {
   };
 
   const signOut = async () => {
-    // if (User.providerData[0].providerId === 'google.com') {
-    try {
-      await GoogleSignin.revokeAccess();
-      await GoogleSignin.signOut();
-      // setloggedIn(false);
-      // setuserInfo([]);
-    } catch (error) {
-      console.error(error);
+    if (dbUser?.google) {
+      try {
+        await GoogleSignin.revokeAccess();
+        await GoogleSignin.signOut();
+      } catch (error) {
+        console.log(error);
+      }
     }
-    // }
-    // if (User.providerData[0].providerId === 'facebook.com') {
-    LoginManager.logOut();
-    // }
+    if (dbUser?.facebook) {
+      LoginManager.logOut();
+    }
 
     return auth()
       .signOut()
       .then(() => console.log('User signed out!'));
     // dispatch({type: 'SIGN_OUT'});
   };
-
-  // const verifyNumber = async (number) => {
-  //   const requestedNo = await auth().verifyPhoneNumber(number)
-  //           .on('state_changed', (phoneAuthSnapshot) => {
-  //               console.log('State: ', phoneAuthSnapshot.state);
-  //             }, (error) => {
-  //               console.error(error);
-  //             }, (phoneAuthSnapshot) => {
-  //               console.log('Success');
-  //             });
-  // }
-
-  // const credential = auth.PhoneAuthProvider.credential(snapshot.verificationId, code);
-  // await auth().currentUser.updatePhoneNumber(credential);
-
-  // // Successful login - onAuthStateChanged is triggered
-  // auth().onAuthStateChanged( async (user) => {
-  //     if (user) {
-  //     // Stop the login flow / Navigate to next page
-  //       // console.log('User info for provider: ', user);
-  //       // console.log('+++++++++_____________========')
-  //       this.setState({status: 'success'});
-  //       const userData =  {
-  //           uid: user.uid,
-  //           timestamp: Date.now(),
-  //           displayName: user.displayName,
-  //           email: user.email,
-  //           phoneNumber: user.phoneNumber,
-  //           photoURL: user.photoURL,
-  //         };
-  //       try{
-  //         await firestore()
-  //         .collection('users')
-  //         .doc(user.uid)
-  //         .update(userData)
-  //         setTimeout(() => { this.props.navigation.navigate('Initial') }, 1000)
-  //       }
-  //       catch(error){
-  //         await firestore()
-  //         .collection('users')
-  //         .doc(user.uid)
-  //         .set(userData)
-  //         setTimeout(() => { this.props.navigation.navigate('Initial') }, 1000)
-  //       }
-
-  //     }
-  //   });
 
   return (
     <AuthContext.Provider
@@ -555,6 +465,7 @@ const AuthContextProvider = (props) => {
         setConfirm,
         phoneNo,
         User,
+        dbUser,
       }}>
       {props.children}
     </AuthContext.Provider>
@@ -562,3 +473,68 @@ const AuthContextProvider = (props) => {
 };
 
 export default AuthContextProvider;
+
+//   Toast.show({
+//     text1: I18n.t('ToastSuccessSignUpTitle'),
+//     text2: I18n.t('ToastSuccessSignUpSubTitle'),
+//     visibilityTime: 8000,
+//     autoHide: true,
+//     topOffset: 60,
+//   });
+// Toast.show({
+//   type: 'error',
+//   text1: I18n.t('ToastErrorSignUpTitle'),
+//   text2: error.message,
+//   // position: 'top | bottom',
+//   visibilityTime: 8000,
+//   autoHide: true,
+//   topOffset: 60,
+//   // bottomOffset: 40,
+// });
+
+// const verifyNumber = async (number) => {
+//   const requestedNo = await auth().verifyPhoneNumber(number)
+//           .on('state_changed', (phoneAuthSnapshot) => {
+//               console.log('State: ', phoneAuthSnapshot.state);
+//             }, (error) => {
+//               console.error(error);
+//             }, (phoneAuthSnapshot) => {
+//               console.log('Success');
+//             });
+// }
+
+// const credential = auth.PhoneAuthProvider.credential(snapshot.verificationId, code);
+// await auth().currentUser.updatePhoneNumber(credential);
+
+// // Successful login - onAuthStateChanged is triggered
+// auth().onAuthStateChanged( async (user) => {
+//     if (user) {
+//     // Stop the login flow / Navigate to next page
+//       // console.log('User info for provider: ', user);
+//       // console.log('+++++++++_____________========')
+//       this.setState({status: 'success'});
+//       const userData =  {
+//           uid: user.uid,
+//           timestamp: Date.now(),
+//           displayName: user.displayName,
+//           email: user.email,
+//           phoneNumber: user.phoneNumber,
+//           photoURL: user.photoURL,
+//         };
+//       try{
+//         await firestore()
+//         .collection('users')
+//         .doc(user.uid)
+//         .update(userData)
+//         setTimeout(() => { this.props.navigation.navigate('Initial') }, 1000)
+//       }
+//       catch(error){
+//         await firestore()
+//         .collection('users')
+//         .doc(user.uid)
+//         .set(userData)
+//         setTimeout(() => { this.props.navigation.navigate('Initial') }, 1000)
+//       }
+
+//     }
+//   });
