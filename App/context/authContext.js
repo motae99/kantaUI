@@ -21,6 +21,7 @@ const AuthContextProvider = (props) => {
   const [confirm, setConfirm] = useState(null);
   const [phoneNo, setPhoneNo] = useState('');
   const [User, setUser] = React.useState(null);
+  const [userData, setUserData] = React.useState(null);
   const [dbUser, setDbUser] = React.useState(null);
   const [providerId, setProviderId] = React.useState(null);
   const [providerData, setProviderData] = React.useState(null);
@@ -35,46 +36,34 @@ const AuthContextProvider = (props) => {
     //       .update(User)
   }
 
-  async function createNewUser() {
-    // switch (User) {
-    //   case User.providerData[0].providerId === 'facebook.com':
-    //     console.log('logged in with facebook');
-    //     break;
-    //   case User.providerData[0].providerId === 'google.com':
-    //     console.log('logged in with google');
-    //     break;
-    //   case User.providerData[0].providerId === 'phone':
-    //     console.log('logged in with phone');
-    //     break;
-    //   default:
-    //     break;
-    // }
-    // userData={
-    //   displayName: User.displayName,
-    //   email: User.email,
-    //   emailVerified: User.emailVerified,
-    //   phoneNumber: User.phoneNumber,
-    //   photoURL
-    // }
-    // firestore().collection('users').doc(User.uid).set(User);
+  function createNewUser(userInfo) {
+    return firestore().collection('users').doc(userInfo.uid).set(userInfo);
   }
 
+  function connectProvider(newData) {
+    console.log('it should be PhoneNumber now', newData);
+    // const updatedUser = {...dbUser, ...newData};
+    // return firestore().collection('users').doc(dbUser.uid).update(updatedUser);
+  }
+
+  // function createGoogleUser
   // Handle user state changes
   function onAuthStateChanged(user) {
+    setUser(user);
     firestore()
       .collection('users')
-      .doc(user.uid)
+      .doc(user?.uid)
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
-          console.log('User data: ', documentSnapshot.data());
-          updateUserInfo(documentSnapshot.data());
-          setUser(user);
+          // console.log('User data: ', documentSnapshot.data());
+          setDbUser(documentSnapshot.data());
         } else {
-          createNewUser();
+          setDbUser(null);
         }
       });
 
+    // console.log(user);
     // setUser(user);
   }
 
@@ -109,11 +98,77 @@ const AuthContextProvider = (props) => {
     // }
   };
 
+  const signUp = async ({
+    email,
+    password,
+    name,
+    gender,
+    photoURL,
+    firstName,
+    lastName,
+  }) => {
+    return auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then((authUser) => {
+        if (authUser.additionalUserInfo.isNewUser) {
+          const {user} = authUser;
+          const userInfo = {
+            uid: user.uid,
+            displayName: name,
+            firstName: firstName,
+            lastName: lastName,
+            gender: gender,
+            phoneNumber: null,
+            email: user.email,
+            emailVerified: user.emailVerified,
+            photoURL: photoURL,
+            currentProfile: 'password',
+            providerData: user.providerData,
+          };
+          console.log('authUser now', authUser);
+          createNewUser(userInfo);
+        }
+      })
+      .then(async () => {
+        const update = {
+          displayName: name,
+          photoURL: photoURL,
+        };
+
+        await auth().currentUser.updateProfile(update);
+      })
+      .catch((error) => {
+        if (error.code === 'auth/operation-not-allowed') {
+          console.log('Enable anonymous in your firebase console.');
+        }
+
+        console.error(error);
+      });
+  };
+
+  //   Toast.show({
+  //     text1: I18n.t('ToastSuccessSignUpTitle'),
+  //     text2: I18n.t('ToastSuccessSignUpSubTitle'),
+  //     visibilityTime: 8000,
+  //     autoHide: true,
+  //     topOffset: 60,
+  //   });
+  // Toast.show({
+  //   type: 'error',
+  //   text1: I18n.t('ToastErrorSignUpTitle'),
+  //   text2: error.message,
+  //   // position: 'top | bottom',
+  //   visibilityTime: 8000,
+  //   autoHide: true,
+  //   topOffset: 60,
+  //   // bottomOffset: 40,
+  // });
+
   const googleSign = async () => {
     // Get the users ID token
     const GoogleUser = await GoogleSignin.signIn();
 
-    console.log(GoogleUser);
+    // console.log(GoogleUser);
 
     // Create a Google credential with the token
     const {idToken} = GoogleUser;
@@ -121,15 +176,39 @@ const AuthContextProvider = (props) => {
 
     // console.log(googleCredential);
     // Sign-in the user with the credential
-    return auth().signInWithCredential(googleCredential);
+    setProviderId('google.com');
+    return auth()
+      .signInWithCredential(googleCredential)
+      .then((authUser) => {
+        if (authUser.additionalUserInfo.isNewUser) {
+          const {user, additionalUserInfo} = authUser;
+          const userInfo = {
+            uid: user.uid,
+            displayName: user.displayName,
+            firstName: additionalUserInfo.profile.given_name,
+            lastName: additionalUserInfo.profile.family_name,
+            phoneNumber: user.phoneNumber,
+            email: user.email,
+            emailVerified: user.emailVerified,
+            photoURL: user.photoURL,
+            google: true,
+            googleProfile: additionalUserInfo.profile,
+            currentProfile: 'google',
+            providerData: user.providerData,
+          };
+
+          createNewUser(userInfo);
+        }
+      })
+      .catch((error) => {
+        if (error.code === 'auth/operation-not-allowed') {
+          console.log('Enable anonymous in your firebase console.');
+        }
+
+        console.error(error);
+      });
 
     // dispatch({type: 'GOOGLE_SIGN', token: googleCredential});
-  };
-
-  const connectGoogle = async () => {
-    const {idToken} = await GoogleSignin.signIn();
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-    return auth().currentUser.linkWithCredential(googleCredential);
   };
 
   const facebookSign = async () => {
@@ -154,10 +233,62 @@ const AuthContextProvider = (props) => {
     const facebookCredential = auth.FacebookAuthProvider.credential(
       data.accessToken,
     );
+    setProviderId('facebook.com');
+    return auth()
+      .signInWithCredential(facebookCredential)
+      .then((authUser) => {
+        if (authUser.additionalUserInfo.isNewUser) {
+          const {user, additionalUserInfo} = authUser;
+          const userInfo = {
+            uid: user.uid,
+            displayName: user.displayName,
+            firstName: additionalUserInfo.profile.first_name,
+            lastName: additionalUserInfo.profile.last_name,
+            phoneNumber: user.phoneNumber,
+            email: user.email,
+            emailVerified: user.emailVerified,
+            photoURL: user.photoURL,
+            facebook: true,
+            facebookProfile: additionalUserInfo.profile,
+            currentProfile: 'facebook',
+            providerData: user.providerData,
+          };
 
-    return auth().signInWithCredential(facebookCredential);
+          createNewUser(userInfo);
+        }
+      })
+      .catch((error) => {
+        if (error.code === 'auth/operation-not-allowed') {
+          console.log('Enable anonymous in your firebase console.');
+        }
+
+        console.error(error);
+      });
 
     // dispatch({type: 'FACEBOOK_SIGN', token: facebookCredential});
+  };
+
+  const connectGoogle = async () => {
+    const {idToken} = await GoogleSignin.signIn();
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+    return auth()
+      .currentUser.linkWithCredential(googleCredential)
+      .then((connectGoogleData) => {
+        const {user, additionalUserInfo} = connectGoogleData;
+        const googleData = {
+          google: true,
+          googleProfile: additionalUserInfo.profile,
+          providerData: user.providerData,
+        };
+        connectProvider(googleData);
+      })
+      .catch((error) => {
+        if (error.code === 'auth/operation-not-allowed') {
+          console.log('Enable anonymous in your firebase console.');
+        }
+
+        console.error(error);
+      });
   };
 
   const connectFacebook = async () => {
@@ -179,7 +310,24 @@ const AuthContextProvider = (props) => {
       data.accessToken,
     );
 
-    return auth().currentUser.linkWithCredential(facebookCredential);
+    return auth()
+      .currentUser.linkWithCredential(facebookCredential)
+      .then((connectFacebookData) => {
+        const {user, additionalUserInfo} = connectFacebookData;
+        const facebookData = {
+          facebook: true,
+          facebookProfile: additionalUserInfo.profile,
+          providerData: user.providerData,
+        };
+        connectProvider(facebookData);
+      })
+      .catch((error) => {
+        if (error.code === 'auth/operation-not-allowed') {
+          console.log('Enable anonymous in your firebase console.');
+        }
+
+        console.error(error);
+      });
   };
 
   const connectPhone = async (phoneNumber) => {
@@ -250,8 +398,17 @@ const AuthContextProvider = (props) => {
       userCode,
     );
 
+    // return auth()
+    //   .currentUser.updatePhoneNumber(credential);
+
     try {
-      await auth().currentUser.updatePhoneNumber(credential);
+      await auth()
+        .currentUser.updatePhoneNumber(credential)
+        .then(() => {
+          const phoneData = {phoneNumber: phoneNo};
+          connectProvider(phoneData);
+        })
+        .catch((error) => console.log(error));
       Toast.show({
         text1: I18n.t('ToastSuccessNumberConnectedTitle'),
         text2: I18n.t('ToastSuccessNumberConnectedSubTitle'),
@@ -262,7 +419,7 @@ const AuthContextProvider = (props) => {
 
       setTimeout(() => {
         setConfirm(null);
-        setPhoneNo('');
+        // setPhoneNo('');
       }, 1000);
     } catch (error) {
       Toast.show({
@@ -313,63 +470,24 @@ const AuthContextProvider = (props) => {
   };
 
   const signOut = async () => {
-    if (User.providerData[0].providerId === 'google.com') {
-      try {
-        await GoogleSignin.revokeAccess();
-        await GoogleSignin.signOut();
-        // setloggedIn(false);
-        // setuserInfo([]);
-      } catch (error) {
-        console.error(error);
-      }
+    // if (User.providerData[0].providerId === 'google.com') {
+    try {
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+      // setloggedIn(false);
+      // setuserInfo([]);
+    } catch (error) {
+      console.error(error);
     }
-    if (User.providerData[0].providerId === 'facebook.com') {
-      LoginManager.logOut();
-    }
+    // }
+    // if (User.providerData[0].providerId === 'facebook.com') {
+    LoginManager.logOut();
+    // }
 
     return auth()
       .signOut()
       .then(() => console.log('User signed out!'));
     // dispatch({type: 'SIGN_OUT'});
-  };
-
-  const signUp = async ({email, password, name, gender}) => {
-    // return await auth().createUserWithEmailAndPassword(email, password);
-
-    try {
-      const response = await auth().createUserWithEmailAndPassword(
-        email,
-        password,
-      );
-
-      if (response.user) {
-        const {uid} = response.user;
-        response.user.updateProfile({displayName: name});
-        const userData = {email, name, uid, gender};
-        setSignUpData(userData);
-        // await firestore().collection('users').doc(uid).set(userData);
-        // this.props.navigation.navigate('App');
-        Toast.show({
-          text1: I18n.t('ToastSuccessSignUpTitle'),
-          text2: I18n.t('ToastSuccessSignUpSubTitle'),
-          visibilityTime: 8000,
-          autoHide: true,
-          topOffset: 60,
-        });
-      }
-    } catch (error) {
-      // console.log(error.message);
-      Toast.show({
-        type: 'error',
-        text1: I18n.t('ToastErrorSignUpTitle'),
-        text2: error.message,
-        // position: 'top | bottom',
-        visibilityTime: 8000,
-        autoHide: true,
-        topOffset: 60,
-        // bottomOffset: 40,
-      });
-    }
   };
 
   // const verifyNumber = async (number) => {
