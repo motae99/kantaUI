@@ -1,3 +1,163 @@
+/* eslint-disable react-native/no-inline-styles */
+
+import React, {Fragment} from 'react';
+import { View, StyleSheet, StatusBar, Dimensions, TouchableOpacity} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Button} from 'react-native-elements';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Formik} from 'formik';
+import * as Yup from 'yup';
+import Video from 'react-native-video';
+import InkinWater from 'assets/InkinWater.mp4';
+import {AuthContext} from 'context/authContext';
+import FormInput from 'auth/components/formInput'
+import FormButton from 'auth/components/formButton'
+import ErrorMessage from 'auth/components/errorMessage'
+import {Sizing, Outlines, Colors, Typography} from 'styles';
+import I18n from 'utils/i18n';
+
+const {width, height} = Dimensions.get('window');
+
+
+const validationSchema = Yup.object().shape({
+  email: Yup.string()
+    .label('Email')
+    .email('Enter a valid email')
+    .required('Please enter a registered email'),
+  password: Yup.string()
+    .label('Password')
+    .required()
+    .min(6, 'Password must have at least 6 characters '),
+});
+
+export default function Login({navigation}) {
+  const {googleSign, facebookSign, signIn} = React.useContext(AuthContext);
+
+  const [passwordVisibility, setPasswordVisibility] = React.useState(true);
+  const [passwordIcon, setPasswordIcon] = React.useState('ios-eye');
+
+  const handlePasswordVisibility = () => {
+    passwordIcon === 'ios-eye'
+      ? setPasswordIcon('ios-eye-off')
+      : setPasswordIcon('ios-eye');
+    setPasswordVisibility(!passwordVisibility);
+  };
+
+  const handleOnLogin = async (values, actions) => {
+    const {email, password} = values;
+    try {
+      const response = signIn({email, password});
+
+      if (response.user) {
+        
+      }
+    } catch (error) {
+      actions.setFieldError('general', error.message);
+    } finally {
+      actions.setSubmitting(false);
+    }
+  };
+
+  return (
+    <SafeAreaView style={{flex: 1}}>
+      <StatusBar
+        translucent
+        backgroundColor="transparent"
+        barStyle={'dark-content'}
+      />
+      <Video
+        repeat
+        source={InkinWater}
+        resizeMode="cover"
+        style={StyleSheet.absoluteFillObject}
+      />
+
+  <View
+        style={{
+          marginTop: Sizing.x80,
+          padding: Sizing.x20,
+        }}>
+      <Formik
+          initialValues={{email: '', password: ''}}
+          onSubmit={(values, actions) => {
+            handleOnLogin(values, actions);
+          }}
+          validationSchema={validationSchema}>
+          {({
+            handleChange,
+            values,
+            handleSubmit,
+            errors,
+            isValid,
+            touched,
+            handleBlur,
+            isSubmitting,
+          }) => (
+            <Fragment>
+              <FormInput
+                name="email"
+                value={values.email}
+                onChangeText={handleChange('email')}
+                placeholder="Enter email"
+                autoCapitalize="none"
+                iconName="email"
+                iconColor="#2C384A"
+                onBlur={handleBlur('email')}
+              />
+              <ErrorMessage errorValue={touched.email && errors.email} />
+              <FormInput
+                name="password"
+                value={values.password}
+                onChangeText={handleChange('password')}
+                placeholder="Enter password"
+                secureTextEntry={passwordVisibility}
+                iconName="form-textbox-password"
+                iconColor="#2C384A"
+                onBlur={handleBlur('password')}
+                // rightIcon={
+                //   <TouchableOpacity onPress={handlePasswordVisibility}>
+                //     <Ionicons name={rightIcon} size={28} color="grey" />
+                //   </TouchableOpacity>
+                // }
+              />
+              <ErrorMessage errorValue={touched.password && errors.password} />
+              <View >
+                <FormButton
+                  buttonType="outline"
+                  onPress={handleSubmit}
+                  title="LOGIN"
+                  buttonColor="#039BE5"
+                  disabled={!isValid || isSubmitting}
+                  loading={isSubmitting}
+                />
+              </View>
+              <ErrorMessage errorValue={errors.general} />
+            </Fragment>
+          )}
+        </Formik>
+
+        <Button
+        title={I18n.t('signUpHaveAccountTitle')}
+        onPress={() => navigation.navigate('SignUp')}
+        titleStyle={{
+          color: '#039BE5',
+        }}
+        type="clear"
+      />
+      
+        <View style={{marginVertical: Sizing.x20}}>
+          <Button title="Google Sign-In" onPress={() => googleSign()} />
+        </View>
+
+        <View style={{marginVertical: Sizing.x20}}>
+          <Button title="FaceBook Sign-In" onPress={() => facebookSign()} />
+        </View>
+      </View>
+    </SafeAreaView>
+  );
+}
+
+
 // /* eslint-disable react-native/no-inline-styles */
 // import React, {Component, Fragment} from 'react';
 // import {
@@ -372,47 +532,3 @@
 //     </SafeAreaView>
 //   );
 // }
-
-/* eslint-disable react-native/no-inline-styles */
-
-import React from 'react';
-import {Button, View, StyleSheet, StatusBar, Dimensions} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import Video from 'react-native-video';
-import InkinWater from 'assets/InkinWater.mp4';
-import {AuthContext} from 'context/authContext';
-import {Sizing, Outlines, Colors, Typography} from 'styles';
-const {width, height} = Dimensions.get('window');
-
-export default function Login() {
-  const {googleSign, facebookSign} = React.useContext(AuthContext);
-  return (
-    <SafeAreaView style={{flex: 1}}>
-      <StatusBar
-        translucent
-        backgroundColor="transparent"
-        barStyle={'dark-content'}
-      />
-      <Video
-        repeat
-        source={InkinWater}
-        resizeMode="cover"
-        style={StyleSheet.absoluteFillObject}
-      />
-      <View
-        style={{
-          width,
-          position: 'absolute',
-          bottom: Sizing.x80,
-        }}>
-        <View style={{margin: Sizing.x20}}>
-          <Button title="Google Sign-In" onPress={() => googleSign()} />
-        </View>
-
-        <View style={{margin: Sizing.x20}}>
-          <Button title="FaceBook Sign-In" onPress={() => facebookSign()} />
-        </View>
-      </View>
-    </SafeAreaView>
-  );
-}

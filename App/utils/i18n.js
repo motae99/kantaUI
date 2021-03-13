@@ -1,6 +1,6 @@
 import I18n from 'i18n-js';
 import * as RNLocalize from 'react-native-localize';
-
+import RNRestart from 'react-native-restart';
 import en from './locales/en';
 import fr from './locales/fr';
 import ar from './locales/ar';
@@ -19,6 +19,8 @@ if (Array.isArray(locales)) {
 ] */
 
 export const isRTL = locales[0].isRTL;
+
+// RNRestart.Restart();
 
 I18n.fallbacks = true;
 I18n.translations = {

@@ -2,6 +2,7 @@ import React from 'react';
 import {Input} from 'react-native-elements';
 import {StyleSheet, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const FormInput = ({
   iconName,
@@ -15,7 +16,7 @@ const FormInput = ({
   <View style={styles.inputContainer}>
     <Input
       {...rest}
-      leftIcon={<Ionicons name={iconName} size={20} color={iconColor} />}
+      leftIcon={<Icon name={iconName} size={20} color={iconColor} />}
       leftIconContainerStyle={styles.iconStyle}
       placeholderTextColor="rgba(0, 0, 0, 0.5)"
       keyboardType={keyboardType}

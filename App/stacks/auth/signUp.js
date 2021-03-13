@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useState, Fragment} from 'react';
 import {
@@ -76,7 +77,7 @@ const SignUp = ({navigation}) => {
     try {
       await signUp({name, email, password, gender, photoURL});
     } catch (error) {
-      console.log(error)
+      console.log(error);
       actions.setFieldError('general', error.message);
     } finally {
       actions.setSubmitting(false);
@@ -123,7 +124,7 @@ const SignUp = ({navigation}) => {
               value={values.name}
               onChangeText={handleChange('name')}
               placeholder={I18n.t('signUpNamePlaceHolder')}
-              iconName="md-person"
+              iconName="account-edit"
               iconColor="#2C384A"
               onBlur={handleBlur('name')}
             />
@@ -154,7 +155,7 @@ const SignUp = ({navigation}) => {
               onChangeText={handleChange('email')}
               placeholder={I18n.t('signUpEmailPlaceHolder')}
               autoCapitalize="none"
-              iconName="ios-mail"
+              iconName="email"
               iconColor="#2C384A"
               onBlur={handleBlur('email')}
             />
@@ -164,7 +165,7 @@ const SignUp = ({navigation}) => {
               value={values.password}
               onChangeText={handleChange('password')}
               placeholder={I18n.t('signUpPasswordPlaceHolder')}
-              iconName="lock-closed"
+              iconName="onepassword"
               iconColor="#2C384A"
               onBlur={handleBlur('password')}
               secureTextEntry={passwordVisibility}
@@ -180,7 +181,7 @@ const SignUp = ({navigation}) => {
               value={values.confirmPassword}
               onChangeText={handleChange('confirmPassword')}
               placeholder={I18n.t('signUpConfirmPasswordPlaceHolder')}
-              iconName="lock-closed"
+              iconName="onepassword"
               iconColor="#2C384A"
               onBlur={handleBlur('confirmPassword')}
               secureTextEntry={confirmPasswordVisibility}

@@ -38,12 +38,14 @@ const AuthContextProvider = (props) => {
   }
 
   function onAuthStateChanged(user) {
-    setUser(user);
-    firestore()
+    setUser(user);  
+  }
+
+  useEffect(() => {
+    const subscriber = firestore()
       .collection('users')
-      .doc(user?.uid)
-      .get()
-      .then((documentSnapshot) => {
+      .doc(User?.uid)
+      .onSnapshot(documentSnapshot => {
         if (documentSnapshot.exists) {
           // console.log('User data: ', documentSnapshot.data());
           setDbUser(documentSnapshot.data());
@@ -52,19 +54,20 @@ const AuthContextProvider = (props) => {
         }
       });
 
-    // console.log(user);
-    // setUser(user);
-  }
+    // Stop listening for updates when no longer required
+    return () => subscriber();
+  }, [User]);
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
   }, []);
 
-  const signIn = async ({data}) => {
+  const signIn = async ({email, password}) => {
+    return auth().signInWithEmailAndPassword(email, password);
     // try {
     //   // const response =
-    //   await auth().createUserWithEmailAndPassword(email, password);
+    //   await auth().signInWithEmailAndPassword(username, password);
     //   // if (response.user.uid) {
     //   //   const {uid} = response.user;
     //   //   response.user.updateProfile({desplayName: name});
