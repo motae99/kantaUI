@@ -1,25 +1,23 @@
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable no-shadow */
-/* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 
-// import {View, Text} from 'react-native';
-import Navigator from './App/navigation/';
+import {View, Text} from 'react-native';
+// import Navigator from './App/navigation/';
 
-// import codePush from 'react-native-code-push';
-// const codePushOptions = {
-//   updateDialog: true,
-//   checkFrequency: codePush.CheckFrequency.ON_APP_START,
-//   installMode: codePush.InstallMode.IMMEDIATE,
-// };
+import codePush from 'react-native-code-push';
+const codePushOptions = {
+  updateDialog: true,
+  checkFrequency: codePush.CheckFrequency.ON_APP_START,
+  installMode: codePush.InstallMode.IMMEDIATE,
+};
 
 const App = ({props}) => {
   return (
     <SafeAreaProvider>
-      <Navigator />
-      {/* <View
+      {/* <Navigator /> */}
+      <View
         style={{
           justifyContent: 'center',
           alignItems: 'center',
@@ -29,14 +27,14 @@ const App = ({props}) => {
         <Text style={{color: 'white'}}>
           Update Now this is a simple fix for now
         </Text>
-      </View> */}
+      </View>
       <Toast ref={(ref) => Toast.setRef(ref)} />
     </SafeAreaProvider>
   );
 };
 
-// export default codePush(codePushOptions)(App);
-export default App;
+export default codePush(codePushOptions)(App);
+// export default App;
 
 // import * as React from 'react';
 // import {Text, View, Image, Dimensions} from 'react-native';
