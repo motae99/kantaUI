@@ -15,6 +15,8 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 const {width, height} = Dimensions.get('window');
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import faker from 'faker';
+import i18n, {isRTL} from 'utils/i18n';
+
 // import {StatusBar} from 'expo-status-bar';
 
 const IMAGE_WIDTH = width * 0.65;
@@ -101,7 +103,7 @@ export default () => {
         <View style={{height: IMAGE_HEIGHT * 2.1}}>
           <Animated.FlatList
             ref={ref}
-            data={DATA}
+            data={isRTL ? DATA.reverse() : DATA}
             keyExtractor={(item) => item.key}
             horizontal
             pagingEnabled
@@ -110,6 +112,8 @@ export default () => {
             contentContainerStyle={{
               height: IMAGE_HEIGHT + SPACING * 2,
               paddingHorizontal: SPACING * 2,
+              flexDirection: isRTL ? 'row-reverse' : 'row',
+
               zIndex: 99999,
             }}
             showsHorizontalScrollIndicator={false}

@@ -14,8 +14,6 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Sizing, Outlines, Colors, Typography} from 'styles';
-import i18n, {isRTL} from 'utils/i18n';
-import {AuthContext} from 'context/authContext';
 
 const {width, height} = Dimensions.get('window');
 
@@ -80,9 +78,6 @@ const mymovies = [
 ];
 
 const Backdrop = ({movies, scrollX, navigation}) => {
-  // console.log('here is Rtl', isRTL);
-  const {dbUser} = React.useContext(AuthContext);
-
   return (
     <View style={{height: BACKDROP_HEIGHT, width, position: 'absolute'}}>
       <FlatList
@@ -142,9 +137,8 @@ const Backdrop = ({movies, scrollX, navigation}) => {
                   style={{
                     width: 255,
                     position: 'absolute',
-                    top: Sizing.x70 * 2,
-                    left: Sizing.x70,
-                    // alignSelf: 'center',
+                    top: Sizing.x80 * 2,
+                    left: Sizing.x60,
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}>
@@ -153,7 +147,6 @@ const Backdrop = ({movies, scrollX, navigation}) => {
                       ...Typography.header.x50,
                       textAlign: 'center',
                       color: Colors.neutral.white,
-                      lineHeight: 30,
                     }}>
                     {item.title}
                   </Text>
@@ -164,7 +157,7 @@ const Backdrop = ({movies, scrollX, navigation}) => {
         }}
       />
 
-      <View style={{position: 'absolute', top: Sizing.x50, right: Sizing.x20}}>
+      <View style={{position: 'absolute', top: Sizing.x50, left: Sizing.x20}}>
         <Text
           style={{
             ...Typography.header.x40,
@@ -180,13 +173,11 @@ const Backdrop = ({movies, scrollX, navigation}) => {
         style={{
           position: 'absolute',
           top: Sizing.x50,
-          left: Sizing.x20,
+          right: Sizing.x50,
           height: Sizing.icons.x40,
           width: Sizing.icons.x40,
-          borderRadius: Sizing.x40,
+          borderRadius: Sizing.x50,
           backgroundColor: Colors.neutral.white,
-          justifyContent: 'center',
-          alignItems: 'center',
         }}>
         <TouchableOpacity
           onPress={() => {
@@ -195,15 +186,10 @@ const Backdrop = ({movies, scrollX, navigation}) => {
           }}>
           <Image
             source={{
-              uri: dbUser.photoURL,
+              uri:
+                'https://www.flaticon.com/svg/vstatic/svg/4061/4061283.svg?token=exp=1610923650~hmac=1dd0068cddddc21a29b99511cf3ee25c',
             }}
-            style={{
-              width: 35,
-              height: 35,
-              borderRadius: 35,
-
-              resizeMode: 'cover',
-            }}
+            style={{width: width / 2, height: height / 4, resizeMode: 'cover'}}
           />
         </TouchableOpacity>
       </View>
@@ -213,13 +199,7 @@ const Backdrop = ({movies, scrollX, navigation}) => {
 
 const App = ({navigation}) => {
   const [movies, setMovies] = React.useState([]);
-  const ref = React.useRef();
   const scrollX = React.useRef(new Animated.Value(0)).current;
-  // const scrollToEnd = ref?.current?.scrollToOffset({
-  //       offset: (index - 1) * width,
-  //       animated: true,
-  //     });
-
   React.useEffect(() => {
     const fetchData = async () => {
       const movies = mymovies; //await getMovies();
@@ -247,21 +227,16 @@ const App = ({navigation}) => {
       <Backdrop movies={movies} scrollX={scrollX} navigation={navigation} />
 
       <Animated.FlatList
-        ref={ref}
         showsHorizontalScrollIndicator={false}
-        data={isRTL ? movies.reverse() : movies}
+        data={movies}
         keyExtractor={(item) => item.key}
         horizontal
         bounces={false}
         decelerationRate={Platform.OS === 'ios' ? 0 : 0.98}
         renderToHardwareTextureAndroid
-        // onContentSizeChange={scrollToEnd}
-        contentContainerStyle={{
-          alignItems: 'center',
-          flexDirection: isRTL ? 'row-reverse' : 'row',
-        }}
+        contentContainerStyle={{alignItems: 'center'}}
         snapToInterval={ITEM_SIZE}
-        // snapToAlignment={isRTL ? 'end' : 'start'}
+        snapToAlignment="start"
         onScroll={Animated.event(
           [{nativeEvent: {contentOffset: {x: scrollX}}}],
           {useNativeDriver: true},
@@ -280,7 +255,7 @@ const App = ({navigation}) => {
 
           const translateY = scrollX.interpolate({
             inputRange,
-            outputRange: [115, 70, 115],
+            outputRange: [160, 100, 160],
             extrapolate: 'clamp',
           });
 

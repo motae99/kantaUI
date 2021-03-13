@@ -50,8 +50,7 @@ const AppStack = () => {
   return (
     <AuthContextProvider>
       <NavigationContainer>
-        {/* {User ? <DrawerStack /> : <AuthStack />} */}
-        <AuthStack />
+        {User ? <DrawerStack /> : <AuthStack />}
       </NavigationContainer>
     </AuthContextProvider>
   );

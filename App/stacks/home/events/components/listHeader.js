@@ -14,6 +14,7 @@ import {
 import * as Animatable from 'react-native-animatable';
 import {SharedElement} from 'react-navigation-shared-element';
 import {Sizing, Typography, Outlines, Colors, Buttons} from 'styles';
+import i18n, {isRTL} from 'utils/i18n';
 
 // import EventPlanner from './EventPlanerCard';
 import Searchbar from './SearchBar';
@@ -72,10 +73,14 @@ const listHeader = ({navigation}) => {
           initialNumToRender={1}
           horizontal
           decelerationRate="fast"
+          contentContainerStyle={{
+            flexDirection: isRTL ? 'row-reverse' : 'row',
+          }}
           onScroll={Animated.event(
             [{nativeEvent: {contentOffset: {x: scrollx}}}],
             {useNativeDriver: false},
           )}
+          snapToAlignment={isRTL ? 'end' : 'start'}
           renderItem={({item, index}) => {
             const inputRange = [
               (index - 1) * FULL_SIZE,
@@ -84,7 +89,7 @@ const listHeader = ({navigation}) => {
             ];
             const translateX = scrollx.interpolate({
               inputRange,
-              outputRange: [ITEM_WIDTH, 0, -ITEM_WIDTH],
+              outputRange: [ITEM_WIDTH - 40, 0, -ITEM_WIDTH],
             });
             const scale = scrollx.interpolate({
               inputRange,
@@ -92,7 +97,7 @@ const listHeader = ({navigation}) => {
             });
             return (
               <Animatable.View
-                animation={'slideInRight'}
+                animation={isRTL ? 'slideInLeft' : 'slideInRight'}
                 delay={index * 100}
                 duration={300}
                 useNativeDriver={true}>

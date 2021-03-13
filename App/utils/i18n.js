@@ -9,6 +9,7 @@ const locales = RNLocalize.getLocales();
 
 if (Array.isArray(locales)) {
   I18n.locale = locales[0].languageTag;
+  // console.log('current isRTL now', locales[0].isRTL);
 }
 
 /* -> [
@@ -16,6 +17,8 @@ if (Array.isArray(locales)) {
   { countryCode: "US", languageTag: "en-US", languageCode: "en", isRTL: false },
   { countryCode: "FR", languageTag: "fr-FR", languageCode: "fr", isRTL: false },
 ] */
+
+export const isRTL = locales[0].isRTL;
 
 I18n.fallbacks = true;
 I18n.translations = {

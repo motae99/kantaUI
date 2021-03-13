@@ -15,6 +15,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/FontAwesome';
 import LinearGradient from 'react-native-linear-gradient';
+import i18n, {isRTL} from 'utils/i18n';
 
 const {width, height} = Dimensions.get('window');
 
@@ -52,6 +53,9 @@ const EventPlannerCard = (data) => {
         showsHorizontalScrollIndicator={false}
         horizontal
         decelerationRate="fast"
+        contentContainerStyle={{
+          flexDirection: isRTL ? 'row-reverse' : 'row',
+        }}
         // onScroll={Animated.event(
         //   [{nativeEvent: {contentOffset: {x: scrollx}}}],
         //   {useNativeDriver: false},

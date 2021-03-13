@@ -58,7 +58,7 @@ export const lineHeight: Record<LineHeight, TextStyle> = {
   },
 }
 
-type Header = "x10" | "x20" | "x40" | "x50" | "x60"
+type Header = "x10" | "x20" | "x40" | "x30" |"x50" | "x60"
 export const header: Record<Header, TextStyle> = {
   x10: {
     ...fontSize.x10,
@@ -70,19 +70,24 @@ export const header: Record<Header, TextStyle> = {
     ...lineHeight.x30,
     ...fontWeight.semibold,
   },
+  x30: {
+    ...fontSize.x30,
+    ...lineHeight.x40,
+    ...fontWeight.semibold,
+  },
   x40: {
     ...fontSize.x40,
-    ...lineHeight.x40,
+    ...lineHeight.x50,
     ...fontWeight.semibold,
   },
   x50: {
     ...fontSize.x50,
-    ...lineHeight.x50,
+    ...lineHeight.x60,
     ...fontWeight.bold,
   },
   x60: {
     ...fontSize.x60,
-    ...lineHeight.x60,
+    ...lineHeight.x70,
     ...fontWeight.bold,
   },
 }

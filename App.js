@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable no-shadow */
 /* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
@@ -7,12 +8,12 @@ import Toast from 'react-native-toast-message';
 // import {View, Text} from 'react-native';
 import Navigator from './App/navigation/';
 
-import codePush from 'react-native-code-push';
-const codePushOptions = {
-  updateDialog: true,
-  checkFrequency: codePush.CheckFrequency.ON_APP_START,
-  installMode: codePush.InstallMode.IMMEDIATE,
-};
+// import codePush from 'react-native-code-push';
+// const codePushOptions = {
+//   updateDialog: true,
+//   checkFrequency: codePush.CheckFrequency.ON_APP_START,
+//   installMode: codePush.InstallMode.IMMEDIATE,
+// };
 
 const App = ({props}) => {
   return (
@@ -34,114 +35,118 @@ const App = ({props}) => {
   );
 };
 
-export default codePush(codePushOptions)(App);
-// export default App;
+// export default codePush(codePushOptions)(App);
+export default App;
 
-// import React from 'react';
-// import {
-//   StyleSheet,
-//   Text,
-//   View,
-//   Image,
-//   ScrollView,
-//   Platform,
-//   SafeAreaView,
-//   Button,
-// } from 'react-native';
+// import * as React from 'react';
+// import {Text, View, Image, Dimensions} from 'react-native';
+// import Animated from 'react-native-reanimated';
 
-// import * as ImagePicker from 'react-native-image-picker';
+// import {Sizing, Outlines, Colors, Typography} from 'styles';
 
-// export default function App() {
-//   const [response, setResponse] = React.useState(null);
+// const {width, height} = Dimensions.get('window');
 
+// const SPACING = Sizing.x10;
+// const ITEM_SIZE = Platform.OS === 'ios' ? width * 0.72 : width * 0.82;
+// const EMPTY_ITEM_SIZE = (width - ITEM_SIZE) / 2;
+// const BACKDROP_HEIGHT = height * 0.65;
+
+// const HEADER_HEIGHT = 60;
+// const {diffClamp, interpolate, Extrapolate} = Animated;
+
+// const List = (props) => {
+//   const x = new Animated.Value(0);
 //   return (
-//     <SafeAreaView>
-//       <ScrollView>
-//         <Button
-//           title="Take image"
-//           onPress={() =>
-//             ImagePicker.launchCamera(
-//               {
-//                 mediaType: 'photo',
-//                 includeBase64: false,
-//                 maxHeight: 200,
-//                 maxWidth: 200,
+//     // Use onScroll to update the y value
+//     <View style={{flex: 1}}>
+//       <Animated.ScrollView
+//         horizontal={true}
+//         contentContainerStyle={{alignItems: 'center'}}
+//         snapToInterval={ITEM_SIZE}
+//         onScroll={Animated.event([
+//           {
+//             nativeEvent: {
+//               contentOffset: {
+//                 x: x,
 //               },
-//               (response) => {
-//                 setResponse(response);
-//               },
-//             )
+//             },
+//           },
+//         ])}
+//         scrollEventThrottle={16}>
+//         {Array.from({length: 10}, (v, index) => {
+//           if (index === 0) {
+//             return <View style={{width: EMPTY_ITEM_SIZE}} />;
 //           }
-//         />
 
-//         <Button
-//           title="Select image"
-//           onPress={() =>
-//             ImagePicker.launchImageLibrary(
-//               {
-//                 mediaType: 'photo',
-//                 includeBase64: false,
-//                 maxHeight: 200,
-//                 maxWidth: 200,
-//               },
-//               (response) => {
-//                 setResponse(response);
-//               },
-//             )
+//           if (index === 9) {
+//             return <View style={{width: EMPTY_ITEM_SIZE}} />;
 //           }
-//         />
 
-//         <Button
-//           title="Take video"
-//           onPress={() =>
-//             ImagePicker.launchCamera({mediaType: 'video'}, (response) => {
-//               setResponse(response);
-//             })
-//           }
-//         />
+//           const inputRange = [
+//             (index - 2) * ITEM_SIZE,
+//             (index - 1) * ITEM_SIZE,
+//             index * ITEM_SIZE,
+//             // (index + 1) * ITEM_SIZE,
+//           ];
 
-//         <Button
-//           title="Select video"
-//           onPress={() =>
-//             ImagePicker.launchImageLibrary({mediaType: 'video'}, (response) => {
-//               setResponse(response);
-//             })
-//           }
-//         />
+//           const translateY = interpolate(x, {
+//             inputRange,
+//             outputRange: [160, 100, 160],
+//             extrapolate: Extrapolate.CLAMP,
+//           });
 
-//         <View style={styles.response}>
-//           <Text>Res: {JSON.stringify(response)}</Text>
-//         </View>
+//           const translateX = interpolate(x, {
+//             inputRange,
+//             outputRange: [-width * 0.7, 0, width * 0.7],
+//             extrapolate: Extrapolate.CLAMP,
+//           });
 
-//         {response && (
-//           <View style={styles.image}>
-//             <Image
-//               style={{width: 200, height: 200}}
-//               source={{uri: response.uri}}
-//             />
-//           </View>
-//         )}
-//       </ScrollView>
-//     </SafeAreaView>
+//           return (
+//             <View
+//               style={{
+//                 width: ITEM_SIZE,
+//                 // justifyContent: 'center',
+//                 // alignItems: 'center',
+//               }}>
+//               <Animated.View
+//                 style={{
+//                   marginHorizontal: Sizing.x10,
+//                   padding: Sizing.x20,
+//                   alignItems: 'center',
+//                   // opacity,
+//                   backgroundColor: Colors.neutral.white,
+//                   transform: [{translateY}],
+//                   borderColor: Colors.neutral.white,
+//                   borderRadius: Outlines.borderRadius.large,
+//                 }}>
+//                 <View
+//                   style={{
+//                     width: '98%',
+//                     height: ITEM_SIZE,
+//                     overflow: 'hidden',
+//                     alignItems: 'center',
+//                     borderRadius: Outlines.borderRadius.large,
+//                   }}>
+//                   <Animated.Image
+//                     style={{
+//                       width: ITEM_SIZE + 20,
+//                       height: ITEM_SIZE,
+//                       resizeMode: 'cover',
+//                       borderRadius: Outlines.borderRadius.small,
+//                       marginBottom: Sizing.x10,
+//                       transform: [{translateX}],
+//                     }}
+//                     key={index + ''}
+//                     source={{uri: 'https://picsum.photos/200/300'}}
+//                   />
+//                 </View>
+//               </Animated.View>
+//             </View>
+//           );
+//         })}
+//       </Animated.ScrollView>
+//     </View>
 //   );
-// }
+// };
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     alignItems: 'center',
-//     backgroundColor: '#F5FCFF',
-//   },
-//   button: {
-//     marginVertical: 24,
-//     marginHorizontal: 24,
-//   },
-//   image: {
-//     marginVertical: 24,
-//     alignItems: 'center',
-//   },
-//   response: {
-//     marginVertical: 16,
-//     marginHorizontal: 8,
-//   },
-// });
+// export default List;

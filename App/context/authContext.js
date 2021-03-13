@@ -7,7 +7,7 @@ import {LoginManager, AccessToken} from 'react-native-fbsdk';
 import {GoogleSignin} from '@react-native-community/google-signin';
 import Toast from 'react-native-toast-message';
 import I18n from 'utils/i18n';
-
+import Storage from 'api/storage';
 export const AuthContext = createContext();
 
 GoogleSignin.configure({
@@ -22,6 +22,9 @@ const AuthContextProvider = (props) => {
   const [phoneNo, setPhoneNo] = useState('');
   const [User, setUser] = React.useState(null);
   const [dbUser, setDbUser] = React.useState(null);
+
+  const [uploadProgress, setUploadProgress] = useState(null);
+
   // const [signUp, setSignUp] = React.useState(false);
 
   function createNewUser(userInfo) {
@@ -85,9 +88,12 @@ const AuthContextProvider = (props) => {
   }) => {
     return auth()
       .createUserWithEmailAndPassword(email, password)
-      .then((authUser) => {
+      .then(async (authUser) => {
         if (authUser.additionalUserInfo.isNewUser) {
           const {user} = authUser;
+          console.log('context SignUp auth done', user);
+          const profileImage = await Storage(photoURL, user.uid);
+
           const userInfo = {
             uid: user.uid,
             displayName: name,
@@ -97,11 +103,12 @@ const AuthContextProvider = (props) => {
             phoneNumber: null,
             email: user.email,
             emailVerified: user.emailVerified,
-            photoURL: photoURL,
+            photoURL: profileImage,
             currentProfile: 'password',
             providerData: user.providerData,
           };
-          console.log('authUser now', authUser);
+          console.log('authUser now', userInfo);
+
           createNewUser(userInfo);
         }
       })
@@ -126,15 +133,12 @@ const AuthContextProvider = (props) => {
     // Get the users ID token
     const GoogleUser = await GoogleSignin.signIn();
 
-    // console.log(GoogleUser);
-
     // Create a Google credential with the token
     const {idToken} = GoogleUser;
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
     // console.log(googleCredential);
     // Sign-in the user with the credential
-    setProviderId('google.com');
     return auth()
       .signInWithCredential(googleCredential)
       .then((authUser) => {
@@ -191,7 +195,6 @@ const AuthContextProvider = (props) => {
     const facebookCredential = auth.FacebookAuthProvider.credential(
       data.accessToken,
     );
-    setProviderId('facebook.com');
     return auth()
       .signInWithCredential(facebookCredential)
       .then((authUser) => {
@@ -466,6 +469,8 @@ const AuthContextProvider = (props) => {
         phoneNo,
         User,
         dbUser,
+        uploadProgress,
+        setUploadProgress,
       }}>
       {props.children}
     </AuthContext.Provider>

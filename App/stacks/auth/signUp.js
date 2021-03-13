@@ -16,6 +16,7 @@ import FormInput from 'auth/components/formInput';
 import FormButton from 'auth/components/formButton';
 import ErrorMessage from 'auth/components/errorMessage';
 import {AuthContext} from 'context/authContext';
+import ProfileImage from 'components/profileImage';
 import I18n from 'utils/i18n';
 import {Sizing, Outlines, Colors, Typography} from 'styles';
 
@@ -49,6 +50,8 @@ const SignUp = ({navigation}) => {
   const [passwordIcon, setPasswordIcon] = useState('ios-eye');
   const [confirmPasswordIcon, setConfirmPasswordIcon] = useState('ios-eye');
   const [index, setIndex] = useState(0);
+  const [response, setResponse] = useState(null);
+
   const genders = ['Male', 'Female'];
 
   const handlePasswordVisibility = () => {
@@ -68,10 +71,12 @@ const SignUp = ({navigation}) => {
   const handleOnSignup = async (values, actions) => {
     const {name, email, password} = values;
     const gender = genders[index];
+    const photoURL = response.uri;
+
     try {
-      await signUp({name, email, password, gender});
+      await signUp({name, email, password, gender, photoURL});
     } catch (error) {
-      // console.error(error)
+      console.log(error)
       actions.setFieldError('general', error.message);
     } finally {
       actions.setSubmitting(false);
@@ -87,31 +92,7 @@ const SignUp = ({navigation}) => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <View
-          elevation={50}
-          style={{
-            height: height / 5,
-            width: height / 5,
-            borderRadius: height / 5,
-            backgroundColor: 'green',
-            borderStyle: 'dotted',
-            borderWidth: 2,
-            borderColor: 'red',
-            alignItems: 'center',
-            // borderRadius: 1,
-          }}>
-          <View
-            elevation={60}
-            style={{
-              height: 40,
-              width: 40,
-              borderRadius: 5,
-              position: 'absolute',
-              bottom: -20,
-              backgroundColor: 'white',
-            }}
-          />
-        </View>
+        <ProfileImage {...{response, setResponse}} />
       </View>
       <Formik
         initialValues={{
@@ -222,6 +203,8 @@ const SignUp = ({navigation}) => {
               checked={values.check}
               onPress={() => setFieldValue('check', !values.check)}
             />
+            <ErrorMessage errorValue={touched.check && errors.check} />
+
             <View style={styles.buttonContainer}>
               <FormButton
                 // buttonType="outline"
@@ -251,8 +234,7 @@ const SignUp = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    marginTop: 50,
+    backgroundColor: Colors.neutral.s100,
     padding: 20,
   },
   checkBoxContainer: {

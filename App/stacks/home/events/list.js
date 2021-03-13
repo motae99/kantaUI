@@ -16,6 +16,7 @@ import EventCard from 'eventsComponents/EventCard';
 import DATA from 'eventsComponents/eventData';
 import {Sizing, Outlines, Colors, Typography} from 'styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
 const {width, height} = Dimensions.get('window');
 
 const EventList = ({navigation}) => {
