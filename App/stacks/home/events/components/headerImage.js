@@ -14,7 +14,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {width, height, HEADER_IMAGE_HEIGHT, MIN_HEADER_HEIGHT} from '../detail';
 
-const Header = ({navigation, route, animatedValue, list}) => {
+const Header = ({route, animatedValue, list}) => {
   const {selectedItem, selectedImageIndex} = route.params;
 
   const [current, setCurrent] = React.useState(selectedImageIndex);
@@ -84,7 +84,9 @@ const Header = ({navigation, route, animatedValue, list}) => {
                     borderBottomRightRadius: 25,
                     borderBottomLeftRadius: 25,
                   }}
-                  source={item.image}
+                  source={{
+                    uri: item.uri,
+                  }}
                 />
               </SharedElement>
             </View>

@@ -2,6 +2,7 @@ import React from 'react';
 // import {enabledScreens} from 'react-native-screens';
 // import {createStackNavigator} from '@react-navigation/stack';
 import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
+import EventContextProvider from 'context/eventsContext';
 
 import Tabs from './tabs';
 
@@ -70,71 +71,74 @@ const Stack = createSharedElementStackNavigator();
 // };
 const HomeStack = () => {
   return (
-    <Stack.Navigator headerMode={'none'}>
-      <Stack.Screen name="Tabs" component={Tabs} />
-      <Stack.Screen name="Phone" component={Phone} />
+    <EventContextProvider>
+      <Stack.Navigator headerMode={'none'}>
+        <Stack.Screen name="Tabs" component={Tabs} />
+        <Stack.Screen name="Phone" component={Phone} />
 
-      <Stack.Screen name="EventList" component={EventList} />
-      <Stack.Screen name="Beauty" component={Beauty} />
-      <Stack.Screen name="BeautyList" component={BeautyList} />
-      <Stack.Screen name="Photo" component={Photo} />
+        <Stack.Screen name="Beauty" component={Beauty} />
+        <Stack.Screen name="BeautyList" component={BeautyList} />
+        <Stack.Screen name="Photo" component={Photo} />
 
-      <Stack.Screen
-        name="EventMap"
-        component={EventMap}
-        // options={{...TransitionPresets.SlideFromRightIOS}}
-      />
-      <Stack.Screen
-        options={() => ({
-          gestureEnabled: false,
-          transitionSpec: {
-            open: {
-              animation: 'timing',
-              config: {duration: 200},
-              // config: {duration: 500, easing: Eeasing.easingInOut},
-            },
-            close: {
-              animation: 'timing',
-              config: {duration: 200},
-            },
-          },
-          cardStyleInterpolator: ({current: {progress}}) => {
-            return {
-              cardStyle: {
-                opacity: progress,
+        <Stack.Screen name="EventList" component={EventList} />
+        <Stack.Screen
+          name="EventMap"
+          component={EventMap}
+          // options={{...TransitionPresets.SlideFromRightIOS}}
+        />
+        <Stack.Screen
+          options={() => ({
+            gestureEnabled: false,
+            transitionSpec: {
+              open: {
+                animation: 'timing',
+                config: {duration: 200},
+                // config: {duration: 500, easing: Eeasing.easingInOut},
               },
-            };
-          },
-        })}
-        name="EventDetail"
-        component={EventDetail}
-      />
-      <Stack.Screen
-        options={() => ({
-          gestureEnabled: false,
-          transitionSpec: {
-            open: {
-              animation: 'timing',
-              config: {duration: 200},
-              // config: {duration: 500, easing: Eeasing.easingInOut},
-            },
-            close: {
-              animation: 'timing',
-              config: {duration: 200},
-            },
-          },
-          cardStyleInterpolator: ({current: {progress}}) => {
-            return {
-              cardStyle: {
-                opacity: progress,
+              close: {
+                animation: 'timing',
+                config: {duration: 200},
               },
-            };
-          },
-        })}
-        name="PlannerDetail"
-        component={PlannerDetail}
-      />
-    </Stack.Navigator>
+            },
+            cardStyleInterpolator: ({current: {progress}}) => {
+              return {
+                cardStyle: {
+                  opacity: progress,
+                },
+              };
+            },
+          })}
+          name="EventDetail"
+          component={EventDetail}
+        />
+
+        <Stack.Screen
+          options={() => ({
+            gestureEnabled: false,
+            transitionSpec: {
+              open: {
+                animation: 'timing',
+                config: {duration: 200},
+                // config: {duration: 500, easing: Eeasing.easingInOut},
+              },
+              close: {
+                animation: 'timing',
+                config: {duration: 200},
+              },
+            },
+            cardStyleInterpolator: ({current: {progress}}) => {
+              return {
+                cardStyle: {
+                  opacity: progress,
+                },
+              };
+            },
+          })}
+          name="PlannerDetail"
+          component={PlannerDetail}
+        />
+      </Stack.Navigator>
+    </EventContextProvider>
   );
 };
 

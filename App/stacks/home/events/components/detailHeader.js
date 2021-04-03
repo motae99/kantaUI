@@ -3,14 +3,16 @@ import React from 'react';
 import {View, TouchableOpacity, Animated, StyleSheet, Text} from 'react-native';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-// import {useNavigation} from 'react-navigation-hooks';
+import {useNavigation} from '@react-navigation/native';
 import * as Animatable from 'react-native-animatable';
 import {width, height, HEADER_IMAGE_HEIGHT, MIN_HEADER_HEIGHT} from '../detail';
+import HeartButton from './heart';
 
 const ICON_SIZE = 20;
 const PADDING = 18;
 
-const Header = ({navigation, route, animatedValue, name, list}) => {
+const Header = ({route, animatedValue, item, list}) => {
+  const {goBack} = useNavigation();
   const opacity = animatedValue.interpolate({
     inputRange: [0, HEADER_IMAGE_HEIGHT, HEADER_IMAGE_HEIGHT + 40],
     outputRange: [0, 0, 1],
@@ -73,7 +75,7 @@ const Header = ({navigation, route, animatedValue, name, list}) => {
               index: 0,
             });
             setTimeout(() => {
-              navigation.goBack();
+              goBack();
             }, 100);
           }}>
           <View
@@ -102,7 +104,7 @@ const Header = ({navigation, route, animatedValue, name, list}) => {
                 fontSize: 18,
                 fontWeight: '800',
               }}>
-              {name}
+              {item.name}
             </Text>
           </Animatable.View>
         </Animated.View>
@@ -118,7 +120,7 @@ const Header = ({navigation, route, animatedValue, name, list}) => {
               justifyContent: 'center',
               marginRight: 8,
             }}>
-            <Ionicons name="heart" size={20} color="#2B3449" />
+            <HeartButton item={item} />
           </View>
           <View
             style={{

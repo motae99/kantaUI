@@ -249,7 +249,8 @@ const App = ({navigation}) => {
       <Animated.FlatList
         ref={ref}
         showsHorizontalScrollIndicator={false}
-        data={isRTL ? movies.reverse() : movies}
+        data={movies}
+        // data={isRTL ? movies.reverse() : movies}
         keyExtractor={(item) => item.key}
         horizontal
         bounces={false}
@@ -258,7 +259,7 @@ const App = ({navigation}) => {
         // onContentSizeChange={scrollToEnd}
         contentContainerStyle={{
           alignItems: 'center',
-          flexDirection: isRTL ? 'row-reverse' : 'row',
+          // flexDirection: isRTL ? 'row-reverse' : 'row',
         }}
         snapToInterval={ITEM_SIZE}
         // snapToAlignment={isRTL ? 'end' : 'start'}
@@ -268,14 +269,15 @@ const App = ({navigation}) => {
         )}
         scrollEventThrottle={16}
         renderItem={({item, index}) => {
+          const newIndex = isRTL ? movies.length - index - 1 : index;
           if (!item.poster) {
             return <View style={{width: EMPTY_ITEM_SIZE}} />;
           }
 
           const inputRange = [
-            (index - 2) * ITEM_SIZE,
-            (index - 1) * ITEM_SIZE,
-            index * ITEM_SIZE,
+            (newIndex - 2) * ITEM_SIZE,
+            (newIndex - 1) * ITEM_SIZE,
+            newIndex * ITEM_SIZE,
           ];
 
           const translateY = scrollX.interpolate({

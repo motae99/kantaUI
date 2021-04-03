@@ -8,22 +8,28 @@ import {
   Animated,
   TouchableOpacity,
 } from 'react-native';
-import Fontisto from 'react-native-vector-icons/Fontisto';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import HeartButton from './heart';
+import EveningButton from './evening';
+import NightButton from './night';
+
 import LinearGradient from 'react-native-linear-gradient';
 import {SharedElement} from 'react-navigation-shared-element';
+import {useNavigation} from '@react-navigation/native';
 
-import Indicator from '../../../../components/Indicator';
+import Indicator from 'components/Indicator';
 
 const {width, height} = Dimensions.get('window');
 const CardWidth = height / 2.15;
 const CardHight = height / 3.8;
 
 const EventCard = ({data, navigation}) => {
+  // const {navigate} = useNavigation();
+
   const list = React.useRef();
   const [current, setCurrent] = React.useState(0);
+  const [selectedTime, setSelectedTime] = React.useState('evening');
+
   const onViewRef = React.useRef(({viewableItems, changed}) => {
     setCurrent(viewableItems[0]?.index);
   });
@@ -95,7 +101,9 @@ const EventCard = ({data, navigation}) => {
                     },
                   ]}>
                   <Image
-                    source={item.image}
+                    source={{
+                      uri: item.uri,
+                    }}
                     style={[
                       {
                         width: CardWidth,
@@ -149,7 +157,7 @@ const EventCard = ({data, navigation}) => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <Ionicons name="heart" size={18} color="#219CAB" />
+        <HeartButton item={data} />
       </View>
 
       <View
@@ -171,7 +179,8 @@ const EventCard = ({data, navigation}) => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Fontisto name="day-sunny" size={18} color="black" />
+          <EveningButton {...{selectedTime, setSelectedTime}} />
+          {/* <Fontisto name="day-sunny" size={18} color="black" /> */}
         </View>
         <View
           style={{
@@ -182,11 +191,7 @@ const EventCard = ({data, navigation}) => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <MaterialCommunityIcons
-            name="weather-night"
-            size={18}
-            color="black"
-          />
+          <NightButton {...{selectedTime, setSelectedTime}} />
         </View>
       </View>
       <Text
@@ -232,7 +237,8 @@ const EventCard = ({data, navigation}) => {
               letterSpacing: 2,
               fontFamily: 'Montserrat',
             }}>
-            {data.rate}
+            {/* {data.rate} */}
+            4.5
           </Text>
         </View>
         <Text
@@ -243,7 +249,7 @@ const EventCard = ({data, navigation}) => {
             letterSpacing: 2,
             fontFamily: 'Montserrat',
           }}>
-          ${data.price}
+          $ {selectedTime === 'evening' ? data.evening : data.night}
         </Text>
       </View>
     </View>

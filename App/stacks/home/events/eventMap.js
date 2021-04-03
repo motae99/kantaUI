@@ -23,94 +23,12 @@ import MapView, {
 
 import imagesData from './components/eventData';
 import Card from './components/EventMapCard';
-import EventCard from './components/EventCard';
+
+import {EventContext} from 'context/eventsContext';
 
 const {width, height} = Dimensions.get('window');
 const CARD_HEIGHT = height / 3;
 const CARD_WIDTH = width * 0.9;
-
-const DATA = [
-  {
-    CateringPrice: '30',
-    address: 'Address and lication',
-    cabacity: '400',
-    contactNo: '0922066609',
-    coordinate: {latitude: 17.411549, longitude: 78.494381},
-    day: true,
-    email: 'me@yahoo.com',
-    // files: imagesData.files[0],
-    files: [[Object], [Object], [Object]],
-    hallRenting: '5000',
-    id: '3',
-    isHearted: false,
-    key: 'NzE0afBtUOfYLg5krWrbVSPoCcB3',
-    night: true,
-    ownerId: 'NzE0afBtUOfYLg5krWrbVSPoCcB3',
-    partyHallName: 'Spark city',
-    photographing: '400',
-    timestamp: 1579602565368,
-    videoShooting: '100',
-    weddingStage: '300',
-  },
-  {
-    CateringPrice: '',
-    address: 'Hshygg jhaggg adress',
-    cabacity: '100',
-    contactNo: '09764323678',
-    coordinate: {latitude: 17.411249, longitude: 78.189381},
-    day: true,
-    email: 'mo@hotmail.com',
-    files: [[Object], [Object], [Object]],
-    hallRenting: '3000',
-    id: '2',
-    isHearted: false,
-    key: 'SZit9ewC3fYpx05WvI4PzU2GzQE3',
-    night: true,
-    ownerId: 'SZit9ewC3fYpx05WvI4PzU2GzQE3',
-    partyHallName: 'Spark',
-    photographing: '',
-    timestamp: 1579602940830,
-    videoShooting: '',
-    weddingStage: '',
-  },
-  {
-    address: 'Address of u ou ',
-    cabacity: '100',
-    contactNo: '09864333567',
-    coordinate: {latitude: 17.426646, longitude: 78.42827},
-    email: 'mo@tail.com',
-    files: [[Object], [Object], [Object]],
-    hallRenting: '5788',
-    id: '5',
-    isHearted: false,
-    key: '9Cg4qvaHKvaWNolba8F9XrU3Wxx1',
-    ownerId: '9Cg4qvaHKvaWNolba8F9XrU3Wxx1',
-    partyHallName: 'Test try',
-    timestamp: 1579603373833,
-  },
-  {
-    CateringPrice: '',
-    address: 'Adress should be my current location',
-    cabacity: '400',
-    contactNo: '09876554332',
-    coordinate: {latitude: 17.441549, longitude: 78.489381},
-    coords: {_latitude: 17.3929717, _longitude: 78.4565447},
-    day: true,
-    email: 'test@yahoo.com',
-    files: [[Object], [Object], [Object]],
-    hallRenting: '9000',
-    id: '4',
-    isHearted: false,
-    key: 'LOQ3NBuIaIeAwVObUh2L7cLoXNE2',
-    night: true,
-    ownerId: 'LOQ3NBuIaIeAwVObUh2L7cLoXNE2',
-    partyHallName: 'With geo location',
-    photographing: '',
-    timestamp: 1579662790561,
-    videoShooting: '',
-    weddingStage: '',
-  },
-];
 
 const region = {
   latitude: 17.4126274,
@@ -120,6 +38,8 @@ const region = {
 };
 
 const eventMap = ({navigation}) => {
+  const {eventProviders} = React.useContext(EventContext);
+
   const [current, setCurrent] = React.useState(0);
   const mapRef = React.useRef();
   const scrollX = React.useRef(new Animated.Value(0)).current;
@@ -132,7 +52,7 @@ const eventMap = ({navigation}) => {
 
   React.useEffect(() => {
     setTimeout(() => {
-      const {coordinate} = DATA[current];
+      const {coordinate} = eventProviders[current];
       mapRef.current.animateToRegion(
         {
           ...coordinate,
@@ -147,7 +67,7 @@ const eventMap = ({navigation}) => {
   return (
     <View style={styles.container}>
       <MapView ref={mapRef} initialRegion={region} style={styles.container}>
-        {DATA.map((marker, index) => {
+        {eventProviders.map((marker, index) => {
           const inputRange = [
             (index - 1) * CARD_WIDTH,
             index * CARD_WIDTH,
@@ -189,7 +109,7 @@ const eventMap = ({navigation}) => {
         ref={cardlList}
         onViewableItemsChanged={onViewRef.current}
         viewabilityConfig={viewConfigRef.current}
-        data={DATA}
+        data={eventProviders}
         renderItem={({item}) => (
           // <View style={{marginHorizontal: 18}}>
           <Card data={item} navigation={navigation} />

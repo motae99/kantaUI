@@ -55,17 +55,17 @@ const styles = StyleSheet.create({
 });
 
 export default memo(({data, navigation}) => {
-  // const {navigate} = useNavigation();
+  const [selectedTime, setSelectedTime] = React.useState('evening');
   const [current, setCurrent] = React.useState(0);
   // console.log(print_r(data.files));
 
   return (
-    <View style={styles.card} key={data.key}>
+    <View style={styles.card}>
       {/* <SharedElement id={`item.${data.key}.image`}> */}
       <Image
         style={styles.cardImage}
         source={{
-          uri: data.files[0].image,
+          uri: data.files[0].uri,
           resizeMode: 'cover',
         }}
       />
@@ -79,7 +79,7 @@ export default memo(({data, navigation}) => {
         }}>
         <View style={styles.textContent}>
           <Text numberOfLines={1} style={styles.cardtitle}>
-            {data.partyHallName}
+            {data.name}
           </Text>
           <Text numberOfLines={1} style={styles.cardDescription}>
             {data.address}
@@ -180,7 +180,7 @@ export default memo(({data, navigation}) => {
 //   geohash: 'tepfcq6rc',
 //   key: '14QydYUAGBTszA1UqeZ5wxf16V12',
 //   ownerId: '14QydYUAGBTszA1UqeZ5wxf16V12',
-//   partyHallName: 'Capital O 2523 N R Residency',
+//   partyname: 'Capital O 2523 N R Residency',
 //   timestamp: 1587594224331,
 //   price: '1200',
 //   beforDiscount: '999',

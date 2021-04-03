@@ -17,9 +17,13 @@ import DATA from 'eventsComponents/eventData';
 import {Sizing, Outlines, Colors, Typography} from 'styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import {EventContext} from 'context/eventsContext';
+
 const {width, height} = Dimensions.get('window');
 
 const EventList = ({navigation}) => {
+  const {eventProviders} = React.useContext(EventContext);
+
   return (
     <View style={{flex: 1}}>
       <StatusBar
@@ -40,7 +44,7 @@ const EventList = ({navigation}) => {
           }
         }>
         <Animated.FlatList
-          data={DATA}
+          data={eventProviders}
           keyExtractor={(item) => item.key}
           showsVerticalScrollIndicator={false}
           ListHeaderComponent={<ListHeader navigation={navigation} />}

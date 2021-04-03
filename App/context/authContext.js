@@ -22,6 +22,7 @@ const AuthContextProvider = (props) => {
   const [phoneNo, setPhoneNo] = useState('');
   const [User, setUser] = React.useState(null);
   const [dbUser, setDbUser] = React.useState(null);
+  const [likes, setLikes] = React.useState(null);
 
   const [uploadProgress, setUploadProgress] = useState(null);
 
@@ -38,14 +39,14 @@ const AuthContextProvider = (props) => {
   }
 
   function onAuthStateChanged(user) {
-    setUser(user);  
+    setUser(user);
   }
 
   useEffect(() => {
     const subscriber = firestore()
       .collection('users')
       .doc(User?.uid)
-      .onSnapshot(documentSnapshot => {
+      .onSnapshot((documentSnapshot) => {
         if (documentSnapshot.exists) {
           // console.log('User data: ', documentSnapshot.data());
           setDbUser(documentSnapshot.data());
@@ -57,6 +58,26 @@ const AuthContextProvider = (props) => {
     // Stop listening for updates when no longer required
     return () => subscriber();
   }, [User]);
+
+  // useEffect(() => {
+  //   const subscriber = firestore()
+  //     .collection('userFavourite')
+  //     .where('userUid', '==', dbUser?.uid)
+  //     .onSnapshot((querySnapshot) => {
+  //       if (querySnapshot) {
+  //         const favourite = querySnapshot.docs.map((documentSnapshot) => {
+  //           return {
+  //             ...documentSnapshot.data(),
+  //             key: documentSnapshot.id,
+  //           };
+  //         });
+  //         if (favourite && favourite.length > 0) {
+  //           setLikes(favourite);
+  //         }
+  //       }
+  //     });
+  //   return () => subscriber();
+  // }, [dbUser]);
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
@@ -456,6 +477,7 @@ const AuthContextProvider = (props) => {
   return (
     <AuthContext.Provider
       value={{
+        likes,
         confirm,
         signIn,
         googleSign,
