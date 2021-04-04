@@ -3,7 +3,6 @@ import React from 'react';
 import {
   View,
   FlatList,
-  Image,
   Text,
   TouchableOpacity,
   Animated,
@@ -13,6 +12,7 @@ import {SharedElement} from 'react-navigation-shared-element';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {width, height, HEADER_IMAGE_HEIGHT, MIN_HEADER_HEIGHT} from '../detail';
+import FastImage from 'react-native-fast-image';
 
 const Header = ({route, animatedValue, list}) => {
   const {selectedItem, selectedImageIndex} = route.params;
@@ -76,17 +76,22 @@ const Header = ({route, animatedValue, list}) => {
                   width,
                   height: HEADER_IMAGE_HEIGHT,
                 }}>
-                <Image
-                  style={{
-                    width,
-                    height: HEADER_IMAGE_HEIGHT,
-                    resizeMode: 'cover',
-                    borderBottomRightRadius: 25,
-                    borderBottomLeftRadius: 25,
-                  }}
+                <FastImage
+                  style={[
+                    {
+                      width,
+                      height: HEADER_IMAGE_HEIGHT,
+                      resizeMode: 'cover',
+                      borderBottomRightRadius: 25,
+                      borderBottomLeftRadius: 25,
+                    },
+                  ]}
                   source={{
                     uri: item.uri,
+                    priority: FastImage.priority.normal,
+                    cashe: FastImage.cacheControl.immutable,
                   }}
+                  resizeMode={FastImage.resizeMode.cover}
                 />
               </SharedElement>
             </View>

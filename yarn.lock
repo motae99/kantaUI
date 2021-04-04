@@ -1272,7 +1272,7 @@
   resolved "https://registry.yarnpkg.com/@react-native-firebase/auth/-/auth-11.0.0.tgz#1bf3afd53c88d7c6701440bb2530477fb4ac53ac"
   integrity sha512-N5nsK0S6jWWUSGEzSNkCdlAzEdZRa5xA0VOklKlQ29uYiKwegog+bY0zxmDK+m6hqbLF0IABf4k6goZ/D0P9qg==
 
-"@react-native-firebase/dynamic-links@^11.2.0":
+"@react-native-firebase/dynamic-links@^11.0.0":
   version "11.2.0"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/dynamic-links/-/dynamic-links-11.2.0.tgz#4bb5a521509734fc18fcdf747ac14dd8897e6e25"
   integrity sha512-Fa3GxVtjNGm5oRS1pZbaCh2hhuwXe5lDi0Jm0SLPKj0OcHNsjB7h1NJGxV3x2LHWsxwCOhfe2l3pE1iiqC78ZQ==
@@ -1281,21 +1281,6 @@
   version "11.0.0"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-11.0.0.tgz#5e609076a03f3ec231f46c464f5761259ee425e3"
   integrity sha512-wj7ZPYhZdScWYEn5ctCkvrxPYmsgLcvHNykuYmAGBNr6ZSCXhDC1Ccv2DQ9WNaY3fdSYl52Fqck3sgl5orGVXg==
-
-"@react-native-firebase/functions@^11.2.0":
-  version "11.2.0"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/functions/-/functions-11.2.0.tgz#41cd135d3bedd36e58c43dc703a437cd0ffa870c"
-  integrity sha512-xS7r7Xcgf9JZBukRvmR2aS6ddR6bp8wvFC72yLaOSJAk2xl7Df3oZZXN825LCU7TjICTaKkZIulpW6eW9wjnPA==
-
-"@react-native-firebase/in-app-messaging@^11.2.0":
-  version "11.2.0"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/in-app-messaging/-/in-app-messaging-11.2.0.tgz#15fb2324e7505ddae78ec3dd5dac4a5ba454a4f5"
-  integrity sha512-sLq7RldilBlnv8Omqc6JSwWr2ja6BguNz9kSFHx+goBdkFUWOjGcSpsTVzg7DFjAP2tSwTifWwVTbPbQlDvOIA==
-
-"@react-native-firebase/messaging@^11.2.0":
-  version "11.2.0"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-11.2.0.tgz#e5eb21707f49aed0572fecb46b81d3f4ed693b70"
-  integrity sha512-TSfEpTqZGf/eQ/5qTVyhX74YvOkk4Kx7Dq/y6XBz8rYFEyxayjpJ/RV9SXTUbDYunOyhC7EUJxcWvG6C5AjoTw==
 
 "@react-native-firebase/storage@^11.0.0":
   version "11.0.0"
@@ -6901,6 +6886,13 @@ react-native-code-push@^7.0.0:
     plist "3.0.1"
     semver "^7.3.2"
     xcode "3.0.1"
+
+react-native-collapsible@^1.5.3:
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/react-native-collapsible/-/react-native-collapsible-1.5.3.tgz#d6bc7274ae8f40f7688cca23ededa263e6c81c63"
+  integrity sha512-Ciuy3yF8wcHeLxXFtx9vxoyrq8l+9EJqLM/ADw54gVwzTQc1/e2ojhQbVFPlxhDA+Pba2qezkaKfv5ifxg8hoQ==
+  dependencies:
+    prop-types "^15.6.2"
 
 react-native-confirmation-code-input@^1.0.4:
   version "1.0.4"

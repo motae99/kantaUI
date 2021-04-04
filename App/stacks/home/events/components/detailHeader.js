@@ -1,14 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {View, TouchableOpacity, Animated, StyleSheet, Text} from 'react-native';
-import Fontisto from 'react-native-vector-icons/Fontisto';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import * as Animatable from 'react-native-animatable';
+
 import {width, height, HEADER_IMAGE_HEIGHT, MIN_HEADER_HEIGHT} from '../detail';
 import HeartButton from './heart';
+import ShareButton from './share';
 
-const ICON_SIZE = 20;
 const PADDING = 18;
 
 const Header = ({route, animatedValue, item, list}) => {
@@ -131,7 +131,7 @@ const Header = ({route, animatedValue, item, list}) => {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <Fontisto name="share-a" size={18} color="#2B3449" />
+            <ShareButton item={item} />
           </View>
         </View>
       </View>

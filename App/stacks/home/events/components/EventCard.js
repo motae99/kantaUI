@@ -12,6 +12,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import HeartButton from './heart';
 import EveningButton from './evening';
 import NightButton from './night';
+import FastImage from 'react-native-fast-image';
 
 import LinearGradient from 'react-native-linear-gradient';
 import {SharedElement} from 'react-navigation-shared-element';
@@ -100,10 +101,7 @@ const EventCard = ({data, navigation}) => {
                       height: CardHight,
                     },
                   ]}>
-                  <Image
-                    source={{
-                      uri: item.uri,
-                    }}
+                  <FastImage
                     style={[
                       {
                         width: CardWidth,
@@ -112,6 +110,12 @@ const EventCard = ({data, navigation}) => {
                         borderRadius: 12,
                       },
                     ]}
+                    source={{
+                      uri: item.uri,
+                      priority: FastImage.priority.normal,
+                      cashe: FastImage.cacheControl.immutable,
+                    }}
+                    resizeMode={FastImage.resizeMode.cover}
                   />
                 </SharedElement>
               </TouchableOpacity>
