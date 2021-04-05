@@ -2,10 +2,16 @@
 import React, {useRef, useContext, useState} from 'react';
 import {TouchableOpacity, View, Text, Image} from 'react-native';
 import FastImage from 'react-native-fast-image';
+import moment from 'moment';
 import {Rating} from 'react-native-elements';
 import {SECTIONS_TOP_MARGIN} from '../detail';
 
 const Reviews = ({item}) => {
+  if (!item.reviewSnippet) {
+    return null;
+  }
+
+  const snippet = item.reviewSnippet;
   return (
     <View
       style={{
@@ -16,8 +22,7 @@ const Reviews = ({item}) => {
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <View>
           <View style={{flexDirection: 'row'}}>
-            <Image
-              source={require('img/profilePlaceholder.png')}
+            <FastImage
               style={{
                 height: 70,
                 width: 70,
@@ -26,10 +31,16 @@ const Reviews = ({item}) => {
                 resizeMode: 'cover',
                 marginRight: 10,
               }}
+              source={{
+                uri: snippet.photoUrl,
+                priority: FastImage.priority.normal,
+                cashe: FastImage.cacheControl.immutable,
+              }}
             />
+
             <View style={{justifyContent: 'center'}}>
-              <Text>Mo Taha</Text>
-              <Text>Dec 10 2020</Text>
+              <Text>{snippet.name}</Text>
+              <Text>{moment(snippet.timeStamp).format('MM/DD/YYYY')}</Text>
             </View>
           </View>
         </View>
@@ -38,7 +49,7 @@ const Reviews = ({item}) => {
             type="custom"
             imageSize={20}
             readonly
-            startingValue={4}
+            startingValue={snippet.rating}
             // ratingColor="#3498db"
             // ratingBackgroundColor="red"
             style={{backgroundColor: 'green'}}
@@ -46,12 +57,7 @@ const Reviews = ({item}) => {
         </View>
       </View>
 
-      <Text style={{marginTop: 20}}>
-        klfjalksf alksdfjlkasdjflka sdfklasjdflkasjd flkasdjf askdlfjalksdf
-        klfjalksf alksdfjlkasdjflka sdfklasjdflkasjd flkasdjf askdlfjalksdf
-        klfjalksf alksdfjlkasdjflka sdfklasjdflkasjd flkasdjf askdlfjalksdf
-        requestalksdjflkasdfjklasjdf klsdfjlaks dfklasdjflkasdjflkasjdf
-      </Text>
+      <Text style={{marginTop: 20}}>{snippet.review}</Text>
       <TouchableOpacity
         onPress={() => console.log('show all ')}
         style={{
@@ -59,7 +65,7 @@ const Reviews = ({item}) => {
           borderWidth: 1,
           borderColor: 'black',
           borderRadius: 10,
-          height: 70,
+          height: 60,
           justifyContent: 'center',
           alignItems: 'center',
         }}>

@@ -17,8 +17,11 @@ import * as Animatable from 'react-native-animatable';
 import {useNavigation} from '@react-navigation/native';
 import StaticMap from 'components/staticMap';
 import Reviews from 'events/components/reviews';
+import Services from 'events/components/services';
 import HeaderImage from 'events/components/headerImage';
 import Header from 'events/components/detailHeader';
+
+import {EventContext} from 'context/eventsContext';
 
 export const {width, height} = Dimensions.get('window');
 
@@ -42,8 +45,10 @@ const fadeIn = {
 
 const Detail = ({route}) => {
   const {navigation} = useNavigation();
+  // const {useProvider, setProvider} = React.useContext(EventContext);
 
   const {selectedItem, selectedImageIndex} = route.params;
+  // setProvider(selectedItem);
   const scrollY = React.useRef(new Animated.Value(0)).current;
   const list = React.useRef();
 
@@ -59,7 +64,7 @@ const Detail = ({route}) => {
     extrapolate: 'clamp',
   });
   return (
-    <View style={{backgroundColor: '#fff', flex: 1}}>
+    <View style={{backgroundColor: '#E5E5E5', flex: 1}}>
       <StatusBar
         // translucent
         barStyle={'light-content'}
@@ -115,6 +120,21 @@ const Detail = ({route}) => {
             </View>
 
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text
+                style={{
+                  fontFamily: 'Montserrat',
+                  fontSize: 10,
+                  fontWeight: '400',
+                  color: 'rgba(43,52,73,1)',
+                  marginRight: 4,
+                }}>
+                {selectedItem.ratingSum
+                  ? Math.round(
+                      selectedItem.ratingSum / selectedItem.totalRating,
+                      1,
+                    )
+                  : 0}
+              </Text>
               <FontAwesome name="star" size={18} color="#219CAB" />
               <Text
                 style={{
@@ -124,7 +144,8 @@ const Detail = ({route}) => {
                   color: 'rgba(43,52,73,1)',
                   paddingLeft: 4,
                 }}>
-                {selectedItem.rate}(2.2K review)
+                ({selectedItem.totalRating ? selectedItem.totalRating : 'No'}{' '}
+                review)
               </Text>
             </View>
           </Animated.View>
@@ -157,6 +178,7 @@ const Detail = ({route}) => {
           </Animatable.View>
 
           <Reviews item={selectedItem} />
+          <Services provider={selectedItem} />
           <View style={{width, height}} />
         </View>
       </ScrollView>
