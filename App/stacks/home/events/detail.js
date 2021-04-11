@@ -1,38 +1,45 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
-import * as React from 'react';
+import React, {useState, useMemo, useRef, useContext} from 'react';
 import {
   Text,
   View,
   Dimensions,
   StatusBar,
-  Animated,
-  ScrollView,
+  Animated as NativeAnimated,
   StyleSheet,
   Image,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as Animatable from 'react-native-animatable';
 import {useNavigation} from '@react-navigation/native';
 import StaticMap from 'components/staticMap';
-import Reviews from 'events/components/reviews';
-import Services from 'events/components/services';
-import HeaderImage from 'events/components/headerImage';
-import Header from 'events/components/detailHeader';
-
+import {useValues} from 'react-native-redash/lib/module/v1';
+import BasicInfo from 'events/components/detailComponents/basicInfo';
+import Reviews from 'events/components/detailComponents/reviews';
+import Services from 'events/components/detailComponents/services';
+import HeaderImage from 'events/components/detailComponents/headerImage';
+import Facilities from 'events/components/detailComponents/facilities';
+import Header from 'events/components/detailComponents/detailHeader';
+import DateTime from 'events/components/detailComponents/dateTime';
+import PayComponent from 'events/components/detailComponents/payComponent';
 import {EventContext} from 'context/eventsContext';
 
-export const {width, height} = Dimensions.get('window');
+import Animated from 'react-native-reanimated';
+const {Value, ScrollView, interpolate, Extrapolate} = Animated;
 
-// const headerHieght = height / 6;
+export const {width, height} = Dimensions.get('window');
 
 export const MIN_HEADER_HEIGHT = 100;
 export const HEADER_IMAGE_HEIGHT = height * 0.65;
 const ICON_SIZE = 20;
-const PADDING = 18;
+export const PADDING = 18;
 export const SECTIONS_TOP_MARGIN = 30;
-const fadeIn = {
+const top = 36;
+
+export const fadeIn = {
   0: {
     opacity: 0,
     translateY: 100,
@@ -44,33 +51,55 @@ const fadeIn = {
 };
 
 const Detail = ({route}) => {
-  const {navigation} = useNavigation();
-  // const {useProvider, setProvider} = React.useContext(EventContext);
-
+  // const {navigation} = useNavigation();
   const {selectedItem, selectedImageIndex} = route.params;
-  // setProvider(selectedItem);
-  const scrollY = React.useRef(new Animated.Value(0)).current;
-  const list = React.useRef();
+  const {selectedTime, selectedServices} = useContext(EventContext);
+  const scrollView = useRef(null);
+  const list = useRef();
+  const [dateAction, setDateAction] = useState(null);
+  const [paymentAction, setPaymentAction] = useState(null);
+  const [scrollY] = useValues([0], []);
 
-  const scrollBack = () => {
-    list.current.scrollToIndex({
-      animated: true,
-      index: 0,
+  const cost = useMemo(() => {
+    const {evening, night} = selectedItem;
+    let initial = selectedTime === 'evening' ? Number(evening) : Number(night);
+    let total = initial;
+    selectedServices.forEach((service) => {
+      total += Number(service.data.price);
     });
-  };
-  const opacity = scrollY.interpolate({
-    inputRange: [0, HEADER_IMAGE_HEIGHT * 0.7],
-    outputRange: [1, 0],
-    extrapolate: 'clamp',
-  });
-  return (
-    <View style={{backgroundColor: '#E5E5E5', flex: 1}}>
-      <StatusBar
-        // translucent
-        barStyle={'light-content'}
-        // backgroundColor="transparent"
-      />
+    return {total, initial};
+  }, [selectedServices, selectedTime, selectedItem]);
+  const dateTopEdge =
+    dateAction?.y -
+    (height - top) +
+    dateAction?.height +
+    top +
+    HEADER_IMAGE_HEIGHT;
+  const paymentTopEdge =
+    paymentAction?.y -
+    (height - top) +
+    paymentAction?.height +
+    top +
+    HEADER_IMAGE_HEIGHT;
+  const dateInputRange = [
+    -1,
+    0,
+    dateTopEdge - 60,
+    dateTopEdge,
+    dateTopEdge + 1,
+  ];
+  const paymentInputRange = [
+    -1,
+    0,
+    paymentTopEdge - 60,
+    paymentTopEdge,
+    paymentTopEdge + 1,
+  ];
+  const paymentBottomInputRange = [-1, dateTopEdge, dateTopEdge + 200];
 
+  return (
+    <SafeAreaView style={{backgroundColor: '#E5E5E5', flex: 1}}>
+      <StatusBar barStyle={'light-content'} />
       <HeaderImage route={route} animatedValue={scrollY} {...{list}} />
       <Header
         route={route}
@@ -79,77 +108,23 @@ const Detail = ({route}) => {
         item={selectedItem}
       />
 
-      <ScrollView
-        onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {y: scrollY}}}],
-          {useNativeDriver: false},
-        )}
-        contentContainerStyle={{paddingHorizontal: 18}}>
-        <View
-          style={{
-            height: HEADER_IMAGE_HEIGHT,
-            marginBottom: 18,
-          }}
-        />
-        <Animatable.View
-          animation={fadeIn}
-          delay={700}
-          duration={400}
-          useNativeDriver={true}>
-          <Animated.View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              // alignItems: 'center',
-              opacity,
-              marginTop: PADDING * 2,
-              marginBottom: 16,
-            }}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Ionicons name="md-location-outline" size={18} color="#2B3449" />
-              <Text
-                style={{
-                  fontFamily: 'Montserrat',
-                  fontSize: 10,
-                  fontWeight: '400',
-                  color: 'rgba(43,52,73,1)',
-                  paddingLeft: 4,
-                }}>
-                {selectedItem.address}
-              </Text>
-            </View>
-
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text
-                style={{
-                  fontFamily: 'Montserrat',
-                  fontSize: 10,
-                  fontWeight: '400',
-                  color: 'rgba(43,52,73,1)',
-                  marginRight: 4,
-                }}>
-                {selectedItem.ratingSum
-                  ? Math.round(
-                      selectedItem.ratingSum / selectedItem.totalRating,
-                      1,
-                    )
-                  : 0}
-              </Text>
-              <FontAwesome name="star" size={18} color="#219CAB" />
-              <Text
-                style={{
-                  fontFamily: 'Montserrat',
-                  fontSize: 10,
-                  fontWeight: '400',
-                  color: 'rgba(43,52,73,1)',
-                  paddingLeft: 4,
-                }}>
-                ({selectedItem.totalRating ? selectedItem.totalRating : 'No'}{' '}
-                review)
-              </Text>
-            </View>
-          </Animated.View>
-        </Animatable.View>
+      <Animated.ScrollView
+        ref={scrollView}
+        onScroll={Animated.event([
+          {
+            nativeEvent: {
+              contentOffset: {
+                y: scrollY,
+              },
+            },
+          },
+        ])}
+        scrollEventThrottle={1}
+        contentContainerStyle={{
+          paddingTop: HEADER_IMAGE_HEIGHT,
+          paddingHorizontal: 18,
+        }}>
+        <BasicInfo item={selectedItem} {...{scrollY}} />
 
         <View>
           <Animatable.View
@@ -177,19 +152,65 @@ const Detail = ({route}) => {
             </View>
           </Animatable.View>
 
+          <Facilities provider={selectedItem} />
+
           <Reviews item={selectedItem} />
+
+          <View
+            onLayout={(ev) => {
+              setDateAction(ev.nativeEvent.layout);
+            }}
+            style={[styles.dateAction, {marginTop: SECTIONS_TOP_MARGIN}]}
+          />
+
           <Services provider={selectedItem} />
-          <View style={{width, height}} />
+          <View
+            onLayout={(ev) => {
+              setPaymentAction(ev.nativeEvent.layout);
+            }}
+            style={[styles.paymentAction, {marginTop: SECTIONS_TOP_MARGIN}]}
+          />
+          <View style={{height: 400, width}} />
         </View>
-      </ScrollView>
-    </View>
+      </Animated.ScrollView>
+      {dateAction && (
+        <DateTime
+          item={selectedItem}
+          inputRange={dateInputRange}
+          {...{scrollY, dateAction}}
+        />
+      )}
+
+      {paymentAction && (
+        <PayComponent
+          item={selectedItem}
+          inputRange={paymentInputRange}
+          {...{scrollY, paymentAction, cost, paymentBottomInputRange}}
+        />
+      )}
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  dateAction: {
+    height: 80,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+  paymentAction: {
+    height: 90,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+});
 
 Detail.sharedElements = (route, otherRoute, showing) => {
   const {selectedItem} = route.params;
   return selectedItem.files.map(
-    (item) => `item.${selectedItem.key}.image.${item.key}`,
+    (item, index) => `item.${selectedItem.key}.image.${item.uri}`,
   );
 };
 

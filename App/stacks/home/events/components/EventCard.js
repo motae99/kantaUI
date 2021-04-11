@@ -17,6 +17,7 @@ import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 import {SharedElement} from 'react-navigation-shared-element';
 import {useNavigation} from '@react-navigation/native';
+import {EventContext} from 'context/eventsContext';
 
 import Indicator from 'components/Indicator';
 
@@ -26,10 +27,13 @@ const CardHight = height / 3.8;
 
 const EventCard = ({data, navigation}) => {
   // const {navigate} = useNavigation();
+  const {date, setDate, selectedTime, setSelectedTime} = React.useContext(
+    EventContext,
+  );
 
   const list = React.useRef();
   const [current, setCurrent] = React.useState(0);
-  const [selectedTime, setSelectedTime] = React.useState('evening');
+  // const [selectedTime, setSelectedTime] = React.useState('evening');
 
   const onViewRef = React.useRef(({viewableItems, changed}) => {
     setCurrent(viewableItems[0]?.index);
@@ -51,7 +55,7 @@ const EventCard = ({data, navigation}) => {
         data={data.files}
         ref={list}
         showsHorizontalScrollIndicator={false}
-        keyExtractor={(item) => item.key}
+        keyExtractor={(item) => data.key + item.uri}
         pagingEnabled={true}
         decelerationRate={'fast'}
         horizontal
@@ -68,8 +72,10 @@ const EventCard = ({data, navigation}) => {
         )}
         snapToInterval={CardWidth}
         renderItem={({item, index}) => {
+          // console.log(data.key + 'images' + index);
           return (
             <View
+              // key={data.key + 'images' + index}
               style={
                 {
                   // width: CardWidth,
@@ -94,7 +100,7 @@ const EventCard = ({data, navigation}) => {
                   }, 100);
                 }}>
                 <SharedElement
-                  id={`item.${data.key}.image.${item.key}`}
+                  id={`item.${data.key}.image.${item.uri}`}
                   style={[
                     {
                       width: CardWidth,
@@ -183,7 +189,7 @@ const EventCard = ({data, navigation}) => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <EveningButton {...{selectedTime, setSelectedTime}} />
+          <EveningButton />
           {/* <Fontisto name="day-sunny" size={18} color="black" /> */}
         </View>
         <View
@@ -195,7 +201,7 @@ const EventCard = ({data, navigation}) => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <NightButton {...{selectedTime, setSelectedTime}} />
+          <NightButton />
         </View>
       </View>
       <Text

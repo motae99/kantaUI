@@ -1,17 +1,19 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {
-  View,
-  FlatList,
-  Text,
-  TouchableOpacity,
-  Animated,
-  StyleSheet,
-} from 'react-native';
+import {View, FlatList, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {SharedElement} from 'react-navigation-shared-element';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {width, height, HEADER_IMAGE_HEIGHT, MIN_HEADER_HEIGHT} from '../detail';
+import {
+  width,
+  height,
+  HEADER_IMAGE_HEIGHT,
+  MIN_HEADER_HEIGHT,
+} from 'events/detail';
+
+import Animated from 'react-native-reanimated';
+const {interpolate, Extrapolate} = Animated;
+
 import FastImage from 'react-native-fast-image';
 
 const Header = ({route, animatedValue, list}) => {
@@ -24,22 +26,22 @@ const Header = ({route, animatedValue, list}) => {
   });
   const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 50});
 
-  const hHeight = animatedValue.interpolate({
+  const hHeight = interpolate(animatedValue, {
     inputRange: [0, HEADER_IMAGE_HEIGHT],
     outputRange: [HEADER_IMAGE_HEIGHT, 0],
-    extrapolate: 'clamp',
+    extrapolate: Extrapolate.CLAMP,
   });
 
-  const radius = animatedValue.interpolate({
+  const radius = interpolate(animatedValue, {
     inputRange: [0, HEADER_IMAGE_HEIGHT / 2],
     outputRange: [25, 0],
-    extrapolate: 'clamp',
+    extrapolate: Extrapolate.CLAMP,
   });
 
-  const opacity = animatedValue.interpolate({
+  const opacity = interpolate(animatedValue, {
     inputRange: [0, HEADER_IMAGE_HEIGHT / 2, HEADER_IMAGE_HEIGHT],
     outputRange: [1, 1, 0],
-    extrapolate: 'clamp',
+    extrapolate: Extrapolate.CLAMP,
   });
 
   return (
@@ -62,16 +64,16 @@ const Header = ({route, animatedValue, list}) => {
         horizontal
         snapToInterval={width}
         showsHorizontalScrollIndicator={false}
-        // initialScrollIndex={selectedImageIndex}
+        keyExtractor={(item) => selectedItem.key + item.uri}
         data={selectedItem.files}
-        keyExtractor={(item) => item.key}
+        // keyExtractor={(item) => item.key}
         onViewableItemsChanged={onViewRef.current}
         viewabilityConfig={viewConfigRef.current}
-        renderItem={({item}) => {
+        renderItem={({item, index}) => {
           return (
             <View>
               <SharedElement
-                id={`item.${selectedItem.key}.image.${item.key}`}
+                id={`item.${selectedItem.key}.image.${item.uri}`}
                 style={{
                   width,
                   height: HEADER_IMAGE_HEIGHT,
@@ -122,7 +124,7 @@ const Header = ({route, animatedValue, list}) => {
 Header.sharedElements = (route, otherRoute, showing) => {
   const {selectedItem} = route.params;
   return selectedItem.files.map(
-    (item) => `item.${selectedItem.key}.image.${item.key}`,
+    (item, index) => `item.${selectedItem.key}.image.${item.uri}`,
   );
 };
 export default Header;

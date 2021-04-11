@@ -1,9 +1,12 @@
-import React, {useRef, useContext, useState} from 'react';
-import {StyleSheet, TouchableWithoutFeedback} from 'react-native';
+import React, {useRef} from 'react';
+import {TouchableNativeFeedback} from 'react-native-gesture-handler';
+
 import * as Animatable from 'react-native-animatable';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {EventContext} from 'context/eventsContext';
 
-const Heart = ({setSelectedTime, selectedTime}) => {
+const Night = () => {
+  const {selectedTime, setSelectedTime} = React.useContext(EventContext);
   const handleViewRef = useRef(null);
 
   const bounce = () => {
@@ -17,7 +20,7 @@ const Heart = ({setSelectedTime, selectedTime}) => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={() => bounce()}>
+    <TouchableNativeFeedback onPress={() => bounce()}>
       <Animatable.View ref={handleViewRef} useNativeDriver={true}>
         <MaterialCommunityIcons
           name="weather-night"
@@ -25,8 +28,8 @@ const Heart = ({setSelectedTime, selectedTime}) => {
           color={selectedTime === 'night' ? '#219CAB' : 'black'}
         />
       </Animatable.View>
-    </TouchableWithoutFeedback>
+    </TouchableNativeFeedback>
   );
 };
 
-export default Heart;
+export default Night;

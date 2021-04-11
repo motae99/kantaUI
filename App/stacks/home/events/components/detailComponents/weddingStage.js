@@ -2,21 +2,25 @@
 import React, {useEffect, useContext, useState} from 'react';
 import {View, Text, FlatList, Dimensions, TouchableOpacity} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
-import {SECTIONS_TOP_MARGIN} from '../detail';
+import {SECTIONS_TOP_MARGIN} from 'events/detail';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FastImage from 'react-native-fast-image';
+import {EventContext} from 'context/eventsContext';
 
 const {width, height} = Dimensions.get('window');
-const Catering = ({provider}) => {
+const Wedding = ({provider}) => {
+  const {selectedServices, setselectedServices} = useContext(EventContext);
+
   const [options, setOptions] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState('');
 
   useEffect(() => {
     const subscriber = firestore()
       .collection('eventProviders')
       .doc(`${provider.key}`)
-      .collection('catering')
+      .collection('weddingStage')
       .onSnapshot((querySnapshot) => {
         if (querySnapshot) {
           const serviceOptions = querySnapshot.docs.map((documentSnapshot) => {
@@ -38,20 +42,24 @@ const Catering = ({provider}) => {
   if (loading) {
     return (
       <View>
-        <Text>Catering Loading</Text>
+        <Text>Stages Loading</Text>
       </View>
     );
   }
 
-  const Header = () => {
-    return (
-      <View style={{height: 60, width, backgroundColor: 'gray', flex: 1}}>
-        <Text>Catering </Text>
-      </View>
-    );
+  const select = (item) => {
+    setSelected(item.key);
+    let newArr = [...selectedServices];
+    const i = newArr.findIndex((_item) => _item.name === 'weddingStage');
+    if (i > -1) {
+      newArr[i].data = item;
+    } else {
+      newArr.push({name: 'weddingStage', data: item});
+    }
+    setselectedServices(newArr);
   };
 
-  const CateringCard = ({item}) => {
+  const WeddingStage = ({item}) => {
     return (
       <View
         style={{
@@ -63,21 +71,23 @@ const Catering = ({provider}) => {
           padding: 10,
           marginTop: 10,
         }}>
-        <View
-          style={{
-            width: 30,
-            height: 30,
-            borderRadius: 15,
-            position: 'absolute',
-            top: -10,
-            right: -10,
-            backgroundColor: '#219CAB',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 10,
-          }}>
-          <Entypo name="check" size={18} color={'white'} />
-        </View>
+        {item.key === selected ? (
+          <View
+            style={{
+              width: 30,
+              height: 30,
+              borderRadius: 15,
+              position: 'absolute',
+              top: -10,
+              right: -10,
+              backgroundColor: '#219CAB',
+              justifyContent: 'center',
+              alignItems: 'center',
+              zIndex: 10,
+            }}>
+            <Entypo name="check" size={18} color={'white'} />
+          </View>
+        ) : null}
         <View style={{flex: 4}}>
           <FastImage
             style={[
@@ -108,10 +118,11 @@ const Catering = ({provider}) => {
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
+                alignItems: 'center',
               }}>
-              <Text style={{paddingTop: 1}}>$ {item.price}</Text>
+              <Text>${item.price}</Text>
               <TouchableOpacity
-                onPress={() => console.log('pressed')}
+                onPress={() => select(item)}
                 style={{
                   height: 30,
                   width: 30,
@@ -137,7 +148,7 @@ const Catering = ({provider}) => {
           flexDirection: 'row',
           justifyContent: 'space-between',
         }}>
-        <Text>Catering</Text>
+        <Text>Wedding Stage</Text>
         <AntDesign name="right" size={18} color={'black'} />
       </View>
       <FlatList
@@ -146,16 +157,11 @@ const Catering = ({provider}) => {
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => item.key}
         showsVerticalScrollIndicator={false}
-        // ListHeaderComponent={<Header />}
-        // contentContainerStyle={{
-        //   alignItems: 'center',
-        //   justifyContent: 'center',
-        // }}
         renderItem={({item, index}) => {
-          return <CateringCard item={item} />;
+          return <WeddingStage item={item} />;
         }}
       />
     </View>
   );
 };
-export default Catering;
+export default Wedding;

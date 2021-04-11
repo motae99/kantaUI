@@ -1,8 +1,8 @@
 import React, {useRef, useContext, useState} from 'react';
-import {StyleSheet, TouchableWithoutFeedback} from 'react-native';
+import {View} from 'react-native';
 import Catering from './catering';
-// import Photography from './photography';
-// import WeddingStage from './weddingStage';
+import Photography from './photography';
+import WeddingStage from './weddingStage';
 // import Other from './other';
 const Services = ({provider}) => {
   const services = provider.services;
@@ -30,9 +30,17 @@ const Services = ({provider}) => {
   //   //   console.log('other Services');
   //   // }
   // });
-  if (services.includes('catering')) {
-    return <Catering provider={provider} />;
-  }
-  return null;
+
+  return (
+    <View>
+      {services.includes('catering') ? <Catering provider={provider} /> : null}
+      {services.includes('weddingStage') ? (
+        <WeddingStage provider={provider} />
+      ) : null}
+      {services.includes('photography') ? (
+        <Photography provider={provider} />
+      ) : null}
+    </View>
+  );
 };
 export default Services;

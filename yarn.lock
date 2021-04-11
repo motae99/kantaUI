@@ -6914,6 +6914,13 @@ react-native-country-picker-modal@^2.0.0:
     prop-types "15.7.2"
     react-async-hook "3.6.1"
 
+react-native-countup@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-countup/-/react-native-countup-0.0.2.tgz#3c8fbf8d364469be3e0989f3ba3c8f2195bfb489"
+  integrity sha512-itiBFeDf9ffI1/Fvhcd6/BuioYUjOuM6Tnmhn72GrIKELl40O/C3H0mM8PsReuY5eEF9zPBRRvYUeLfKXOlqeQ==
+  dependencies:
+    react-timer-mixin "^0.13.3"
+
 react-native-dotenv@^2.5.3:
   version "2.5.3"
   resolved "https://registry.yarnpkg.com/react-native-dotenv/-/react-native-dotenv-2.5.3.tgz#ec70186d2b1491b0519647c53bf91f34395377a3"
@@ -7235,6 +7242,11 @@ react-test-renderer@16.13.1:
     prop-types "^15.6.2"
     react-is "^16.8.6"
     scheduler "^0.19.1"
+
+react-timer-mixin@^0.13.3:
+  version "0.13.4"
+  resolved "https://registry.yarnpkg.com/react-timer-mixin/-/react-timer-mixin-0.13.4.tgz#75a00c3c94c13abe29b43d63b4c65a88fc8264d3"
+  integrity sha512-4+ow23tp/Tv7hBM5Az5/Be/eKKF7DIvJ09voz5LyHGQaqqz9WV8YMs31eFvcYQs7d451LSg7kDJV70XYN/Ug/Q==
 
 react@16.13.1:
   version "16.13.1"

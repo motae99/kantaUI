@@ -1,34 +1,44 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, TouchableOpacity, Animated, StyleSheet, Text} from 'react-native';
+import {View, TouchableOpacity, StyleSheet, Text} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import * as Animatable from 'react-native-animatable';
 
-import {width, height, HEADER_IMAGE_HEIGHT, MIN_HEADER_HEIGHT} from '../detail';
-import HeartButton from './heart';
-import ShareButton from './share';
+import {
+  width,
+  height,
+  HEADER_IMAGE_HEIGHT,
+  MIN_HEADER_HEIGHT,
+} from 'events/detail';
+
+import HeartButton from 'events/components/heart';
+import ShareButton from 'events/components/share';
+
+import Animated from 'react-native-reanimated';
+const {interpolate, Extrapolate} = Animated;
 
 const PADDING = 18;
 
 const Header = ({route, animatedValue, item, list}) => {
   const {goBack} = useNavigation();
-  const opacity = animatedValue.interpolate({
+
+  const opacity = interpolate(animatedValue, {
     inputRange: [0, HEADER_IMAGE_HEIGHT, HEADER_IMAGE_HEIGHT + 40],
     outputRange: [0, 0, 1],
-    extrapolate: 'clamp',
+    extrapolate: Extrapolate.CLAMP,
   });
 
-  const translateX = animatedValue.interpolate({
+  const translateX = interpolate(animatedValue, {
     inputRange: [0, HEADER_IMAGE_HEIGHT],
     outputRange: [-28, PADDING],
-    extrapolate: 'clamp',
+    extrapolate: Extrapolate.CLAMP,
   });
 
-  const translateY = animatedValue.interpolate({
+  const translateY = interpolate(animatedValue, {
     inputRange: [0, HEADER_IMAGE_HEIGHT],
     outputRange: [HEADER_IMAGE_HEIGHT - 36, -4],
-    extrapolate: 'clamp',
+    extrapolate: Extrapolate.CLAMP,
   });
 
   const fadeIn = {

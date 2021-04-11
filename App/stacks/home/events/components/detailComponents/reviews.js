@@ -4,7 +4,7 @@ import {TouchableOpacity, View, Text, Image} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import moment from 'moment';
 import {Rating} from 'react-native-elements';
-import {SECTIONS_TOP_MARGIN} from '../detail';
+import {SECTIONS_TOP_MARGIN} from 'events/detail';
 
 const Reviews = ({item}) => {
   if (!item.reviewSnippet) {
@@ -15,7 +15,7 @@ const Reviews = ({item}) => {
   return (
     <View
       style={{
-        height: 300,
+        // height: 300,
         width: '100%',
         marginTop: SECTIONS_TOP_MARGIN,
       }}>
