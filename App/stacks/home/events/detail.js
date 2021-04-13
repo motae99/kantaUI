@@ -1,23 +1,10 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState, useMemo, useRef, useContext} from 'react';
-import {
-  Text,
-  View,
-  Dimensions,
-  StatusBar,
-  Animated as NativeAnimated,
-  StyleSheet,
-  Image,
-} from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import {View, Dimensions, StatusBar, StyleSheet} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import * as Animatable from 'react-native-animatable';
-import {useNavigation} from '@react-navigation/native';
-import StaticMap from 'components/staticMap';
 import {useValues} from 'react-native-redash/lib/module/v1';
 import BasicInfo from 'events/components/detailComponents/basicInfo';
+import LocationMap from 'events/components/detailComponents/locationMap';
 import Reviews from 'events/components/detailComponents/reviews';
 import Services from 'events/components/detailComponents/services';
 import HeaderImage from 'events/components/detailComponents/headerImage';
@@ -25,16 +12,16 @@ import Facilities from 'events/components/detailComponents/facilities';
 import Header from 'events/components/detailComponents/detailHeader';
 import DateTime from 'events/components/detailComponents/dateTime';
 import PayComponent from 'events/components/detailComponents/payComponent';
+import {AuthContext} from 'context/authContext';
 import {EventContext} from 'context/eventsContext';
+import moment from 'moment';
 
 import Animated from 'react-native-reanimated';
-const {Value, ScrollView, interpolate, Extrapolate} = Animated;
 
 export const {width, height} = Dimensions.get('window');
 
 export const MIN_HEADER_HEIGHT = 100;
 export const HEADER_IMAGE_HEIGHT = height * 0.65;
-const ICON_SIZE = 20;
 export const PADDING = 18;
 export const SECTIONS_TOP_MARGIN = 30;
 const top = 36;
@@ -50,14 +37,19 @@ export const fadeIn = {
   },
 };
 
-const Detail = ({route}) => {
-  // const {navigation} = useNavigation();
-  const {selectedItem, selectedImageIndex} = route.params;
-  const {selectedTime, selectedServices} = useContext(EventContext);
+const Detail = ({route, navigation}) => {
+  const {selectedItem, time} = route.params;
+  const {dbUser} = useContext(AuthContext);
+  const {date, creatBooking} = useContext(EventContext);
+
   const scrollView = useRef(null);
   const list = useRef();
   const [dateAction, setDateAction] = useState(null);
   const [paymentAction, setPaymentAction] = useState(null);
+  const [selectedTime, setSelectedTime] = useState(time);
+
+  const [selectedServices, setselectedServices] = useState([]);
+
   const [scrollY] = useValues([0], []);
 
   const cost = useMemo(() => {
@@ -69,6 +61,32 @@ const Detail = ({route}) => {
     });
     return {total, initial};
   }, [selectedServices, selectedTime, selectedItem]);
+
+  const bookNow = () => {
+    const data = {
+      userId: dbUser.uid,
+      userDisplayName: dbUser.displayName,
+      userPhotoURL: dbUser.photoURL,
+      userPhoneNumber: dbUser.phoneNumber,
+      providerType: 'partyHall',
+      providerUserId: selectedItem.ownerId,
+      providerId: selectedItem.key,
+      providerName: selectedItem.name,
+      providerNamePhotoURL: selectedItem.files[0].uri,
+      date: date,
+      timeStamp: Date.now(),
+      time: selectedTime,
+      basicCost: cost.initial,
+      additionalServices: selectedServices,
+      totalCost: cost.total,
+      bookingStatus: 'booked',
+    };
+
+    creatBooking(data).then(navigation.goBack());
+    // console.log('date: ', moment(data.date).format('DD/MM/YYYY'));
+    // console.log('timeStamp:', Date.now());
+  };
+
   const dateTopEdge =
     dateAction?.y -
     (height - top) +
@@ -107,7 +125,6 @@ const Detail = ({route}) => {
         list={list}
         item={selectedItem}
       />
-
       <Animated.ScrollView
         ref={scrollView}
         onScroll={Animated.event([
@@ -125,45 +142,20 @@ const Detail = ({route}) => {
           paddingHorizontal: 18,
         }}>
         <BasicInfo item={selectedItem} {...{scrollY}} />
-
         <View>
-          <Animatable.View
-            animation={'fadeInUp'}
-            delay={1100}
-            duration={400}
-            useNativeDriver={true}
-            style={{marginTop: SECTIONS_TOP_MARGIN / 2}}>
-            <Text
-              style={{
-                fontFamily: 'Montserrat',
-                fontSize: 14,
-                fontWeight: '500',
-                marginBottom: 18,
-              }}>
-              Get Directions
-            </Text>
-            <View
-              style={{
-                borderRadius: 16,
-                overflow: 'hidden',
-                height: height / 4,
-              }}>
-              <StaticMap item={selectedItem} />
-            </View>
-          </Animatable.View>
-
+          <LocationMap item={selectedItem} />
           <Facilities provider={selectedItem} />
-
           <Reviews item={selectedItem} />
-
           <View
             onLayout={(ev) => {
               setDateAction(ev.nativeEvent.layout);
             }}
             style={[styles.dateAction, {marginTop: SECTIONS_TOP_MARGIN}]}
           />
-
-          <Services provider={selectedItem} />
+          <Services
+            provider={selectedItem}
+            {...{selectedServices, setselectedServices}}
+          />
           <View
             onLayout={(ev) => {
               setPaymentAction(ev.nativeEvent.layout);
@@ -177,15 +169,14 @@ const Detail = ({route}) => {
         <DateTime
           item={selectedItem}
           inputRange={dateInputRange}
-          {...{scrollY, dateAction}}
+          {...{scrollY, dateAction, selectedTime, setSelectedTime}}
         />
       )}
-
       {paymentAction && (
         <PayComponent
           item={selectedItem}
           inputRange={paymentInputRange}
-          {...{scrollY, paymentAction, cost, paymentBottomInputRange}}
+          {...{scrollY, paymentAction, cost, paymentBottomInputRange, bookNow}}
         />
       )}
     </SafeAreaView>

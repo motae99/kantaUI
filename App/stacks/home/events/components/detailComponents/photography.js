@@ -11,9 +11,7 @@ import FastImage from 'react-native-fast-image';
 import {EventContext} from 'context/eventsContext';
 
 const {width, height} = Dimensions.get('window');
-const Photography = ({provider}) => {
-  const {selectedServices, setselectedServices} = useContext(EventContext);
-
+const Photography = ({provider, selectedServices, setselectedServices}) => {
   const [options, setOptions] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState('');

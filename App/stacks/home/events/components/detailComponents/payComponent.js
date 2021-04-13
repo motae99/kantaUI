@@ -14,6 +14,7 @@ const BookButton = ({
   inputRange,
   paymentBottomInputRange,
   cost,
+  bookNow,
 }) => {
   if (!paymentAction) {
     return null;
@@ -111,25 +112,27 @@ const BookButton = ({
           }}
         />
       </Animated.View>
-      <Animated.View
-        style={{
-          // flex: 2,
+      <TouchableNativeFeedback onPress={bookNow}>
+        <Animated.View
+          style={{
+            // flex: 2,
 
-          width: interpolate(scrollY, {
-            inputRange,
-            outputRange: [200, 200, 200, 320, 320],
-            extrapolate: Extrapolate.CLAMP,
-          }),
-          height: 60,
-          borderRadius: 10,
-          backgroundColor: 'green',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <Text style={{fontWeight: 'bold', fontSize: 18, color: 'white'}}>
-          book
-        </Text>
-      </Animated.View>
+            width: interpolate(scrollY, {
+              inputRange,
+              outputRange: [200, 200, 200, 320, 320],
+              extrapolate: Extrapolate.CLAMP,
+            }),
+            height: 60,
+            borderRadius: 10,
+            backgroundColor: 'green',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text style={{fontWeight: 'bold', fontSize: 18, color: 'white'}}>
+            book
+          </Text>
+        </Animated.View>
+      </TouchableNativeFeedback>
     </Animated.View>
   );
 };

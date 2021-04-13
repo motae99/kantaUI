@@ -4,7 +4,7 @@ import Catering from './catering';
 import Photography from './photography';
 import WeddingStage from './weddingStage';
 // import Other from './other';
-const Services = ({provider}) => {
+const Services = ({provider, selectedServices, setselectedServices}) => {
   const services = provider.services;
 
   if (!services) {
@@ -33,12 +33,23 @@ const Services = ({provider}) => {
 
   return (
     <View>
-      {services.includes('catering') ? <Catering provider={provider} /> : null}
+      {services.includes('catering') ? (
+        <Catering
+          provider={provider}
+          {...{selectedServices, setselectedServices}}
+        />
+      ) : null}
       {services.includes('weddingStage') ? (
-        <WeddingStage provider={provider} />
+        <WeddingStage
+          provider={provider}
+          {...{selectedServices, setselectedServices}}
+        />
       ) : null}
       {services.includes('photography') ? (
-        <Photography provider={provider} />
+        <Photography
+          provider={provider}
+          {...{selectedServices, setselectedServices}}
+        />
       ) : null}
     </View>
   );

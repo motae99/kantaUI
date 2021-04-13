@@ -3,10 +3,8 @@ import {TouchableNativeFeedback} from 'react-native-gesture-handler';
 
 import * as Animatable from 'react-native-animatable';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import {EventContext} from 'context/eventsContext';
 
-const Heart = () => {
-  const {selectedTime, setSelectedTime} = React.useContext(EventContext);
+const Heart = ({selectedTime, setSelectedTime}) => {
   const handleViewRef = useRef(null);
 
   const bounce = () => {

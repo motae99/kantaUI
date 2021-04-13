@@ -1,12 +1,9 @@
 import React, {useRef} from 'react';
 import {TouchableNativeFeedback} from 'react-native-gesture-handler';
-
 import * as Animatable from 'react-native-animatable';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {EventContext} from 'context/eventsContext';
 
-const Night = () => {
-  const {selectedTime, setSelectedTime} = React.useContext(EventContext);
+const Night = ({selectedTime, setSelectedTime}) => {
   const handleViewRef = useRef(null);
 
   const bounce = () => {

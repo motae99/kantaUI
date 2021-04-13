@@ -15,8 +15,15 @@ import {EventContext} from 'context/eventsContext';
 import Animated from 'react-native-reanimated';
 const {interpolate, Extrapolate} = Animated;
 
-const DateTime = ({dateAction, scrollY, inputRange, yInputRange, item}) => {
-  const {date, setDate, selectedTime} = React.useContext(EventContext);
+const DateTime = ({
+  dateAction,
+  scrollY,
+  inputRange,
+  item,
+  selectedTime,
+  setSelectedTime,
+}) => {
+  const {date, setDate} = React.useContext(EventContext);
 
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
@@ -136,28 +143,20 @@ const DateTime = ({dateAction, scrollY, inputRange, yInputRange, item}) => {
                   {
                     translateX: interpolate(scrollY, {
                       inputRange,
-                      outputRange: [120, 120, 120, 0, 0],
+                      outputRange: [60, 60, 60, 0, 0],
                       extrapolate: Extrapolate.CLAMP,
                     }),
                   },
                 ],
               },
             ]}>
-            {selectedTime === 'night' ? <Night /> : <Evening />}
+            {selectedTime === 'night' ? (
+              <Night {...{selectedTime, setSelectedTime}} />
+            ) : (
+              <Evening {...{selectedTime, setSelectedTime}} />
+            )}
           </Animated.View>
-          <Animated.View
-            style={[
-              styles.icon,
-              {
-                opacity: interpolate(scrollY, {
-                  inputRange,
-                  outputRange: [0, 0, 0, 1, 1],
-                  extrapolate: Extrapolate.CLAMP,
-                }),
-              },
-            ]}>
-            {selectedTime === 'night' ? <Evening /> : <Night />}
-          </Animated.View>
+
           <Animated.View
             style={[
               styles.icon,

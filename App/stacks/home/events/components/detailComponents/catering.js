@@ -9,11 +9,7 @@ import FastImage from 'react-native-fast-image';
 import {EventContext} from 'context/eventsContext';
 import Animated from 'react-native-reanimated';
 const {width, height} = Dimensions.get('window');
-const Catering = ({provider}) => {
-  const {selectedServices, setselectedServices} = React.useContext(
-    EventContext,
-  );
-
+const Catering = ({provider, selectedServices, setselectedServices}) => {
   const [options, setOptions] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState('');

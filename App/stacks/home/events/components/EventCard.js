@@ -26,19 +26,14 @@ const CardWidth = height / 2.15;
 const CardHight = height / 3.8;
 
 const EventCard = ({data, navigation}) => {
-  // const {navigate} = useNavigation();
-  const {date, setDate, selectedTime, setSelectedTime} = React.useContext(
-    EventContext,
-  );
-
   const list = React.useRef();
-  const [current, setCurrent] = React.useState(0);
-  // const [selectedTime, setSelectedTime] = React.useState('evening');
+  const [selectedTime, setSelectedTime] = React.useState('evening');
 
-  const onViewRef = React.useRef(({viewableItems, changed}) => {
-    setCurrent(viewableItems[0]?.index);
-  });
-  const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 50});
+  // const [current, setCurrent] = React.useState(0);
+  // const onViewRef = React.useRef(({viewableItems, changed}) => {
+  //   setCurrent(viewableItems[0]?.index);
+  // });
+  // const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 50});
 
   const scrollx = React.useRef(new Animated.Value(0)).current;
   return (
@@ -95,7 +90,7 @@ const EventCard = ({data, navigation}) => {
                   setTimeout(() => {
                     navigation.navigate('EventDetail', {
                       selectedItem: data,
-                      selectedImageIndex: current,
+                      time: selectedTime,
                     });
                   }, 100);
                 }}>
@@ -189,7 +184,7 @@ const EventCard = ({data, navigation}) => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <EveningButton />
+          <EveningButton {...{selectedTime, setSelectedTime}} />
           {/* <Fontisto name="day-sunny" size={18} color="black" /> */}
         </View>
         <View
@@ -201,7 +196,7 @@ const EventCard = ({data, navigation}) => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <NightButton />
+          <NightButton {...{selectedTime, setSelectedTime}} />
         </View>
       </View>
       <Text
