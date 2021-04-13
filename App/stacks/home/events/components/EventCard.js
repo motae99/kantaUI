@@ -54,8 +54,8 @@ const EventCard = ({data, navigation}) => {
         pagingEnabled={true}
         decelerationRate={'fast'}
         horizontal
-        onViewableItemsChanged={onViewRef.current}
-        viewabilityConfig={viewConfigRef.current}
+        // onViewableItemsChanged={onViewRef.current}
+        // viewabilityConfig={viewConfigRef.current}
         // onMomentumScrollEnd={(ev) => {
         //   const newIndex = Math.floor(ev.nativeEvent.contentOffset.x / width);
         //   console.log(newIndex + 1);
