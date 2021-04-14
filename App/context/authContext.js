@@ -3,6 +3,7 @@ import React, {createContext, useState, useEffect} from 'react';
 import firebase from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-community/async-storage';
 import {LoginManager, AccessToken} from 'react-native-fbsdk';
 import {GoogleSignin} from '@react-native-community/google-signin';
 import Toast from 'react-native-toast-message';
@@ -26,7 +27,22 @@ const AuthContextProvider = (props) => {
 
   const [uploadProgress, setUploadProgress] = useState(null);
 
-  // const [signUp, setSignUp] = React.useState(false);
+  async function addUserToken() {
+    const fcmToken = await AsyncStorage.getItem('fcmToken');
+    return firestore().collection('users').doc(User?.uid).update({
+      fcmToken: fcmToken,
+    });
+  }
+
+  async function checkToken(data) {
+    const fcmToken = await AsyncStorage.getItem('fcmToken');
+    if (data.fcmToken === fcmToken) {
+      return firestore().collection('users').doc(User?.uid).update({
+        fcmToken: fcmToken,
+      });
+    }
+    return null;
+  }
 
   function createNewUser(userInfo) {
     return firestore().collection('users').doc(userInfo.uid).set(userInfo);
@@ -42,20 +58,26 @@ const AuthContextProvider = (props) => {
     setUser(user);
   }
 
-  useEffect(() => {
+  useEffect(async () => {
     const subscriber = firestore()
       .collection('users')
       .doc(User?.uid)
       .onSnapshot((documentSnapshot) => {
         if (documentSnapshot.exists) {
           // console.log('User data: ', documentSnapshot.data());
-          setDbUser(documentSnapshot.data());
+          const data = documentSnapshot.data();
+
+          if (!data.fcmToken) {
+            addUserToken();
+          } else {
+            checkToken(data);
+          }
+          setDbUser(data);
         } else {
           setDbUser(null);
         }
       });
 
-    // Stop listening for updates when no longer required
     return () => subscriber();
   }, [User]);
 
@@ -503,68 +525,3 @@ const AuthContextProvider = (props) => {
 };
 
 export default AuthContextProvider;
-
-//   Toast.show({
-//     text1: I18n.t('ToastSuccessSignUpTitle'),
-//     text2: I18n.t('ToastSuccessSignUpSubTitle'),
-//     visibilityTime: 8000,
-//     autoHide: true,
-//     topOffset: 60,
-//   });
-// Toast.show({
-//   type: 'error',
-//   text1: I18n.t('ToastErrorSignUpTitle'),
-//   text2: error.message,
-//   // position: 'top | bottom',
-//   visibilityTime: 8000,
-//   autoHide: true,
-//   topOffset: 60,
-//   // bottomOffset: 40,
-// });
-
-// const verifyNumber = async (number) => {
-//   const requestedNo = await auth().verifyPhoneNumber(number)
-//           .on('state_changed', (phoneAuthSnapshot) => {
-//               console.log('State: ', phoneAuthSnapshot.state);
-//             }, (error) => {
-//               console.error(error);
-//             }, (phoneAuthSnapshot) => {
-//               console.log('Success');
-//             });
-// }
-
-// const credential = auth.PhoneAuthProvider.credential(snapshot.verificationId, code);
-// await auth().currentUser.updatePhoneNumber(credential);
-
-// // Successful login - onAuthStateChanged is triggered
-// auth().onAuthStateChanged( async (user) => {
-//     if (user) {
-//     // Stop the login flow / Navigate to next page
-//       // console.log('User info for provider: ', user);
-//       // console.log('+++++++++_____________========')
-//       this.setState({status: 'success'});
-//       const userData =  {
-//           uid: user.uid,
-//           timestamp: Date.now(),
-//           displayName: user.displayName,
-//           email: user.email,
-//           phoneNumber: user.phoneNumber,
-//           photoURL: user.photoURL,
-//         };
-//       try{
-//         await firestore()
-//         .collection('users')
-//         .doc(user.uid)
-//         .update(userData)
-//         setTimeout(() => { this.props.navigation.navigate('Initial') }, 1000)
-//       }
-//       catch(error){
-//         await firestore()
-//         .collection('users')
-//         .doc(user.uid)
-//         .set(userData)
-//         setTimeout(() => { this.props.navigation.navigate('Initial') }, 1000)
-//       }
-
-//     }
-//   });
