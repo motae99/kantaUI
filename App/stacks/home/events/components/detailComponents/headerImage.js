@@ -9,7 +9,7 @@ import {
   height,
   HEADER_IMAGE_HEIGHT,
   MIN_HEADER_HEIGHT,
-} from 'events/detail';
+} from 'events/components/constants';
 
 import Animated from 'react-native-reanimated';
 const {interpolate, Extrapolate} = Animated;

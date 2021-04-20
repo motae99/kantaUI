@@ -10,7 +10,7 @@ import {
   height,
   HEADER_IMAGE_HEIGHT,
   MIN_HEADER_HEIGHT,
-} from 'events/detail';
+} from 'events/components/constants';
 
 import HeartButton from 'events/components/heart';
 import ShareButton from 'events/components/share';

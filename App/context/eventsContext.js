@@ -6,7 +6,7 @@ export const EventContext = createContext();
 const EventContextProvider = (props) => {
   const [eventProviders, setEventProviders] = useState(null);
   const [selectedServices, setselectedServices] = useState([]);
-  const [date, setDate] = useState(new Date(1598051730000));
+  const [date, setDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState('evening');
 
   useEffect(() => {

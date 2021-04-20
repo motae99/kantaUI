@@ -12,9 +12,10 @@ import Facilities from 'events/components/detailComponents/facilities';
 import Header from 'events/components/detailComponents/detailHeader';
 import DateTime from 'events/components/detailComponents/dateTime';
 import PayComponent from 'events/components/detailComponents/payComponent';
+import moment from 'moment';
+
 import {AuthContext} from 'context/authContext';
 import {EventContext} from 'context/eventsContext';
-import moment from 'moment';
 
 import Animated from 'react-native-reanimated';
 
@@ -73,7 +74,7 @@ const Detail = ({route, navigation}) => {
       providerId: selectedItem.key,
       providerName: selectedItem.name,
       providerNamePhotoURL: selectedItem.files[0].uri,
-      date: date,
+      date: moment(date).format('YYYY-MM-DD'),
       timeStamp: Date.now(),
       time: selectedTime,
       basicCost: cost.initial,
@@ -82,6 +83,7 @@ const Detail = ({route, navigation}) => {
       bookingStatus: 'booked',
     };
 
+    // console.log(moment(date).format('YYYY-MM-DD'));
     creatBooking(data).then(navigation.goBack());
     // console.log('date: ', moment(data.date).format('DD/MM/YYYY'));
     // console.log('timeStamp:', Date.now());

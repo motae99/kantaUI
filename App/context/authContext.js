@@ -1,9 +1,8 @@
 import React, {createContext, useState, useEffect} from 'react';
-// import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 import firebase from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import AsyncStorage from '@react-native-community/async-storage';
 import {LoginManager, AccessToken} from 'react-native-fbsdk';
 import {GoogleSignin} from '@react-native-community/google-signin';
 import Toast from 'react-native-toast-message';
@@ -21,23 +20,23 @@ GoogleSignin.configure({
 const AuthContextProvider = (props) => {
   const [confirm, setConfirm] = useState(null);
   const [phoneNo, setPhoneNo] = useState('');
-  const [User, setUser] = React.useState(null);
-  const [dbUser, setDbUser] = React.useState(null);
-  const [likes, setLikes] = React.useState(null);
+  const [User, setUser] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const [dbUser, setDbUser] = useState(null);
 
   const [uploadProgress, setUploadProgress] = useState(null);
 
-  async function addUserToken() {
-    const fcmToken = await AsyncStorage.getItem('fcmToken');
-    return firestore().collection('users').doc(User?.uid).update({
-      fcmToken: fcmToken,
-    });
-  }
-
   async function checkToken(data) {
     const fcmToken = await AsyncStorage.getItem('fcmToken');
+
+    if (!data.fcmToken) {
+      return firestore().collection('users').doc(userId).update({
+        fcmToken: fcmToken,
+      });
+    }
+
     if (data.fcmToken === fcmToken) {
-      return firestore().collection('users').doc(User?.uid).update({
+      return firestore().collection('users').doc(userId).update({
         fcmToken: fcmToken,
       });
     }
@@ -56,30 +55,29 @@ const AuthContextProvider = (props) => {
 
   function onAuthStateChanged(user) {
     setUser(user);
+    if (user) {
+      setUserId(user.uid);
+    }
   }
 
-  useEffect(async () => {
+  useEffect(() => {
     const subscriber = firestore()
       .collection('users')
-      .doc(User?.uid)
-      .onSnapshot((documentSnapshot) => {
+      .doc(userId)
+      .onSnapshot(async (documentSnapshot) => {
         if (documentSnapshot.exists) {
-          // console.log('User data: ', documentSnapshot.data());
           const data = documentSnapshot.data();
-
-          if (!data.fcmToken) {
-            addUserToken();
-          } else {
-            checkToken(data);
-          }
+          await checkToken(data);
           setDbUser(data);
         } else {
           setDbUser(null);
         }
       });
 
+    // Stop listening for updates when no longer required
     return () => subscriber();
-  }, [User]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId]);
 
   // useEffect(() => {
   //   const subscriber = firestore()
@@ -499,7 +497,6 @@ const AuthContextProvider = (props) => {
   return (
     <AuthContext.Provider
       value={{
-        likes,
         confirm,
         signIn,
         googleSign,

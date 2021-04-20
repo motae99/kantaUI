@@ -1,6 +1,6 @@
 import React, {useRef, useContext, useState} from 'react';
 import {View, Text, FlatList, Dimensions, Image} from 'react-native';
-import {SECTIONS_TOP_MARGIN} from 'events/detail';
+import {SECTIONS_TOP_MARGIN} from 'events/components/constants';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';

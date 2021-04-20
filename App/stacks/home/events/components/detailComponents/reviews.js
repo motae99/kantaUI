@@ -4,7 +4,7 @@ import {TouchableOpacity, View, Text, Image} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import moment from 'moment';
 import {Rating} from 'react-native-elements';
-import {SECTIONS_TOP_MARGIN} from 'events/detail';
+import {SECTIONS_TOP_MARGIN} from 'events/components/constants';
 
 const Reviews = ({item}) => {
   if (!item.reviewSnippet) {

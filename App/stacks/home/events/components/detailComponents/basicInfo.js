@@ -7,7 +7,11 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as Animatable from 'react-native-animatable';
 import Animated from 'react-native-reanimated';
 const {interpolate, Extrapolate} = Animated;
-import {HEADER_IMAGE_HEIGHT, fadeIn, SECTIONS_TOP_MARGIN} from 'events/detail';
+import {
+  HEADER_IMAGE_HEIGHT,
+  fadeIn,
+  SECTIONS_TOP_MARGIN,
+} from 'events/components/constants';
 
 const BasicInfo = ({item, scrollY}) => {
   const opacity = interpolate(scrollY, {

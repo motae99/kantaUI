@@ -3,7 +3,7 @@ import React from 'react';
 import {Text, View} from 'react-native';
 import StaticMap from 'components/staticMap';
 import * as Animatable from 'react-native-animatable';
-import {height, SECTIONS_TOP_MARGIN} from 'events/detail';
+import {height, SECTIONS_TOP_MARGIN} from 'events/components/constants';
 
 const LocationMap = ({item}) => {
   return (

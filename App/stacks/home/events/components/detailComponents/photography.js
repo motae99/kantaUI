@@ -2,7 +2,7 @@
 import React, {useEffect, useContext, useState} from 'react';
 import {View, Text, FlatList, Dimensions, TouchableOpacity} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
-import {SECTIONS_TOP_MARGIN} from 'events/detail';
+import {SECTIONS_TOP_MARGIN} from 'events/components/constants';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';

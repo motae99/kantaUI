@@ -24,9 +24,22 @@ const ShareButton = ({item}) => {
         android: {
           packageName: 'com.kantaui',
         },
+        ios: {
+          bundleId: 'IOS bundle ID',
+        },
       },
       dynamicLinks.ShortLinkType.SHORT,
     );
+
+    //   new firebase.links.DynamicLink(
+    //     encodeURI(`https://eventsmag.page.link/${id}`),
+    //     'eventsmag.page.link'
+    // ).android.setPackageName('app_android_package_name')
+    // .ios.setBundleId('app_ios_bundle_id');
+
+    // const dymcLink = await firebase.links()
+    //     .createShortDynamicLink(link, `UNGUESSABLE`)
+    //     .then((url) => decodeURIComponent(url));
 
     // console.log(sharedUrl);
 
