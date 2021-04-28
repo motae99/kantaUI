@@ -7,10 +7,11 @@ import Tabs from './tabs';
 import Beauty from 'beauty';
 import BeautyList from 'beauty/beautyList';
 import Photo from 'photo';
-import EventList from 'events/list';
+import Event from 'events';
 import EventDetail from 'events/detail';
-import EventMap from 'events/eventMap';
 import PlannerDetail from 'events/plannerDetail';
+import Calendar from 'events/calendar';
+import Filter from 'events/filter';
 
 import Phone from 'auth/phone';
 // enabledScreens();
@@ -27,12 +28,9 @@ const HomeStack = () => {
         <Stack.Screen name="BeautyList" component={BeautyList} />
         <Stack.Screen name="Photo" component={Photo} />
 
-        <Stack.Screen name="EventList" component={EventList} />
-        <Stack.Screen
-          name="EventMap"
-          component={EventMap}
-          // options={{...TransitionPresets.SlideFromRightIOS}}
-        />
+        <Stack.Screen name="Event" component={Event} />
+        <Stack.Screen name="Calendar" component={Calendar} />
+        <Stack.Screen name="Filter" component={Filter} />
         <Stack.Screen
           options={() => ({
             gestureEnabled: false,

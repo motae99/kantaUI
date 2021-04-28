@@ -358,7 +358,7 @@ const App = ({navigation}) => {
                   }}
                   onPress={() => {
                     if (item.key === '567') {
-                      navigation.navigate('EventList');
+                      navigation.navigate('Event');
                     }
                     if (item.key === '123') {
                       navigation.navigate('Beauty');

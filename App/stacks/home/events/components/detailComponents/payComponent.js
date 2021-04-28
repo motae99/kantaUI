@@ -124,7 +124,7 @@ const BookButton = ({
             }),
             height: 60,
             borderRadius: 10,
-            backgroundColor: 'green',
+            backgroundColor: '#219CAB',
             justifyContent: 'center',
             alignItems: 'center',
           }}>

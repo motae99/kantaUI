@@ -138,7 +138,7 @@ const Detail = ({route, navigation}) => {
             },
           },
         ])}
-        scrollEventThrottle={1}
+        scrollEventThrottle={16}
         contentContainerStyle={{
           paddingTop: HEADER_IMAGE_HEIGHT,
           paddingHorizontal: 18,

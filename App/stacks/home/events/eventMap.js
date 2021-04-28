@@ -1,4 +1,6 @@
-import React from 'react';
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable no-unused-vars */
+import React, {useRef, useContext, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -21,7 +23,6 @@ import MapView, {
   AnimatedRegion,
 } from 'react-native-maps';
 
-import imagesData from './components/eventData';
 import Card from './components/EventMapCard';
 
 import {EventContext} from 'context/eventsContext';
@@ -38,17 +39,17 @@ const region = {
 };
 
 const eventMap = ({navigation}) => {
-  const {eventProviders} = React.useContext(EventContext);
+  const {eventProviders} = useContext(EventContext);
 
-  const [current, setCurrent] = React.useState(0);
-  const mapRef = React.useRef();
-  const scrollX = React.useRef(new Animated.Value(0)).current;
-  const cardlList = React.useRef();
+  const [current, setCurrent] = useState(0);
+  const mapRef = useRef();
+  const scrollX = useRef(new Animated.Value(0)).current;
+  const cardlList = useRef();
 
-  const onViewRef = React.useRef(({viewableItems, changed}) => {
+  const onViewRef = useRef(({viewableItems, changed}) => {
     setCurrent(viewableItems[0]?.index);
   });
-  const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 50});
+  const viewConfigRef = useRef({viewAreaCoveragePercentThreshold: 50});
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -62,7 +63,7 @@ const eventMap = ({navigation}) => {
         350,
       );
     }, 10);
-  }, [current]);
+  }, [current, eventProviders]);
 
   return (
     <View style={styles.container}>
@@ -115,13 +116,13 @@ const eventMap = ({navigation}) => {
           <Card data={item} navigation={navigation} />
           // </View>
         )}
-        contentContainerStyle={
-          {
-            // alignItems: 'center',
-            // justifyContent: 'center',
-            // marginHorizontal: 18,
-          }
-        }
+        // contentContainerStyle={
+        //   {
+        //     // alignItems: 'center',
+        //     // justifyContent: 'center',
+        //     // marginHorizontal: 18,
+        //   }
+        // }
         keyExtractor={(item) => item.key}
         horizontal
         scrollEventThrottle={1}

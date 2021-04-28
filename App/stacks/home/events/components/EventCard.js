@@ -25,8 +25,9 @@ const {width, height} = Dimensions.get('window');
 const CardWidth = height / 2.15;
 const CardHight = height / 3.8;
 
-const EventCard = ({data, navigation}) => {
+const EventCard = ({data}) => {
   const list = React.useRef();
+  const navigation = useNavigation();
   const [selectedTime, setSelectedTime] = React.useState('evening');
 
   // const [current, setCurrent] = React.useState(0);

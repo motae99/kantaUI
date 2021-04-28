@@ -23,6 +23,7 @@ const AuthContextProvider = (props) => {
   const [User, setUser] = useState(null);
   const [userId, setUserId] = useState(null);
   const [dbUser, setDbUser] = useState(null);
+  const [likes, setLikes] = useState(null);
 
   const [uploadProgress, setUploadProgress] = useState(null);
 
@@ -45,6 +46,42 @@ const AuthContextProvider = (props) => {
 
   function createNewUser(userInfo) {
     return firestore().collection('users').doc(userInfo.uid).set(userInfo);
+  }
+
+  function deleteLike(id) {
+    // console.log(id);
+    return firestore().collection('userFavourite').doc(id).delete();
+  }
+
+  function unLike(item) {
+    const object = firestore()
+      .collection('userFavourite')
+      .where('userId', '==', userId)
+      .where('providerId', '==', item.key)
+      .limit(1)
+      .get()
+      .then((querySnapshot) => {
+        if (querySnapshot) {
+          deleteLike(querySnapshot.docs[0].id);
+        }
+      })
+      .catch((error) => {
+        console.log('Error : ', error);
+      });
+
+    console.log(object);
+  }
+
+  function addLike(item) {
+    // console.log('like');
+    const data = {
+      userId: userId,
+      providerId: item.key,
+      type: 'events',
+      createdAt: firestore.FieldValue.serverTimestamp(),
+      item,
+    };
+    return firestore().collection('userFavourite').add(data);
   }
 
   function connectProvider(newData) {
@@ -79,25 +116,25 @@ const AuthContextProvider = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
-  // useEffect(() => {
-  //   const subscriber = firestore()
-  //     .collection('userFavourite')
-  //     .where('userUid', '==', dbUser?.uid)
-  //     .onSnapshot((querySnapshot) => {
-  //       if (querySnapshot) {
-  //         const favourite = querySnapshot.docs.map((documentSnapshot) => {
-  //           return {
-  //             ...documentSnapshot.data(),
-  //             key: documentSnapshot.id,
-  //           };
-  //         });
-  //         if (favourite && favourite.length > 0) {
-  //           setLikes(favourite);
-  //         }
-  //       }
-  //     });
-  //   return () => subscriber();
-  // }, [dbUser]);
+  useEffect(() => {
+    const subscriber = firestore()
+      .collection('userFavourite')
+      // .where('userUid', '==', userId)
+      .onSnapshot((querySnapshot) => {
+        if (querySnapshot) {
+          const favourite = querySnapshot.docs.map((documentSnapshot) => {
+            return {
+              ...documentSnapshot.data(),
+              key: documentSnapshot.id,
+            };
+          });
+          if (favourite && favourite.length > 0) {
+            setLikes(favourite);
+          }
+        }
+      });
+    return () => subscriber();
+  }, [userId]);
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
@@ -515,6 +552,9 @@ const AuthContextProvider = (props) => {
         dbUser,
         uploadProgress,
         setUploadProgress,
+        likes,
+        unLike,
+        addLike,
       }}>
       {props.children}
     </AuthContext.Provider>

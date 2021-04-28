@@ -2,6 +2,7 @@ import React, {useRef, useContext, useState, useReducer} from 'react';
 import {StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {AuthContext} from 'context/authContext';
+import {EventContext} from 'context/eventsContext';
 
 import Svg, {Path} from 'react-native-svg';
 
@@ -32,7 +33,8 @@ import Svg, {Path} from 'react-native-svg';
 // }
 
 const Heart = ({item}) => {
-  const {userLikes, likes} = useContext(AuthContext);
+  const {unLike, addLike} = useContext(AuthContext);
+  const {unHeart} = useContext(EventContext);
 
   // const [state, dispatch] = useReducer(reducer, item)
   // console.log(item);
@@ -42,7 +44,9 @@ const Heart = ({item}) => {
 
   const bounce = () => {
     handleViewRef.current.bounce(300).then((endState) => {
+      // hearted ? unLike(item) : addLike(item);
       toggleHeart(!hearted);
+      unHeart(item, !item.isHearted);
     });
   };
 

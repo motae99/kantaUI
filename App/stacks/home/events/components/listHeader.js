@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
@@ -15,6 +16,7 @@ import * as Animatable from 'react-native-animatable';
 import {SharedElement} from 'react-navigation-shared-element';
 import {Sizing, Typography, Outlines, Colors, Buttons} from 'styles';
 import i18n, {isRTL} from 'utils/i18n';
+import {useNavigation} from '@react-navigation/native';
 
 // import EventPlanner from './EventPlanerCard';
 import Searchbar from './SearchBar';
@@ -30,21 +32,21 @@ const ITEM_HEIGHT = s * 1.5;
 const RADIUS = 18;
 const FULL_SIZE = s + SPACING * 2;
 
-const listHeader = ({navigation}) => {
+const listHeader = () => {
   const scrollx = React.useRef(new Animated.Value(0)).current;
+  const navigation = useNavigation();
 
   return (
     <View
       style={{
-        marginTop: Sizing.x80,
+        marginTop: Sizing.x10,
         // paddingLeft: 18,
         // flex: 1,
       }}>
-      <Searchbar />
+      {/* <Searchbar /> */}
       <View
         style={{
           width,
-          marginTop: Sizing.x30,
           // paddingLeft: 18,
           // flex: 1,
         }}>

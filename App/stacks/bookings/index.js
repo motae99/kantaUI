@@ -1,65 +1,47 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Dimensions,
-  Animated,
-  StatusBar,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import firestore from '@react-native-firebase/firestore';
-import BookingCard from 'stacks/bookings/components/bookingCard';
-import {Sizing, Outlines, Colors, Typography} from 'styles';
+import * as React from 'react';
+import {StatusBar} from 'react-native';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 
-const BookingList = () => {
-  const [bookings, setBookings] = useState([]);
+import Booked from './booked';
+import Confirmed from './confirmed';
+import Previous from './previous';
 
-  useEffect(() => {
-    const subscriber = firestore()
-      .collection('bookings')
-      .onSnapshot((querySnapshot) => {
-        if (querySnapshot) {
-          const data = querySnapshot.docs.map((documentSnapshot) => {
-            return {
-              ...documentSnapshot.data(),
-              key: documentSnapshot.id,
-            };
-          });
-          if (data && data.length > 0) {
-            setBookings(data);
-          }
-        }
-      });
+const Tab = createMaterialTopTabNavigator();
 
-    return () => subscriber();
-  }, []);
-
+const MyTabs = () => {
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView mode="margin" style={{flex: 1}}>
       <StatusBar
-        barStyle={'dark-content'}
+        barStyle={'light-content'}
         translucent
-        backgroundColor="transparent"
+        backgroundColor="black"
       />
+      <Tab.Navigator
+        initialRouteName="Booked"
+        tabBarOptions={{
+          activeTintColor: '#e91e63',
+          labelStyle: {fontSize: 12},
+          style: {backgroundColor: 'powderblue'},
+        }}>
+        <Tab.Screen
+          name="Booked"
+          component={Booked}
+          options={{tabBarLabel: 'Booked'}}
+        />
+        <Tab.Screen
+          name="Confirmed"
+          component={Confirmed}
+          options={{tabBarLabel: 'Confirmed'}}
+        />
 
-      <Animated.FlatList
-        data={bookings}
-        keyExtractor={(item) => item.key}
-        showsVerticalScrollIndicator={false}
-        initialNumToRender={3}
-        contentContainerStyle={{
-          marginTop: Sizing.x40,
-          marginHorizontal: Sizing.x20,
-        }}
-        renderItem={({item, index}) => {
-          return <BookingCard {...{item, index}} />;
-        }}
-      />
+        <Tab.Screen
+          name="Previous"
+          component={Previous}
+          options={{tabBarLabel: 'Previous'}}
+        />
+      </Tab.Navigator>
     </SafeAreaView>
   );
 };
-export default BookingList;
+export default MyTabs;
