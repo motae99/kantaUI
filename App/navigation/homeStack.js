@@ -1,6 +1,11 @@
 import React from 'react';
-// import {enabledScreens} from 'react-native-screens';
-// import {createStackNavigator} from '@react-navigation/stack';
+import {Easing} from 'react-native';
+import {
+  createStackNavigator,
+  TransitionPresets,
+  CardStyleInterpolators,
+  TransitionSpecs,
+} from '@react-navigation/stack';
 import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
 import EventContextProvider from 'context/eventsContext';
 import Tabs from './tabs';
@@ -12,15 +17,79 @@ import EventDetail from 'events/detail';
 import PlannerDetail from 'events/plannerDetail';
 import Calendar from 'events/calendar';
 import Filter from 'events/filter';
+import Notifications from 'stacks/common/notifications';
+import Faviourate from 'stacks/common/faviourate';
 
 import Phone from 'auth/phone';
 // enabledScreens();
 const Stack = createSharedElementStackNavigator();
+const ModalStack = createStackNavigator();
 
+const modalOpen = {
+  animation: 'spring',
+  config: {
+    stiffness: 1000,
+    damping: 50,
+    mass: 3,
+    overshootClamping: false,
+    restDisplacementThreshold: 0.01,
+    restSpeedThreshold: 0.01,
+  },
+};
+
+const modalClose = {
+  animation: 'timing',
+  config: {
+    duration: 500,
+    easing: Easing.linear,
+  },
+};
+
+function MainStackScreen() {
+  return (
+    <ModalStack.Navigator
+      mode="modal"
+      // headerMode={'none'}
+      // screenOptions={{
+      //   gestureEnabled: true,
+      //   gestureDirection: 'horizontal',
+      //   // cardStyleInterpolator: CardStyleInterpolators.SlideFromRightIOS,
+      //   transitionSpec: {
+      //     open: modalOpen,
+      //     close: modalClose,
+      //   },
+      // }}
+      // animation="fade"
+      // headerMode="float"
+    >
+      <ModalStack.Screen
+        name="Calendar"
+        component={Calendar}
+        options={{
+          title: 'Notifcations',
+          transitionSpec: {
+            open: TransitionSpecs.TransitionIOSSpec,
+            close: TransitionSpecs.TransitionIOSSpec,
+          },
+        }}
+      />
+      <ModalStack.Screen name="Filter" component={Filter} />
+      <ModalStack.Screen
+        name="Notifications"
+        component={Notifications}
+        options={{
+          title: 'Profile',
+          cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+        }}
+      />
+      <ModalStack.Screen name="Faviourate" component={Faviourate} />
+    </ModalStack.Navigator>
+  );
+}
 const HomeStack = () => {
   return (
     <EventContextProvider>
-      <Stack.Navigator headerMode={'none'}>
+      <Stack.Navigator headerMode={'none'} intial="Tabs">
         <Stack.Screen name="Tabs" component={Tabs} />
         <Stack.Screen name="Phone" component={Phone} />
 
@@ -29,8 +98,6 @@ const HomeStack = () => {
         <Stack.Screen name="Photo" component={Photo} />
 
         <Stack.Screen name="Event" component={Event} />
-        <Stack.Screen name="Calendar" component={Calendar} />
-        <Stack.Screen name="Filter" component={Filter} />
         <Stack.Screen
           options={() => ({
             gestureEnabled: false,
@@ -81,6 +148,12 @@ const HomeStack = () => {
           })}
           name="PlannerDetail"
           component={PlannerDetail}
+        />
+
+        <Stack.Screen
+          name="Modal"
+          component={MainStackScreen}
+          // options={{headerShown: false}}
         />
       </Stack.Navigator>
     </EventContextProvider>

@@ -10,6 +10,7 @@ export const screen: Record<Screen, number> = {
 type Layout =
   | "x5"
   | "x10"
+  | "x15"
   | "x20"
   | "x30"
   | "x40"
@@ -20,6 +21,7 @@ type Layout =
 export const layout: Record<Layout, number> = {
   x5: 6,
   x10: 10,
+  x15: 14,
   x20: 18,
   x30: 26,
   x40: 34,
@@ -31,6 +33,7 @@ export const layout: Record<Layout, number> = {
 
 export const x5 = layout.x5
 export const x10 = layout.x10
+export const x15 = layout.x15
 export const x20 = layout.x20
 export const x30 = layout.x30
 export const x40 = layout.x40

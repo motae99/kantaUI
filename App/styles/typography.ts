@@ -36,7 +36,7 @@ export const fontWeight: Record<FontWeight, TextStyle> = {
   },
 }
 
-type LineHeight = "x10" | "x20" | "x30" | "x40" | "x50" | "x60"
+type LineHeight = "x10" | "x20" | "x30" | "x40" | "x50" | "x60" | "x70"
 export const lineHeight: Record<LineHeight, TextStyle> = {
   x10: {
     lineHeight: 12,
@@ -56,9 +56,12 @@ export const lineHeight: Record<LineHeight, TextStyle> = {
   x60: {
     lineHeight: 48,
   },
+  x70: {
+    lineHeight: 52,
+  },
 }
 
-type Header = "x10" | "x20" | "x40" | "x30" |"x50" | "x60"
+type Header = "x10" | "x20" | "x40" | "x30" |"x50" | "x60" 
 export const header: Record<Header, TextStyle> = {
   x10: {
     ...fontSize.x10,

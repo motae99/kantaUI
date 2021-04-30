@@ -114,7 +114,10 @@ const Header = ({scrollY}) => {
           }}>
           <TouchableOpacity
             onPress={() => {
-              console.log('pressed');
+              navigation.navigate('Modal', {
+                screen: 'Notifications',
+                initial: true,
+              });
             }}>
             <Ionicons
               name="notifications-off-circle-outline"

@@ -59,7 +59,12 @@ const DateTimePick = ({scrollY}) => {
             borderRightWidth: 0.8,
             flex: 2,
           }}
-          onPress={() => navigation.navigate('Calendar')}>
+          onPress={() =>
+            navigation.navigate('Modal', {
+              screen: 'Calendar',
+              initial: false,
+            })
+          }>
           <Ionicons name="calendar-outline" size={25} color="#219CAB" />
           <Text style={{paddingHorizontal: 10}}>
             {moment(date).format('YYYY-MM-DD')}
