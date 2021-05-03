@@ -1,7 +1,8 @@
 import * as React from 'react';
-import {StatusBar} from 'react-native';
+import {StatusBar, View} from 'react-native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {Sizing, Outlines, Colors, Typography} from 'styles';
 
 import Booked from './booked';
 import Confirmed from './confirmed';
@@ -15,14 +16,19 @@ const MyTabs = () => {
       <StatusBar
         barStyle={'light-content'}
         translucent
-        backgroundColor="black"
+        backgroundColor={Colors.primary.brand}
       />
       <Tab.Navigator
         initialRouteName="Booked"
         tabBarOptions={{
-          activeTintColor: '#e91e63',
-          labelStyle: {fontSize: 12},
-          style: {backgroundColor: 'powderblue'},
+          activeTintColor: Colors.primary.s600,
+          labelStyle: {...Typography.header.x20},
+          style: {
+            backgroundColor: Colors.primary.brand,
+            height: 80,
+            justifyContent: 'center',
+          },
+          indicatorStyle: {backgroundColor: Colors.primary.s200},
         }}>
         <Tab.Screen
           name="Booked"

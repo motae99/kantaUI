@@ -1,26 +1,23 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Dimensions,
-  Animated,
-  StatusBar,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-} from 'react-native';
+import {View, Animated} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import firestore from '@react-native-firebase/firestore';
 import BookingCard from 'stacks/bookings/components/bookingCard';
 import {Sizing, Outlines, Colors, Typography} from 'styles';
+import moment from 'moment';
 
 const BookingList = () => {
   const [bookings, setBookings] = useState([]);
-
+  const today = moment(Date.now()).format('YYYY-MM-DD');
   useEffect(() => {
     const subscriber = firestore()
       .collection('bookings')
+      .where('bookingStatus', '==', 'booked')
+      .where('date', '>=', today)
+      .orderBy('date', 'desc')
+      .orderBy('timeStamp', 'desc')
       .onSnapshot((querySnapshot) => {
         if (querySnapshot) {
           const data = querySnapshot.docs.map((documentSnapshot) => {
@@ -39,27 +36,21 @@ const BookingList = () => {
   }, []);
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <StatusBar
-        barStyle={'dark-content'}
-        translucent
-        backgroundColor="transparent"
-      />
-
+    <View style={{flex: 1, backgroundColor: Colors.neutral.s200}}>
       <Animated.FlatList
         data={bookings}
         keyExtractor={(item) => item.key}
         showsVerticalScrollIndicator={false}
         initialNumToRender={3}
         contentContainerStyle={{
-          marginTop: Sizing.x40,
           marginHorizontal: Sizing.x20,
+          paddingTop: Sizing.x10,
         }}
         renderItem={({item, index}) => {
           return <BookingCard {...{item, index}} />;
         }}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 export default BookingList;

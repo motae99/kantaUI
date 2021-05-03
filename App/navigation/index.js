@@ -70,8 +70,7 @@ export default AppStack;
 
 // import React from 'react';
 // import {NavigationContainer} from '@react-navigation/native';
-// import AsyncStorage from '@react-native-community/async-storage';
-// import auth from '@react-native-firebase/auth';
+// import AsyncStorage from '@react-native-async-storage/async-storage';// import auth from '@react-native-firebase/auth';
 // import {LoginManager, AccessToken} from 'react-native-fbsdk';
 // import {GoogleSignin} from '@react-native-community/google-signin';
 // import AuthStack from './authStack';

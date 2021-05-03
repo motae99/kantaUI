@@ -42,6 +42,7 @@ const Detail = ({route, navigation}) => {
   const {selectedItem, time} = route.params;
   const {dbUser} = useContext(AuthContext);
   const {date, creatBooking} = useContext(EventContext);
+  // console.log('Provider ', dbUser);
 
   const scrollView = useRef(null);
   const list = useRef();
@@ -73,8 +74,10 @@ const Detail = ({route, navigation}) => {
       providerUserId: selectedItem.ownerId,
       providerId: selectedItem.key,
       providerName: selectedItem.name,
+      providerPhoneNumber: dbUser.phoneNumber,
       providerNamePhotoURL: selectedItem.files[0].uri,
       date: moment(date).format('YYYY-MM-DD'),
+      coordinate: selectedItem.coordinate,
       timeStamp: Date.now(),
       time: selectedTime,
       basicCost: cost.initial,

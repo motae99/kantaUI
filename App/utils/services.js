@@ -3,18 +3,12 @@ import {useEffect, useState} from 'react';
 import {Alert, Linking} from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import NavigationService from 'utils/navigationService';
 import * as RootNavigation from 'navigation';
 
 const Services = () => {
   const [localToken, setLocalToken] = useState(null);
-
-  function handleDynamicLink(link) {
-    console.log('link', link);
-    const testUrl = 'https://kantaui.page.link/HomeStack/EventList';
-    Linking.openURL(testUrl);
-  }
 
   const storageToken = async () => {
     const tokenStorage = await AsyncStorage.getItem('fcmToken')
@@ -22,6 +16,14 @@ const Services = () => {
       .catch((error) => console.log(error));
     return tokenStorage;
   };
+
+  storageToken();
+
+  function handleDynamicLink(link) {
+    console.log('link', link);
+    const testUrl = 'https://kantaui.page.link/HomeStack/EventList';
+    Linking.openURL(testUrl);
+  }
 
   const getFcmToken = async () => {
     const fcmToken = await messaging().getToken();
@@ -45,29 +47,49 @@ const Services = () => {
     }
   };
 
-  const processNotification = (remoteMessage, fromBackground) => {
+  const processNotification = async (remoteMessage, fromBackground) => {
+    await AsyncStorage.setItem('booking', JSON.stringify(8));
+
     let title = '';
     let body = '';
+    let timeStamp = null;
     let alertBtns = [];
 
     // Update a users messages list using AsyncStorage
-    // const currentMessages = await AsyncStorage.getItem('messages');
-    // const messageArray = JSON.parse(currentMessages);
-    // messageArray.push(remoteMessage.data);
-    // await AsyncStorage.setItem('messages', JSON.stringify(messageArray));
+    const currentMessages = await AsyncStorage.getItem('notifications');
+    const messageArray = JSON.parse(currentMessages);
+    const messageData = remoteMessage.data;
+    let notificationType = null;
+    if (messageData.type === 'booking') {
+      notificationType = 'booking';
+    }
+    if (messageData.type === 'offer') {
+      notificationType = 'offer';
+    }
+    if (messageData.type === 'social') {
+      notificationType = 'social';
+    }
+    const badge = await AsyncStorage.getItem(notificationType);
+    // eslint-disable-next-line radix
+    const count = badge ? parseInt(badge) + 1 : 1;
+    // await AsyncStorage.setItem('booking', toString(count));
+    messageArray.push(messageData);
+    await AsyncStorage.setItem('notifications', JSON.stringify(messageArray));
 
     if (remoteMessage) {
-      RootNavigation.navigate('EventList');
+      // RootNavigation.navigate('EventList');
+      console.log('processing Notification RemoteMessage', remoteMessage);
       if (remoteMessage.notification) {
         title = remoteMessage.notification.title;
         body = remoteMessage.notification.body;
       }
+      // timeStamp = remoteMessage.sentTime;
 
       if (remoteMessage.data) {
         if (fromBackground && remoteMessage.data.msgType) {
           switch (remoteMessage.data.msgType) {
             case 'Event':
-              NavigationService.navigate('Phone');
+              // NavigationService.navigate('Phone');
               console.log('you should navigate now to a a page of search');
               return; // terminate the method here
 
@@ -104,6 +126,7 @@ const Services = () => {
       }
 
       if (!fromBackground) {
+        // This Happens if message arrives while using the app in the for_ground
         if (title.length > 0 && body.length > 0) {
           Alert.alert(
             title,
@@ -116,8 +139,6 @@ const Services = () => {
   };
 
   useEffect(() => {
-    storageToken();
-
     if (!localToken) {
       console.log('we dont have');
       requestUserPermission();
@@ -140,6 +161,7 @@ const Services = () => {
       .getInitialNotification()
       .then((remoteMessage) => {
         if (remoteMessage) {
+          // happens when App is closed but opened with Notification
           console.log(
             'Notification caused app to open from quit state:',
             remoteMessage,
@@ -150,8 +172,9 @@ const Services = () => {
       });
 
     const unsubscribe = messaging().onMessage(async (remoteMessage) => {
-      console.log('A new FCM message arrived!', remoteMessage);
-      processNotification(remoteMessage, true);
+      // happens in the forGround
+      console.log('A new FCM message arrived! ForGround', remoteMessage);
+      processNotification(remoteMessage, false);
       // this.forwardToSearchPage(remoteMessage.data.word);
     });
     return () => unsubscribe();

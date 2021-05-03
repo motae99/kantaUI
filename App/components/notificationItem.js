@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {Sizing, Outlines, Colors, Typography} from 'styles';
 import moment from 'moment';
-const {height} = Dimensions.get('window');
+const {height, width} = Dimensions.get('window');
 const styles = StyleSheet.create({
   actionText: {
     color: Colors.primary.brand,
@@ -26,7 +26,11 @@ const styles = StyleSheet.create({
     paddingBottom: Sizing.layout.x15,
     ...Typography.body.x10,
   },
-  title: {color: Colors.neutral.black, marginTop: Sizing.layout.x20},
+  title: {
+    color: Colors.neutral.black,
+    marginTop: Sizing.layout.x20,
+    ...Typography.header.x20,
+  },
   image: {
     height: height / 5,
     width: '100%',
@@ -43,7 +47,12 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: Sizing.layout.x15,
     backgroundColor: 'white',
-    marginVertical: Sizing.layout.x5,
+    // marginVertical: Sizing.layout.x5,
+  },
+  spacer: {
+    backgroundColor: 'transparent',
+    height: Sizing.layout.x10,
+    // width: width,
   },
 });
 
