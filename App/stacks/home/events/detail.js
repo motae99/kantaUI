@@ -65,6 +65,8 @@ const Detail = ({route, navigation}) => {
   }, [selectedServices, selectedTime, selectedItem]);
 
   const bookNow = () => {
+    let newSelectedServices = [...selectedServices];
+    newSelectedServices.push({name: 'booking', data: {price: cost.initial}});
     const data = {
       userId: dbUser.uid,
       userDisplayName: dbUser.displayName,
@@ -81,11 +83,10 @@ const Detail = ({route, navigation}) => {
       timeStamp: Date.now(),
       time: selectedTime,
       basicCost: cost.initial,
-      additionalServices: selectedServices,
+      additionalServices: newSelectedServices,
       totalCost: cost.total,
       bookingStatus: 'booked',
     };
-
     // console.log(moment(date).format('YYYY-MM-DD'));
     creatBooking(data).then(navigation.goBack());
     // console.log('date: ', moment(data.date).format('DD/MM/YYYY'));

@@ -1,44 +1,27 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {View, Animated} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import firestore from '@react-native-firebase/firestore';
+import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import BookingCard from 'stacks/bookings/components/bookingCard';
+import BottomSheet from 'stacks/bookings/components/bottomSheet';
 import {Sizing, Outlines, Colors, Typography} from 'styles';
 import moment from 'moment';
 
-const BookingList = () => {
-  const [bookings, setBookings] = useState([]);
-  const today = moment(Date.now()).format('YYYY-MM-DD');
-
-  useEffect(() => {
-    const subscriber = firestore()
-      .collection('bookings')
-      .where('date', '<', today)
-      .orderBy('date', 'desc')
-      .orderBy('timeStamp', 'desc')
-      .onSnapshot((querySnapshot) => {
-        if (querySnapshot) {
-          const data = querySnapshot.docs.map((documentSnapshot) => {
-            return {
-              ...documentSnapshot.data(),
-              key: documentSnapshot.id,
-            };
-          });
-          if (data && data.length > 0) {
-            setBookings(data);
-          }
-        }
-      });
-
-    return () => subscriber();
-  }, []);
-
+const PreviousList = ({
+  bottomSheetModalRef,
+  handleSheetChanges,
+  snapPoints,
+  action,
+  selected,
+  requestedAction,
+  process,
+  previousBookings,
+}) => {
   return (
     <View style={{flex: 1, backgroundColor: Colors.neutral.s200}}>
       <Animated.FlatList
-        data={bookings}
+        data={previousBookings}
         keyExtractor={(item) => item.key}
         showsVerticalScrollIndicator={false}
         initialNumToRender={3}
@@ -47,10 +30,18 @@ const BookingList = () => {
           paddingTop: Sizing.x10,
         }}
         renderItem={({item, index}) => {
-          return <BookingCard {...{item, index}} />;
+          return <BookingCard {...{item, index, action}} />;
         }}
       />
+
+      <BottomSheetModal
+        ref={bottomSheetModalRef}
+        index={1}
+        snapPoints={snapPoints}
+        onChange={handleSheetChanges}>
+        <BottomSheet {...{selected, requestedAction, process}} />
+      </BottomSheetModal>
     </View>
   );
 };
-export default BookingList;
+export default PreviousList;

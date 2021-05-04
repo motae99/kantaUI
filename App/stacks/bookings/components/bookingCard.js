@@ -16,7 +16,6 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Sizing, Outlines, Colors, Typography} from 'styles';
-import firestore from '@react-native-firebase/firestore';
 
 const {width, height} = Dimensions.get('window');
 const styles = StyleSheet.create({
@@ -43,7 +42,7 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
   },
   row: {flexDirection: 'row', alignItems: 'center', padding: 5},
-  color: {color: Colors.secondary.brand},
+  color: {color: Colors.secondary.brand, paddingHorizontal: 10},
   rowNoPadding: {alignItems: 'center', flexDirection: 'row'},
   iconCash: {color: Colors.secondary.brand, margin: 5},
   Button: {
@@ -78,25 +77,13 @@ const styles = StyleSheet.create({
   },
   dateTime: {flexDirection: 'row'},
 });
-const BookingCard = ({item, index}) => {
+const BookingCard = ({item, index, action}) => {
   const services = item.additionalServices.length;
   const prev =
     moment(item.date).format('YYYY-MM-DD') <
     moment(Date.now()).format('YYYY-MM-DD')
       ? true
       : false;
-
-  const confirm = (item) => {
-    // console.log(item);
-    return firestore().collection('bookings').doc(item.key).update({
-      bookingStatus: 'confirmed',
-    });
-  };
-  const cancel = (item) => {
-    return firestore().collection('bookings').doc(item.key).update({
-      bookingStatus: 'canceled',
-    });
-  };
 
   return (
     // <Animatable.View
@@ -108,14 +95,14 @@ const BookingCard = ({item, index}) => {
       <View style={styles.dataContainer}>
         <View style={styles.row}>
           <FontAwesome name="user" size={16} color={Colors.secondary.brand} />
-          <Text style={styles.color}>{'  '}provider name : </Text>
+          <Text style={styles.color}>provider name : </Text>
           <Text numberOfLines={1} style={{width: 100}}>
             {item.providerName}
           </Text>
         </View>
         <View style={styles.row}>
           <Entypo name="price-tag" size={16} color={Colors.secondary.brand} />
-          <Text style={styles.color}>{'  '}TotalCost : </Text>
+          <Text style={styles.color}>TotalCost : </Text>
           <Text style={{}}>{item.totalCost}</Text>
         </View>
         <View style={styles.row}>
@@ -124,8 +111,21 @@ const BookingCard = ({item, index}) => {
             size={16}
             color={Colors.secondary.brand}
           />
-          <Text style={styles.color}>{'  '}Services : </Text>
-          <Text style={{}}># {services} requested</Text>
+          <Text style={[styles.color, {}]}>
+            {services === 1
+              ? item.additionalServices[services - 1].name + ' :'
+              : 'Services :'}
+          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              action('services', item);
+            }}>
+            <Text>
+              {services === 1
+                ? item.additionalServices[services - 1].data.price
+                : '# ' + services + ' requested'}
+            </Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.dateTimeContainer}>
           <View style={styles.dateTime}>
@@ -224,7 +224,7 @@ const BookingCard = ({item, index}) => {
             {item.bookingStatus === 'booked' ? (
               <TouchableOpacity
                 onPress={() => {
-                  confirm(item);
+                  action('confirm', item);
                 }}
                 style={[
                   {
@@ -241,7 +241,7 @@ const BookingCard = ({item, index}) => {
 
             <TouchableOpacity
               onPress={() => {
-                cancel(item);
+                action('cancel', item);
               }}
               style={[
                 {
@@ -255,6 +255,31 @@ const BookingCard = ({item, index}) => {
           </View>
         </View>
       )}
+      {prev ? (
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: 40,
+            width: 40,
+            borderRadius: 20,
+            position: 'absolute',
+            top: 10,
+            right: 10,
+            backgroundColor:
+              item.bookingStatus === 'confirmed' ? 'green' : 'red',
+          }}>
+          <MaterialCommunityIcons
+            name={
+              item.bookingStatus === 'confirmed'
+                ? 'check-all'
+                : 'bookmark-remove'
+            }
+            size={20}
+            color={'white'}
+          />
+        </View>
+      ) : null}
     </View>
     // </Animatable.View>
   );
