@@ -58,7 +58,7 @@ const Sheet = ({selected, requestedAction, process}) => {
             paddingTop: 10,
           }}
           renderItem={({item, index}) => {
-            console.log(item);
+            // console.log(item);
             // return <BookingCard {...{item, index, action}} />;
             return (
               <View

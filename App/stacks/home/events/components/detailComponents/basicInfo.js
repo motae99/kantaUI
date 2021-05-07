@@ -57,8 +57,8 @@ const BasicInfo = ({item, scrollY}) => {
               color: 'rgba(43,52,73,1)',
               marginRight: 4,
             }}>
-            {item.ratingSum
-              ? Math.round(item.ratingSum / item.totalRating, 1)
+            {item.totalRate
+              ? Math.round(item.totalRate / item.numberOfRate, 1)
               : 0}
           </Text>
           <FontAwesome name="star" size={18} color="#219CAB" />
@@ -70,7 +70,7 @@ const BasicInfo = ({item, scrollY}) => {
               color: 'rgba(43,52,73,1)',
               paddingLeft: 4,
             }}>
-            ({item.totalRating ? item.totalRating : 'No'} review)
+            ({item.numberOfRate ? item.numberOfRate : 'No'} review)
           </Text>
         </View>
       </Animated.View>

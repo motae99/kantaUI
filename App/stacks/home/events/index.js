@@ -86,18 +86,16 @@ const MyTabs = () => {
           {(props) => (
             <List
               {...props}
-              scrollY={scrollY}
-              ref={ref}
-              eventProviders={eventProviders}
+              // scrollY={scrollY}
+              // ref={ref}
+              // eventProviders={eventProviders}
+              {...{eventProviders, ref, scrollY}}
             />
           )}
         </Tab.Screen>
-        <Tab.Screen
-          name="Map"
-          component={Map}
-          options={{tabBarLabel: 'Map'}}
-          {...{eventProviders}}
-        />
+        <Tab.Screen name="Map" options={{tabBarLabel: 'Map'}}>
+          {(props) => <Map {...props} {...{eventProviders}} />}
+        </Tab.Screen>
       </Tab.Navigator>
     </SafeAreaView>
   );

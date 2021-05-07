@@ -46,8 +46,11 @@ const MyTabs = () => {
   }, []);
 
   useMemo(() => {
+    console.log('here', sort);
     const previous = data.filter(
-      (item) => moment(item.date).format('YYYY-MM-DD') < today,
+      (item) =>
+        moment(item.date).format('YYYY-MM-DD') < today ||
+        item.bookingStatus === 'canceled',
     );
     setPreviousBookings(previous);
 
@@ -64,7 +67,8 @@ const MyTabs = () => {
         moment(item.date).format('YYYY-MM-DD') >= today,
     );
     setConfimedBookings(confirmed);
-  }, [data, today]);
+    setSort(false);
+  }, [data, today, sort]);
 
   const snapPoints = useMemo(() => {
     // const numberOfServices = selected.additionalServices.length;
@@ -90,7 +94,7 @@ const MyTabs = () => {
   // };
 
   const handleSheetChanges = useCallback((index) => {
-    console.log('handleSheetChanges', index);
+    // console.log('handleSheetChanges', index);
   }, []);
   const process = () => {
     requestedAction === 'confirm'
@@ -135,8 +139,8 @@ const MyTabs = () => {
   };
 
   const action = (name, item) => {
-    console.log('name', name);
-    console.log('item', item);
+    // console.log('name', name);
+    // console.log('item', item);
     setRequestedAction(name);
     setSelected(item);
     // bottomSheetModalRef.current?.dismiss();
@@ -193,6 +197,7 @@ const MyTabs = () => {
                   requestedAction,
                   process,
                   confimedBookings,
+                  setSort,
                 }}
               />
             )}

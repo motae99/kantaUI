@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import ListHeader from 'eventsComponents/listHeader';
-import EventCard from 'eventsComponents/EventCard';
+import EventCard from 'eventsComponents/eventCard';
 import Header from 'components/headerTest';
 import {Sizing, Outlines, Colors, Typography} from 'styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';

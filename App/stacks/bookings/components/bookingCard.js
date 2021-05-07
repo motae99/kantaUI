@@ -8,12 +8,18 @@ import {
   StyleSheet,
   Linking,
   Platform,
+  Image,
+  Modal,
+  Pressable,
+  Alert,
 } from 'react-native';
-import * as Animatable from 'react-native-animatable';
 import moment from 'moment';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {useNavigation} from '@react-navigation/native';
+
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Sizing, Outlines, Colors, Typography} from 'styles';
 
@@ -78,10 +84,12 @@ const styles = StyleSheet.create({
   dateTime: {flexDirection: 'row'},
 });
 const BookingCard = ({item, index, action}) => {
+  const navigation = useNavigation();
   const services = item.additionalServices.length;
   const prev =
     moment(item.date).format('YYYY-MM-DD') <
-    moment(Date.now()).format('YYYY-MM-DD')
+      moment(Date.now()).format('YYYY-MM-DD') ||
+    item.bookingStatus === 'canceled'
       ? true
       : false;
 
@@ -92,6 +100,8 @@ const BookingCard = ({item, index, action}) => {
     //   duration={400}
     //   useNativeDriver={true}>
     <View style={styles.container}>
+      {/* <FeedBack {...{setModalVisible, modalVisible, item, setSort}} /> */}
+
       <View style={styles.dataContainer}>
         <View style={styles.row}>
           <FontAwesome name="user" size={16} color={Colors.secondary.brand} />
@@ -235,9 +245,38 @@ const BookingCard = ({item, index, action}) => {
                 <Feather name="thumbs-up" size={16} color={'white'} />
                 <Text style={{color: 'white'}}> Confirm</Text>
               </TouchableOpacity>
-            ) : (
-              <View style={{height: 45}} />
-            )}
+            ) : null}
+            {item.bookingStatus === 'confirmed' && !item.rate ? (
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('Modal', {
+                    screen: 'FeedBack',
+                    params: {
+                      item: item,
+                    },
+                  });
+                }}
+                style={[
+                  {
+                    backgroundColor: Colors.secondary.brand,
+                  },
+                  styles.Button,
+                ]}>
+                <MaterialIcons name="rate-review" size={16} color={'white'} />
+                <Text style={{color: 'white'}}> Rate</Text>
+              </TouchableOpacity>
+            ) : item.bookingStatus === 'confirmed' && item.rate ? (
+              <View
+                style={[
+                  {
+                    backgroundColor: Colors.secondary.brand,
+                  },
+                  styles.Button,
+                ]}>
+                <MaterialIcons name="rate-review" size={16} color={'white'} />
+                <Text style={{color: 'white'}}> {item.rate}</Text>
+              </View>
+            ) : null}
 
             <TouchableOpacity
               onPress={() => {
@@ -256,32 +295,43 @@ const BookingCard = ({item, index, action}) => {
         </View>
       )}
       {prev ? (
-        <View
+        <Image
+          source={require('assets/img/tagCorner.png')}
           style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: 40,
-            width: 40,
-            borderRadius: 20,
             position: 'absolute',
-            top: 10,
+            top: -24,
             right: 10,
-            backgroundColor:
-              item.bookingStatus === 'confirmed' ? 'green' : 'red',
-          }}>
-          <MaterialCommunityIcons
-            name={
-              item.bookingStatus === 'confirmed'
-                ? 'check-all'
-                : 'bookmark-remove'
-            }
-            size={20}
-            color={'white'}
-          />
-        </View>
-      ) : null}
+            height: 90,
+            width: 60,
+          }}
+        />
+      ) : // <View
+      //   style={{
+      //     justifyContent: 'center',
+      //     alignItems: 'center',
+      //     height: 40,
+      //     width: 40,
+      //     borderRadius: 20,
+      //     position: 'absolute',
+      //     top: 10,
+      //     right: 10,
+      //     backgroundColor:
+      //       item.bookingStatus === 'confirmed' ? 'green' : 'red',
+      //   }}>
+      //   <MaterialCommunityIcons
+      //     name={
+      //       item.bookingStatus === 'confirmed'
+      //         ? 'check-all'
+      //         : 'bookmark-remove'
+      //     }
+      //     size={20}
+      //     color={'white'}
+      //   />
+      // </View>
+      null}
     </View>
     // </Animatable.View>
   );
 };
+
 export default BookingCard;

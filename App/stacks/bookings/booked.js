@@ -24,7 +24,7 @@ const BookedList = ({
         data={bookedBookings}
         keyExtractor={(item) => item.key}
         showsVerticalScrollIndicator={false}
-        initialNumToRender={3}
+        // initialNumToRender={3}
         contentContainerStyle={{
           marginHorizontal: Sizing.x20,
           paddingTop: Sizing.x10,

@@ -74,6 +74,9 @@ const AuthContextProvider = (props) => {
 
   function addLike(item) {
     // console.log('like');
+    // item.push({isHearted: true});
+    item.isHearted = true;
+    // console.log(item);
     const data = {
       userId: userId,
       providerId: item.key,

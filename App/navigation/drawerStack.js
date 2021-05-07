@@ -15,6 +15,7 @@ import {
 } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Facebook from 'components/buttons/facebook';
+import Faviourate from 'stacks/common/faviourate';
 import Google from 'components/buttons/google';
 import Phone from 'components/buttons/phone';
 import Animated from 'react-native-reanimated';
@@ -181,6 +182,8 @@ export default function App() {
       }}
       drawerContent={(props) => <CustomDrawerContent {...props} />}>
       <Drawer.Screen name="HomeStack" component={HomeStack} />
+      <Drawer.Screen name="Faviourate" component={Faviourate} />
+
       {/* <Drawer.Screen name="Language" component={Language} />
       <Drawer.Screen name="Vouchers" component={Vouchers} /> */}
     </Drawer.Navigator>

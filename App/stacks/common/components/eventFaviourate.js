@@ -1,16 +1,22 @@
 /* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
-import {Text, View, Dimensions, Animated, TouchableOpacity} from 'react-native';
+import {
+  Text,
+  View,
+  Image,
+  Dimensions,
+  Animated,
+  TouchableOpacity,
+} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import HeartButton from './heart';
-import EveningButton from './evening';
-import NightButton from './night';
+// import HeartButton from 'events/components/heart';
+import EveningButton from 'events/components/evening';
+import NightButton from 'events/components/night';
 import FastImage from 'react-native-fast-image';
 
 import LinearGradient from 'react-native-linear-gradient';
 import {SharedElement} from 'react-navigation-shared-element';
 import {useNavigation} from '@react-navigation/native';
-import {EventContext} from 'context/eventsContext';
 
 import Indicator from 'components/Indicator';
 
@@ -82,9 +88,12 @@ const EventCard = ({data}) => {
                   });
 
                   setTimeout(() => {
-                    navigation.navigate('EventDetail', {
-                      selectedItem: data,
-                      time: selectedTime,
+                    navigation.navigate('HomeStack', {
+                      screen: 'EventDetail',
+                      params: {
+                        selectedItem: data,
+                        time: selectedTime,
+                      },
                     });
                   }, 100);
                 }}>
@@ -143,20 +152,6 @@ const EventCard = ({data}) => {
           files={data.files}
           containerWidth={CardWidth}
         />
-      </View>
-      <View
-        style={{
-          position: 'absolute',
-          top: 12,
-          right: 18,
-          height: 28,
-          width: 28,
-          backgroundColor: '#fff',
-          borderRadius: 36 / 2,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <HeartButton item={data} />
       </View>
 
       <View
@@ -236,10 +231,8 @@ const EventCard = ({data}) => {
               letterSpacing: 2,
               fontFamily: 'Montserrat',
             }}>
-            {data.totalRate
-              ? Math.round(data.totalRate / data.numberOfRate, 1)
-              : 0}
-            {/* 4.5 */}
+            {/* {data.rate} */}
+            4.5
           </Text>
         </View>
         <Text

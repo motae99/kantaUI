@@ -27,36 +27,6 @@ if (Platform.OS === 'android') {
     UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-const notifications = [
-  {
-    key: `key-${2237832672}`,
-    timeStamp: 2237832672,
-    title: 'something',
-    description: 'somekdfj adfkl ksldfjla fkljsdf kladfjlka dfkljsdfl adfklj ',
-    image: 'https://www.sitepronews.com/wp-content/uploads/2016/06/notify.jpg',
-    actionText: 'book Now',
-    action: 'navigate to something',
-  },
-  {
-    key: `key-${2232132672}`,
-    timeStamp: 2231132672,
-    title: 'no imageelse',
-    description:
-      ' adfkl ksldfjla fkljsdf kladfjlka dfkljsdfl adfklj adfkl ksldfjla fkljsdf kladfjlka dfkljsdfl adfklj adfkl ksldfjla fkljsdf kladfjlka dfkljsdfl adfklj ',
-    actionText: 'try Now',
-    action: 'navigate to something',
-  },
-  {
-    key: `key-${2231632672}`,
-    timeStamp: 2231832672,
-    title: 'else',
-    description: ' adfkl ksldfjla fkljsdf kladfjlka dfkljsdfl adfklj ',
-    image: 'https://www.sitepronews.com/wp-content/uploads/2016/06/notify.jpg',
-    actionText: 'try Now',
-    action: 'navigate to something',
-  },
-];
-
 const setNotifications = async (notificationsData) => {
   const data = JSON.stringify(notificationsData);
   await AsyncStorage.setItem('notifications', data);

@@ -16,7 +16,7 @@ const BottomTabs = () => {
 
   const readItemFromStorage = async () => {
     const item = await getItem();
-    console.log('item', item);
+    // console.log('item', item);
     item ? setValue(item) : null;
   };
 
@@ -25,7 +25,7 @@ const BottomTabs = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(value, 'value');
+  // console.log(value, 'value');
   // const [bookTab, setBookingBadge] = React.useState(null);
 
   // const getBookingBadge = async () => {

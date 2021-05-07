@@ -4,9 +4,11 @@ import MapView, {Marker} from 'react-native-maps';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const Map = ({item}) => {
+  // console.log('coordinate', item.coordinate);
+  // console.log('coordinates', item.coordinates);
   const region = {
-    latitude: item.coordinate.latitude,
-    longitude: item.coordinate.longitude,
+    latitude: item.coordinates.latitude,
+    longitude: item.coordinates.longitude,
     latitudeDelta: 0.0192,
     longitudeDelta: 0.0142,
   };

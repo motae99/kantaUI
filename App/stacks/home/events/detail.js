@@ -5,13 +5,13 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {useValues} from 'react-native-redash/lib/module/v1';
 import BasicInfo from 'events/components/detailComponents/basicInfo';
 import LocationMap from 'events/components/detailComponents/locationMap';
-import Reviews from 'events/components/detailComponents/reviews';
 import Services from 'events/components/detailComponents/services';
 import HeaderImage from 'events/components/detailComponents/headerImage';
 import Facilities from 'events/components/detailComponents/facilities';
 import Header from 'events/components/detailComponents/detailHeader';
 import DateTime from 'events/components/detailComponents/dateTime';
 import PayComponent from 'events/components/detailComponents/payComponent';
+import Reviews from 'components/reviews';
 import moment from 'moment';
 
 import {AuthContext} from 'context/authContext';

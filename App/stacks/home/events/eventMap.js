@@ -53,10 +53,11 @@ const eventMap = ({navigation}) => {
 
   React.useEffect(() => {
     setTimeout(() => {
-      const {coordinate} = eventProviders[current];
+      const {coordinates} = eventProviders[current];
       mapRef.current.animateToRegion(
         {
-          ...coordinate,
+          latitude: coordinates._latitude,
+          longitude: coordinates._longitude,
           latitudeDelta: 0.00864195044303443,
           longitudeDelta: 0.000142817690068,
         },
@@ -95,8 +96,12 @@ const eventMap = ({navigation}) => {
             ],
           };
 
+          const coordinates = {
+            latitude: marker.coordinates._latitude,
+            longitude: marker.coordinates._longitude,
+          };
           return (
-            <MapView.Marker key={index} coordinate={marker.coordinate}>
+            <MapView.Marker key={index} coordinate={coordinates}>
               <Animated.View style={[styles.markerWrap, {opacity}]}>
                 <Animated.View style={[styles.ring, scaleStyle]} />
                 <View style={styles.marker} />

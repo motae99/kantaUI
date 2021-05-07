@@ -19,6 +19,8 @@ import Calendar from 'events/calendar';
 import Filter from 'events/filter';
 import Notifications from 'stacks/common/notifications';
 import Faviourate from 'stacks/common/faviourate';
+import FeedBack from 'stacks/common/feedBack';
+import AllReview from 'stacks/common/rating';
 
 import Phone from 'auth/phone';
 // enabledScreens();
@@ -74,11 +76,13 @@ function MainStackScreen() {
         }}
       />
       <ModalStack.Screen name="Filter" component={Filter} />
+      <ModalStack.Screen name="FeedBack" component={FeedBack} />
+      <ModalStack.Screen name="AllReview" component={AllReview} />
       <ModalStack.Screen
         name="Notifications"
         component={Notifications}
         options={{
-          title: 'Profile',
+          title: 'Notifications',
           cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
         }}
       />

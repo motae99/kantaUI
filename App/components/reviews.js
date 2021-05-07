@@ -4,20 +4,25 @@ import {TouchableOpacity, View, Text, Image} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import moment from 'moment';
 import {Rating} from 'react-native-elements';
+import {useNavigation} from '@react-navigation/native';
 import {SECTIONS_TOP_MARGIN} from 'events/components/constants';
 
 const Reviews = ({item}) => {
-  if (!item.reviewSnippet) {
+  const navigation = useNavigation();
+
+  if (!item.snippet) {
     return null;
   }
 
-  const snippet = item.reviewSnippet;
+  const snippet = item.snippet;
   return (
     <View
       style={{
-        // height: 300,
+        backgroundColor: 'white',
+        padding: 20,
         width: '100%',
         marginTop: SECTIONS_TOP_MARGIN,
+        borderRadius: 10,
       }}>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <View>
@@ -32,14 +37,14 @@ const Reviews = ({item}) => {
                 marginRight: 10,
               }}
               source={{
-                uri: snippet.photoUrl,
+                uri: snippet.userPhotoURL,
                 priority: FastImage.priority.normal,
                 cashe: FastImage.cacheControl.immutable,
               }}
             />
 
             <View style={{justifyContent: 'center'}}>
-              <Text>{snippet.name}</Text>
+              <Text>{snippet.userDisplayName}</Text>
               <Text>{moment(snippet.timeStamp).format('MM/DD/YYYY')}</Text>
             </View>
           </View>
@@ -49,7 +54,7 @@ const Reviews = ({item}) => {
             type="custom"
             imageSize={20}
             readonly
-            startingValue={snippet.rating}
+            startingValue={snippet.rate}
             // ratingColor="#3498db"
             // ratingBackgroundColor="red"
             style={{backgroundColor: 'green'}}
@@ -59,13 +64,20 @@ const Reviews = ({item}) => {
 
       <Text style={{marginTop: 20}}>{snippet.review}</Text>
       <TouchableOpacity
-        onPress={() => console.log('show all ')}
+        onPress={() =>
+          navigation.navigate('Modal', {
+            screen: 'AllReview',
+            params: {
+              provider: item,
+            },
+          })
+        }
         style={{
           marginTop: 20,
           borderWidth: 1,
           borderColor: 'black',
           borderRadius: 10,
-          height: 60,
+          height: 55,
           justifyContent: 'center',
           alignItems: 'center',
         }}>
