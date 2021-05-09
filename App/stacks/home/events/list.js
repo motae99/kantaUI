@@ -30,7 +30,7 @@ export const getCloser = (value, checkOne, checkTwo) =>
 const EventList = ({scrollY, eventProviders}) => {
   const insets = useSafeAreaInsets();
 
-  // const {eventProviders} = React.useContext(EventContext);
+  // const {eventProviders, eventsLoading} = React.useContext(EventContext);
 
   const ref = React.useRef(null);
 

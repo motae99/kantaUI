@@ -69,7 +69,7 @@ const MyTabBar = ({state, descriptors, navigation, position}) => {
 
         const top = Animated.interpolate(position, {
           inputRange: [0, 1],
-          outputRange: [height - 100, height - 280],
+          outputRange: [height - 110, height - 280],
         });
 
         // const translateX = Animated.interpolate(position, {
@@ -86,7 +86,7 @@ const MyTabBar = ({state, descriptors, navigation, position}) => {
               paddingVertical: 5,
               // width: 90,
               borderRadius: 20,
-              backgroundColor: 'rgba(0,0,0,.6)',
+              backgroundColor: 'rgba(0,0,0,.5)',
               justifyContent: 'center',
               alignItems: 'center',
               position: 'absolute',
@@ -100,11 +100,21 @@ const MyTabBar = ({state, descriptors, navigation, position}) => {
               accessibilityLabel={options.tabBarAccessibilityLabel}
               testID={options.tabBarTestID}
               onPress={onPress}
-              onLongPress={onLongPress}>
-              <Animated.Text style={{color: 'white', opacity}}>
+              onLongPress={onLongPress}
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Animated.Text
+                style={{
+                  color: 'white',
+                  opacity,
+                  fontSize: 12,
+                  alignSelf: 'center',
+                }}>
                 <Feather
                   name={label === 'Map' ? 'map-pin' : 'list'}
-                  size={18}
+                  size={16}
                   color="white"
                 />{' '}
                 {label} View

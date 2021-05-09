@@ -1,40 +1,84 @@
-import React, {createContext, useState, useContext, useEffect} from 'react';
+import React, {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  useMemo,
+} from 'react';
 import firestore from '@react-native-firebase/firestore';
 import * as geofirestore from 'geofirestore';
 import {AuthContext} from 'context/authContext';
 export const EventContext = createContext();
 
 const EventContextProvider = (props) => {
-  // const GeoFirestore = geofirestore.initializeApp(firestore());
-  // const geocollection = GeoFirestore.collection('eventProviders');
+  const GeoFirestore = geofirestore.initializeApp(firestore());
+  const geocollection = GeoFirestore.collection('eventProviders');
 
-  const {likes} = useContext(AuthContext);
+  const {likes, currentLocation} = useContext(AuthContext);
   const [eventProviders, setEventProviders] = useState(null);
   const [selectedServices, setselectedServices] = useState([]);
   const [date, setDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState('evening');
-  // const [filterQuery, setFilterQuery] = useState(geocollection);
+  const [filterQuery, setFilterQuery] = useState(geocollection);
+  const [currentFilter, setCurrentFilter] = useState(null);
+  const [sortBy, setSortBy] = useState('rate');
+  const [eventsLoading, setEventsLoading] = useState(true);
 
-  // const nearQuery = (radius) => {
-  //   const query = geocollection.near({
-  //     center: new firestore.GeoPoint(15.5863, 32.5426),
-  //     radius: radius,
-  //   });
-  // };
+  const nearQuery = (radius) => {
+    const query = geocollection.near({
+      center: new firestore.GeoPoint(
+        currentLocation.latitude,
+        currentLocation.longitude,
+      ),
+      radius: radius,
+    });
+    setFilterQuery(query);
+    setCurrentFilter({near: radius});
+  };
+
+  useMemo(() => {
+    setEventsLoading(true);
+
+    if (sortBy === 'distance') {
+      const query = geocollection.near({
+        center: new firestore.GeoPoint(
+          currentLocation.latitude,
+          currentLocation.longitude,
+        ),
+        radius: 1000,
+      });
+      setFilterQuery(query);
+    }
+    if (sortBy === 'rate') {
+      const query = firestore()
+        .collection('eventProviders')
+        .orderBy('totalRate', 'desc');
+      setFilterQuery(query);
+    }
+    if (sortBy === 'low') {
+      const query = firestore()
+        .collection('eventProviders')
+        .orderBy(selectedTime, 'asc');
+      setFilterQuery(query);
+    }
+    if (sortBy === 'high') {
+      const query = firestore()
+        .collection('eventProviders')
+        .orderBy(selectedTime, 'desc');
+      setFilterQuery(query);
+    }
+  }, [sortBy]);
+
+  const priceRange = (min, max) => {
+    const query = geocollection
+      .where(`${selectedTime}`, '>=', min)
+      .where(`${selectedTime}`, '<=', max)
+      .orderBy(`${selectedTime}`, 'asc');
+    setFilterQuery(query);
+  };
 
   useEffect(() => {
-    const GeoFirestore = geofirestore.initializeApp(firestore());
-    const geocollection = GeoFirestore.collection('eventProviders');
-    // const query = geocollection.near({
-    //   center: new firestore.GeoPoint(15.5863, 32.5426),
-    //   radius: 500,
-    // });
-    // .orderBy('night', 'desc');
-    // query.get().then((value) => {
-    //   // All GeoDocument returned by GeoQuery, like the GeoDocument added above
-    //   console.log(value.docs);
-    // });
-    const subscriber = geocollection.onSnapshot((querySnapshot) => {
+    const subscriber = filterQuery.onSnapshot((querySnapshot) => {
       if (querySnapshot) {
         const events = querySnapshot.docs.map((documentSnapshot) => {
           if (likes && likes.length > 0) {
@@ -43,7 +87,7 @@ const EventContextProvider = (props) => {
             );
             var hearted = existed.length > 0 ? true : false;
           }
-          // console.log(value.docs);
+          console.log(documentSnapshot.data().totalRate);
           return {
             ...documentSnapshot.data(),
             key: documentSnapshot.id,
@@ -52,12 +96,13 @@ const EventContextProvider = (props) => {
         });
         if (events && events.length > 0) {
           setEventProviders(events);
+          setEventsLoading(false);
         }
       }
     });
 
     return () => subscriber();
-  }, [likes]);
+  }, [likes, filterQuery]);
 
   const creatBooking = (data) => {
     // console.log(data.time);
@@ -88,6 +133,11 @@ const EventContextProvider = (props) => {
         setSelectedTime,
         creatBooking,
         unHeart,
+        priceRange,
+        nearQuery,
+        sortBy,
+        setSortBy,
+        eventsLoading,
       }}>
       {props.children}
     </EventContext.Provider>

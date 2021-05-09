@@ -17,6 +17,7 @@ import Map from './eventMap';
 import Sorting from './components/sorting';
 import Tabs from './components/tabButton';
 import TabHeader from './components/tabHeader';
+import FilterTab from './components/filterTab';
 
 import {EventContext} from 'context/eventsContext';
 
@@ -28,45 +29,9 @@ export const getCloser = (value, checkOne, checkTwo) =>
 const Tab = createMaterialTopTabNavigator();
 
 const MyTabs = () => {
-  const {eventProviders} = React.useContext(EventContext);
+  const {eventProviders, loading} = React.useContext(EventContext);
   const ref = React.useRef(null);
   const scrollY = React.useRef(new Animated.Value(0)).current;
-  //  const onScroll = {Animated.event(
-  //   [{nativeEvent: {contentOffset: {y: scrollY}}}],
-  //   {useNativeDriver: false},
-  // )}
-  // const scrollYClamped = diffClamp(scrollY.current, 0, headerHeight);
-
-  // const translateY = scrollYClamped.interpolate({
-  //   inputRange: [0, headerHeight],
-  //   outputRange: [0, -headerHeight / 2],
-  // });
-
-  // const translateYNumber = React.useRef();
-
-  // translateY.addListener(({value}) => {
-  //   translateYNumber.current = value;
-  // });
-
-  // const handleSnap = ({nativeEvent}) => {
-  //   const offsetY = nativeEvent.contentOffset.y;
-  //   if (
-  //     !(
-  //       translateYNumber.current === 0 ||
-  //       translateYNumber.current === -headerHeight
-  //     )
-  //   ) {
-  //     if (ref.current) {
-  //       ref.current.scrollToOffset({
-  //         offset:
-  //           getCloser(translateYNumber.current, -headerHeight, 0) ===
-  //           -headerHeight
-  //             ? offsetY + headerHeight
-  //             : offsetY - headerHeight / 2,
-  //       });
-  //     }
-  //   }
-  // };
   return (
     <SafeAreaView mode="margin" style={styles.container}>
       <StatusBar
@@ -75,28 +40,22 @@ const MyTabs = () => {
         backgroundColor="#219CAB"
       />
 
-      {/* <Animated.View style={[styles.header, {transform: [{translateY}]}]} /> */}
-      {/* <Sorting /> */}
-
-      {/* <Header {...{headerHeight}} /> */}
-      {/* </Animated.View> */}
       <TabHeader {...{scrollY, ref}} />
-      <Tab.Navigator tabBar={(props) => <Tabs {...props} />}>
-        <Tab.Screen name="List" options={{tabBarLabel: 'List'}}>
-          {(props) => (
-            <List
-              {...props}
-              // scrollY={scrollY}
-              // ref={ref}
-              // eventProviders={eventProviders}
-              {...{eventProviders, ref, scrollY}}
-            />
-          )}
-        </Tab.Screen>
-        <Tab.Screen name="Map" options={{tabBarLabel: 'Map'}}>
-          {(props) => <Map {...props} {...{eventProviders}} />}
-        </Tab.Screen>
-      </Tab.Navigator>
+      {loading ? (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Text>loading ... </Text>
+        </View>
+      ) : (
+        <Tab.Navigator tabBar={(props) => <Tabs {...props} />}>
+          <Tab.Screen name="List" options={{tabBarLabel: 'List'}}>
+            {(props) => <List {...props} {...{eventProviders, ref, scrollY}} />}
+          </Tab.Screen>
+          <Tab.Screen name="Map" options={{tabBarLabel: 'Map'}}>
+            {(props) => <Map {...props} {...{eventProviders}} />}
+          </Tab.Screen>
+        </Tab.Navigator>
+      )}
+      <FilterTab />
     </SafeAreaView>
   );
 };

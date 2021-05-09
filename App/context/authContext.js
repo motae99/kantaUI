@@ -8,6 +8,8 @@ import {GoogleSignin} from '@react-native-community/google-signin';
 import Toast from 'react-native-toast-message';
 import I18n from 'utils/i18n';
 import Storage from 'api/storage';
+import Geolocation from '@react-native-community/geolocation';
+
 export const AuthContext = createContext();
 
 GoogleSignin.configure({
@@ -24,6 +26,7 @@ const AuthContextProvider = (props) => {
   const [userId, setUserId] = useState(null);
   const [dbUser, setDbUser] = useState(null);
   const [likes, setLikes] = useState(null);
+  const [currentLocation, setCurrentLocation] = useState(null);
 
   const [uploadProgress, setUploadProgress] = useState(null);
 
@@ -98,6 +101,12 @@ const AuthContextProvider = (props) => {
     if (user) {
       setUserId(user.uid);
     }
+    Geolocation.getCurrentPosition((info) =>
+      setCurrentLocation({
+        latitude: info.coords.latitude,
+        longitude: info.coords.longitude,
+      }),
+    );
   }
 
   useEffect(() => {
@@ -558,6 +567,7 @@ const AuthContextProvider = (props) => {
         likes,
         unLike,
         addLike,
+        currentLocation,
       }}>
       {props.children}
     </AuthContext.Provider>

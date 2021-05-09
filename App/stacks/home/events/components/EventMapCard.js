@@ -8,7 +8,7 @@ import {
   Image,
 } from 'react-native';
 // import {SharedElement} from 'react-navigation-shared-element';
-// import {useNavigation} from 'react-navigation-hooks';
+import {useNavigation} from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('window');
 
@@ -17,10 +17,11 @@ const CARD_WIDTH = width * 0.9;
 
 const styles = StyleSheet.create({
   card: {
+    marginHorizontal: (width * 0.1) / 2,
     padding: 10,
     elevation: 2,
     backgroundColor: '#FFF',
-    marginHorizontal: 10,
+    // marginHorizontal: 10,
     shadowColor: '#000',
     shadowRadius: 5,
     shadowOpacity: 0.3,
@@ -54,7 +55,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export default memo(({data, navigation}) => {
+export default memo(({data}) => {
+  const navigation = useNavigation();
+
   const [selectedTime, setSelectedTime] = React.useState('evening');
   const [current, setCurrent] = React.useState(0);
   // console.log(print_r(data.files));

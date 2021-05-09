@@ -10,6 +10,7 @@ import {
   StatusBar,
   Platform,
   FlatList,
+  Text,
 } from 'react-native';
 
 import MapView, {
@@ -39,7 +40,15 @@ const region = {
 };
 
 const eventMap = ({navigation}) => {
-  const {eventProviders} = useContext(EventContext);
+  const {eventProviders, eventsLoading} = useContext(EventContext);
+
+  if (eventsLoading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <Text>loading ... </Text>
+      </View>
+    );
+  }
 
   const [current, setCurrent] = useState(0);
   const mapRef = useRef();
@@ -118,7 +127,7 @@ const eventMap = ({navigation}) => {
         data={eventProviders}
         renderItem={({item}) => (
           // <View style={{marginHorizontal: 18}}>
-          <Card data={item} navigation={navigation} />
+          <Card data={item} />
           // </View>
         )}
         // contentContainerStyle={
@@ -165,10 +174,10 @@ const styles = StyleSheet.create({
     bottom: 30,
     left: 0,
     right: 0,
-    paddingVertical: 10,
+    // paddingVertical: 10,
   },
   endPadding: {
-    paddingRight: width - CARD_WIDTH,
+    // paddingHorizontal: (width - CARD_WIDTH) / 2,
   },
   markerWrap: {
     alignItems: 'center',
