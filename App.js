@@ -2,7 +2,7 @@ import React from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 
-// import {View, Text} from 'react-native';
+import {View, Text} from 'react-native';
 // import Navigator from './App/navigation/';
 // import Services from 'utils/services';
 
