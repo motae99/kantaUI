@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 import {TouchableNativeFeedback} from 'react-native-gesture-handler';
 import {interpolateColor} from 'react-native-redash/lib/module/v1';
-import AnimateNumber from 'react-native-countup';
+import AnimateNumber from 'utils/aniNumer';
 
 import Animated from 'react-native-reanimated';
 const {interpolate, Extrapolate} = Animated;

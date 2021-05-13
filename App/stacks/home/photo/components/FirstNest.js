@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import Animated from 'react-native-reanimated';
+import {Sizing, Outlines, Colors, Typography} from 'styles';
 
 import {perspective, fHeight, fWidth} from './FoldingStyle';
 import DateSection from './DateSection';
@@ -23,11 +24,11 @@ const styles = StyleSheet.create({
   fronFace: {
     ...StyleSheet.absoluteFillObject,
     backfaceVisibility: 'hidden',
-    backgroundColor: '#ffd9ff',
+    backgroundColor: Colors.neutral.s100,
   },
 });
 
-export default function ({animation, toggle}) {
+export default function ({animation, book, date, setDate, selected}) {
   const borderRadius = interpolate(animation, {
     inputRange: [0, 0.4],
     outputRange: [20, 0],
@@ -61,9 +62,9 @@ export default function ({animation, toggle}) {
       {/* Back face */}
       <Animated.View
         style={[styles.backFace, {transform: transformBackFace, borderRadius}]}>
-        <DateSection />
+        <DateSection {...{animation, date, setDate, selected}} />
 
-        <SecondNest {...{animation, toggle}} />
+        <SecondNest {...{animation, book}} />
       </Animated.View>
 
       {/* front face */}

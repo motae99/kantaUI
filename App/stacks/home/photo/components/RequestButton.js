@@ -1,24 +1,38 @@
 import React from 'react';
-import {View, Text, Alert} from 'react-native';
+import {View, Text} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {sWidth, sHeight} from './FoldingStyle';
+import {sWidth, sHeight, fullBorderRadius} from './FoldingStyle';
+import {Sizing, Outlines, Colors, Typography} from 'styles';
 
-const Second = ({toggle, animation}) => {
+const Second = ({book}) => {
   return (
-    <View style={{width: sWidth, height: sHeight, justifyContent: 'center', alignItems: 'center'}}>
-        <TouchableOpacity
+    <View
+      style={{
+        width: sWidth,
+        height: sHeight,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: Colors.neutral.s100,
+        borderRadius: fullBorderRadius,
+      }}>
+      <TouchableOpacity
+        style={{
+          height: sHeight / 2,
+          width: sWidth * 0.9,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: Colors.primary.brand,
+          borderRadius: fullBorderRadius,
+        }}
+        onPress={() => book()}>
+        <Text
           style={{
-            height: sHeight / 2,
-            width: sWidth * 0.9,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: '#01c5c4',
-            borderRadius: 20
-          }}
-          onPress={() => toggle()}>
-          <Text style={{color: '#fff', fontSize: 18, fontWeight: 'bold'}}>REQUEST</Text>
-        </TouchableOpacity>
-      {/* </View> */}
+            color: Colors.neutral.white,
+            ...Typography.header.x30,
+          }}>
+          REQUEST
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };

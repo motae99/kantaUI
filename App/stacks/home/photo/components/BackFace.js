@@ -1,122 +1,235 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {Text, View} from 'react-native';
+import {Text, View, StyleSheet, Platform} from 'react-native';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import {Sizing, Outlines, Colors, Typography} from 'styles';
+import moment from 'moment';
 
-import {cardWidth, cardHeigh} from './FoldingStyle';
+import {cardWidth, cardHeigh, fullBorderRadius} from './FoldingStyle';
 import Animated from 'react-native-reanimated';
 const {interpolate, Extrapolate} = Animated;
 
-const Base = ({toggle, animation}) => {
-  const [date, setDate] = useState(new Date(1598051730000));
-  const [mode, setMode] = useState('date');
+const styles = StyleSheet.create({
+  selectServiceContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    borderBottomWidth: 0.5,
+    borderBottomColor: Colors.neutral.s300,
+    borderStyle: 'dashed',
+    backgroundColor: Colors.neutral.s100,
+  },
+  service: {
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: Colors.neutral.white,
+    marginHorizontal: Sizing.x20,
+    height: '70%',
+    borderRadius: fullBorderRadius,
+    paddingVertical: 10,
+  },
+  iconButton: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 5,
+    alignSelf: 'center',
+  },
+  serviceText: {flex: 4, justifyContent: 'space-evenly', paddingHorizontal: 5},
+  serviceSelectionText: {fontWeight: 'bold', fontSize: 16},
+  touchable: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 130,
+    height: '100%',
+  },
+});
+const BackFace = ({
+  animation,
+  item,
+  fromTime,
+  setFromTime,
+  toTime,
+  setToTime,
+  selected,
+  setSelected,
+}) => {
+  const [showFrom, setShowFrom] = useState(false);
+  const [showTo, setShowTo] = useState(false);
   const [show, setShow] = useState(false);
 
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
+  const onChangeFrom = (event, selectedDate) => {
     setShow(Platform.OS === 'ios');
-    setDate(currentDate);
+    setFromTime(selectedDate);
+    setShowFrom(false);
   };
 
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
-  const showDatepicker = () => {
-    showMode('date');
-  };
-
-  const showTimepicker = () => {
-    showMode('time');
+  const onChangeTo = (event, selectedDate) => {
+    setShow(Platform.OS === 'ios');
+    setToTime(selectedDate);
+    setShowTo(false);
   };
 
   const borderRadius = interpolate(animation, {
     inputRange: [0, 0.4],
-    outputRange: [20, 0],
+    outputRange: [fullBorderRadius, 0],
     extrapolate: Extrapolate.CLAMP,
   });
   return (
     // <View>
-    <TouchableWithoutFeedback onPress={() => {}}>
+    <>
       <Animated.View
         style={{
           backgroundColor: 'white',
           width: cardWidth,
           height: cardHeigh,
           borderRadius,
+          overflow: 'hidden',
         }}>
-        <View
-          style={{
-            flex: 1.5,
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-            alignItems: 'center',
-          }}>
-          <View style={{flex: 1}}>
-            <Text>1</Text>
+        <View style={styles.selectServiceContainer}>
+          <View
+            style={[
+              styles.service,
+              {
+                borderWidth: selected === item.inDoor ? 2 : 0,
+                borderColor:
+                  selected === item.inDoor
+                    ? Colors.primary.brand
+                    : Colors.neutral.black,
+              },
+            ]}>
+            <TouchableWithoutFeedback
+              style={styles.touchable}
+              onPress={() => setSelected(item.inDoor)}>
+              <Text>Indoor</Text>
+              <Text
+                style={{
+                  ...Typography.header.x20,
+                  fontWeight: 'bold',
+                  color:
+                    selected === item.inDoor
+                      ? Colors.primary.brand
+                      : Colors.neutral.black,
+                }}>
+                {item.inDoor}
+              </Text>
+            </TouchableWithoutFeedback>
           </View>
-          <View style={{flex: 1}}>
-            <Text>2</Text>
-          </View>
-          <View style={{flex: 1}}>
-            <Text>3</Text>
+          <View
+            style={[
+              styles.service,
+              {
+                borderWidth: selected === item.outDoor ? 2 : 0,
+                borderColor:
+                  selected === item.outDoor
+                    ? Colors.primary.brand
+                    : Colors.neutral.black,
+              },
+            ]}>
+            <TouchableWithoutFeedback
+              style={styles.touchable}
+              onPress={() => setSelected(item.outDoor)}>
+              <Text>outDoor</Text>
+              <Text
+                style={{
+                  ...Typography.header.x20,
+                  fontWeight: 'bold',
+                  color:
+                    selected === item.outDoor
+                      ? Colors.primary.brand
+                      : Colors.neutral.black,
+                }}>
+                {item.outDoor}
+              </Text>
+            </TouchableWithoutFeedback>
           </View>
         </View>
 
-        <View style={{flex: 1, flexDirection: 'row'}}>
-          <View style={{flex: 1, paddingHorizontal: 10, flexDirection: 'row'}}>
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingHorizontal: 10,
+        <View style={styles.selectServiceContainer}>
+          <View style={styles.service}>
+            <Ionicons
+              name="ios-time-outline"
+              size={24}
+              color={Colors.primary.brand}
+              style={styles.iconButton}
+            />
+            <TouchableWithoutFeedback
+              style={styles.serviceText}
+              onPress={() => {
+                // setShowTo(false);
+                setShowFrom(true);
               }}>
-              <TouchableWithoutFeedback onPress={showTimepicker}>
-                <Ionicons name="ios-time-outline" size={24} color="#01c5c4" />
-              </TouchableWithoutFeedback>
-            </View>
-            <View style={{flex: 4, justifyContent: 'space-evenly'}}>
               <Text>From</Text>
-              <Text style={{fontWeight: 'bold', fontSize: 16}}>05/30 PM</Text>
-            </View>
+              <Text style={styles.serviceSelectionText}>
+                {moment(fromTime).format('HH:mm A')}
+              </Text>
+            </TouchableWithoutFeedback>
+
+            <Ionicons
+              name="chevron-down"
+              size={24}
+              color={Colors.neutral.black}
+              style={styles.iconButton}
+            />
           </View>
 
-          <View style={{flex: 1, paddingHorizontal: 10, flexDirection: 'row'}}>
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingHorizontal: 10,
+          <View style={styles.service}>
+            <Ionicons
+              name="ios-time-outline"
+              size={24}
+              color={Colors.secondary.brand}
+              style={styles.iconButton}
+            />
+            <TouchableWithoutFeedback
+              style={styles.serviceText}
+              onPress={() => {
+                // setShowFrom(false);
+                setShowTo(true);
               }}>
-              <TouchableWithoutFeedback onPress={showTimepicker}>
-                <Ionicons name="ios-time-outline" size={24} color="#B98EFF" />
-              </TouchableWithoutFeedback>
-            </View>
-            <View style={{flex: 4, justifyContent: 'space-evenly'}}>
-              <Text>To</Text>
-              <Text style={{fontWeight: 'bold', fontSize: 16}}>10/30 PM</Text>
-            </View>
+              <Text>From</Text>
+              <Text style={styles.serviceSelectionText}>
+                {moment(toTime).format('HH:mm A')}
+              </Text>
+            </TouchableWithoutFeedback>
+
+            <Ionicons
+              name="chevron-down"
+              size={24}
+              color={Colors.neutral.black}
+              style={styles.iconButton}
+            />
           </View>
         </View>
-        {show && (
+        {showFrom && (
           <DateTimePicker
             testID="dateTimePicker"
-            value={date}
-            mode={mode}
+            value={fromTime}
+            mode={'time'}
             is24Hour={true}
             display="default"
-            onChange={onChange}
+            onChange={onChangeFrom}
+          />
+        )}
+
+        {showTo && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={toTime}
+            mode={'time'}
+            is24Hour={true}
+            display="default"
+            onChange={onChangeTo}
           />
         )}
       </Animated.View>
-    </TouchableWithoutFeedback>
+    </>
     // </View>
   );
 };
 
-export default Base;
+export default BackFace;

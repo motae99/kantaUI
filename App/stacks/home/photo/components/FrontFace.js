@@ -1,81 +1,110 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, Image, Text} from 'react-native';
-import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+import {View, Image, Text, StyleSheet} from 'react-native';
+import {
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+} from 'react-native-gesture-handler';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {cardWidth, cardHeigh} from './FoldingStyle';
+import {Sizing, Outlines, Colors, Typography} from 'styles';
 
-const Base = ({toggle}) => {
+import {cardWidth, cardHeigh, fullBorderRadius} from './FoldingStyle';
+const styles = StyleSheet.create({
+  container: {
+    width: cardWidth,
+    height: cardHeigh,
+    alignSelf: 'center',
+    backgroundColor: 'white',
+    borderRadius: fullBorderRadius,
+    flexDirection: 'row',
+  },
+  imageContainer: {
+    flex: 1.7,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    borderRadius: fullBorderRadius,
+  },
+  heartContainer: {flex: 1, alignItems: 'center', justifyContent: 'flex-start'},
+  heartButton: {
+    height: 35,
+    width: 35,
+    backgroundColor: Colors.primary.brand,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  ratingLine: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  line: {
+    width: '75%',
+    borderBottomColor: Colors.neutral.s300,
+    borderBottomWidth: 0.5,
+  },
+  servicesContainer: {
+    flex: 1,
+    width: '98%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  priceNumber: {...Typography.header.x30, color: Colors.neutral.black},
+  priceTite: {
+    ...Typography.body.x10,
+    color: Colors.neutral.s300,
+  },
+});
+const Base = ({toggle, item}) => {
   return (
     <TouchableWithoutFeedback onPress={() => toggle()}>
-      <View
-        style={{
-          width: cardWidth,
-          height: cardHeigh,
-          alignSelf: 'center',
-          backgroundColor: 'white',
-          borderRadius: 20,
-          flexDirection: 'row',
-        }}>
-        <View style={{width: '100%', height: '100%', flex: 1.2}}>
-          <View
-            style={{flex: 3, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={styles.container}>
+        <View style={{flex: 1.6}}>
+          <View style={styles.imageContainer}>
             <Image
-              style={{width: '90%', height: '90%', borderRadius: 20}}
+              style={styles.image}
               resizeMode="cover"
-              source={require('img/UserPhoto.jpeg')}
+              source={{uri: item.files[0].uri}}
             />
           </View>
-          <View
-            style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <View
-              style={{
-                height: 40,
-                width: 40,
-                backgroundColor: '#01c5c4',
-                borderRadius: 40,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <AntDesign name={'heart'} size={24} color="white" />
-            </View>
+          <View style={styles.heartContainer}>
+            <TouchableOpacity style={styles.heartButton}>
+              <AntDesign name={'heart'} size={20} color="white" />
+            </TouchableOpacity>
           </View>
         </View>
 
-        <View style={{width: '100%', height: '100%', flex: 2, margin: 8}}>
-          <View style={{flex: 1, justifyContent: 'center'}}>
-            <Text style={{fontSize: 28, fontWeight: 'bold'}}> John Smith</Text>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <AntDesign name={'star'} size={20} color="#01c5c4" />
-              <Text style={{marginHorizontal: 8}}>4.9</Text>
-              <View
-                style={{
-                  // height: 1,
-                  width: '65%',
-                  borderBottomColor: 'gray',
-                  borderBottomWidth: 1,
-                }}
-              />
+        <View style={{flex: 3, padding: 10}}>
+          <View style={{flex: 1.1, justifyContent: 'center'}}>
+            <Text style={{...Typography.header.x30}}>{item.name}</Text>
+            <View style={styles.ratingLine}>
+              <AntDesign name={'star'} size={18} color={Colors.primary.brand} />
+              <Text style={{marginHorizontal: 10}}>
+                {item.rate ? item.rate : 0}
+              </Text>
+              <View style={styles.line} />
             </View>
           </View>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
+          <View style={styles.servicesContainer}>
             <View style={{alignItems: 'flex-start'}}>
-              <Text>Requested</Text>
-              <Text style={{fontSize: 22, fontWeight: 'bold'}}>2</Text>
+              <Text style={styles.priceTite}>Request</Text>
+              <Text style={styles.priceNumber}>
+                {item.requests ? item.requests : 0}
+              </Text>
             </View>
             <View style={{alignItems: 'flex-start'}}>
-              <Text>Indoor</Text>
-              <Text style={{fontSize: 22, fontWeight: 'bold'}}>100$</Text>
+              <Text style={styles.priceTite}>Indoor</Text>
+              <Text style={styles.priceNumber}>{item.inDoor} $</Text>
             </View>
             <View style={{alignItems: 'flex-start'}}>
-              <Text>Outdoor</Text>
-              <Text style={{fontSize: 22, fontWeight: 'bold'}}>200$</Text>
+              <Text style={styles.priceTite}>Outdoor</Text>
+              <Text style={styles.priceNumber}>{item.outDoor} $</Text>
             </View>
           </View>
         </View>

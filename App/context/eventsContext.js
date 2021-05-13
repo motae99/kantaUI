@@ -13,7 +13,6 @@ export const EventContext = createContext();
 const EventContextProvider = (props) => {
   const GeoFirestore = geofirestore.initializeApp(firestore());
   const geocollection = GeoFirestore.collection('eventProviders');
-
   const {likes, currentLocation} = useContext(AuthContext);
   const [eventProviders, setEventProviders] = useState(null);
   const [selectedServices, setselectedServices] = useState([]);
@@ -21,7 +20,7 @@ const EventContextProvider = (props) => {
   const [selectedTime, setSelectedTime] = useState('evening');
   const [filterQuery, setFilterQuery] = useState(geocollection);
   const [currentFilter, setCurrentFilter] = useState(null);
-  const [sortBy, setSortBy] = useState('rate');
+  const [sortBy, setSortBy] = useState('low');
   const [eventsLoading, setEventsLoading] = useState(true);
 
   const nearQuery = (radius) => {
@@ -49,24 +48,28 @@ const EventContextProvider = (props) => {
       });
       setFilterQuery(query);
     }
+
     if (sortBy === 'rate') {
       const query = firestore()
         .collection('eventProviders')
         .orderBy('totalRate', 'desc');
       setFilterQuery(query);
     }
+
     if (sortBy === 'low') {
       const query = firestore()
         .collection('eventProviders')
         .orderBy(selectedTime, 'asc');
       setFilterQuery(query);
     }
+
     if (sortBy === 'high') {
       const query = firestore()
         .collection('eventProviders')
         .orderBy(selectedTime, 'desc');
       setFilterQuery(query);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortBy]);
 
   const priceRange = (min, max) => {

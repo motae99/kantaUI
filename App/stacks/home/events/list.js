@@ -27,12 +27,13 @@ const headerHeight = 58 * 2;
 export const getCloser = (value, checkOne, checkTwo) =>
   Math.abs(value - checkOne) < Math.abs(value - checkTwo) ? checkOne : checkTwo;
 
-const EventList = ({scrollY, eventProviders}) => {
+const EventList = ({scrollY, refs}) => {
+  // const EventList = () => {
+  // const scrollY = React.useRef(new Animated.Value(0)).current;
   const insets = useSafeAreaInsets();
+  const {eventProviders, eventsLoading} = React.useContext(EventContext);
 
-  // const {eventProviders, eventsLoading} = React.useContext(EventContext);
-
-  const ref = React.useRef(null);
+  // const ref = React.useRef(null);
 
   // const scrollY = React.useRef(new Animated.Value(0));
   // const scrollYClamped = diffClamp(scrollY.current, 0, headerHeight * 2);
@@ -96,7 +97,7 @@ const EventList = ({scrollY, eventProviders}) => {
   return (
     <SafeAreaView mode="margin" style={styles.container}>
       <Animated.FlatList
-        ref={ref}
+        ref={refs}
         scrollEventThrottle={16}
         onScroll={Animated.event(
           [{nativeEvent: {contentOffset: {y: scrollY}}}],
@@ -143,7 +144,7 @@ const EventList = ({scrollY, eventProviders}) => {
         <TouchableOpacity
           activeOpacity={0.9}
           onPress={() => {
-            ref.current?.scrollToOffset({
+            refs.current?.scrollToOffset({
               offset: 0,
               animated: true,
             });

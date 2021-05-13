@@ -12,6 +12,7 @@ import Tabs from './tabs';
 import Beauty from 'beauty';
 import BeautyList from 'beauty/beautyList';
 import Photo from 'photo';
+import PhotoDetail from 'photo/details';
 import Event from 'events';
 import EventDetail from 'events/detail';
 import PlannerDetail from 'events/plannerDetail';
@@ -100,6 +101,7 @@ const HomeStack = () => {
         <Stack.Screen name="Beauty" component={Beauty} />
         <Stack.Screen name="BeautyList" component={BeautyList} />
         <Stack.Screen name="Photo" component={Photo} />
+        <Stack.Screen name="PhotoDetail" component={PhotoDetail} />
 
         <Stack.Screen name="Event" component={Event} />
         <Stack.Screen

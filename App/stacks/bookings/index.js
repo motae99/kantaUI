@@ -22,15 +22,16 @@ const MyTabs = () => {
   const [selected, setSelected] = useState(null);
   const [requestedAction, setRequestedAction] = useState(null);
   const today = moment(Date.now()).format('YYYY-MM-DD');
-
+ 
   useEffect(() => {
     const subscriber = firestore()
       .collection('bookings')
-      .orderBy('date', 'desc')
-      .orderBy('timeStamp', 'asc')
+      // .orderBy('date', 'desc')
+      // .orderBy('timeStamp', 'asc')
       .onSnapshot((querySnapshot) => {
         if (querySnapshot) {
           const allData = querySnapshot.docs.map((documentSnapshot) => {
+            // console.log(documentSnapshot.id);
             return {
               ...documentSnapshot.data(),
               key: documentSnapshot.id,

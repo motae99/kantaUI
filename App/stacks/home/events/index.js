@@ -41,20 +41,16 @@ const MyTabs = () => {
       />
 
       <TabHeader {...{scrollY, ref}} />
-      {loading ? (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <Text>loading ... </Text>
-        </View>
-      ) : (
-        <Tab.Navigator tabBar={(props) => <Tabs {...props} />}>
-          <Tab.Screen name="List" options={{tabBarLabel: 'List'}}>
-            {(props) => <List {...props} {...{eventProviders, ref, scrollY}} />}
-          </Tab.Screen>
-          <Tab.Screen name="Map" options={{tabBarLabel: 'Map'}}>
-            {(props) => <Map {...props} {...{eventProviders}} />}
-          </Tab.Screen>
-        </Tab.Navigator>
-      )}
+
+      <Tab.Navigator tabBar={(props) => <Tabs {...props} />}>
+        <Tab.Screen name="List" options={{tabBarLabel: 'List'}}>
+          {() => <List refs={ref} {...{scrollY}} />}
+        </Tab.Screen>
+        <Tab.Screen name="Map" options={{tabBarLabel: 'Map'}}>
+          {() => <Map {...{eventProviders}} />}
+        </Tab.Screen>
+      </Tab.Navigator>
+
       <FilterTab />
     </SafeAreaView>
   );

@@ -2,7 +2,8 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import Animated from 'react-native-reanimated';
 import RequestButton from './RequestButton';
-import {perspective, sWidth, sHeight} from './FoldingStyle';
+import {perspective, sWidth, sHeight, fullBorderRadius} from './FoldingStyle';
+import {Sizing, Outlines, Colors, Typography} from 'styles';
 
 const {concat, interpolate, Extrapolate} = Animated;
 
@@ -13,16 +14,16 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function({animation, toggle}) {
+export default function ({animation, book}) {
   const borderRadius = interpolate(animation, {
     inputRange: [0, 0.4],
-    outputRange: [20, 0],
+    outputRange: [fullBorderRadius, 0],
     extrapolate: Extrapolate.CLAMP,
   });
 
   const borderRadiusBT = interpolate(animation, {
     inputRange: [0, 0.4, 1],
-    outputRange: [20, 0, 20],
+    outputRange: [fullBorderRadius, 0, fullBorderRadius],
     extrapolate: Extrapolate.CLAMP,
   });
 
@@ -54,14 +55,12 @@ export default function({animation, toggle}) {
             {translateY: -sHeight / 2},
             {rotateX: '180deg'},
           ],
-           borderTopLeftRadius: borderRadius,
-           borderTopRightRadius: borderRadius,
-           borderBottomLeftRadius: borderRadiusBT, 
-           borderBottomRightRadius: borderRadiusBT, 
-
+          borderTopLeftRadius: borderRadius,
+          borderTopRightRadius: borderRadius,
+          borderBottomLeftRadius: borderRadiusBT,
+          borderBottomRightRadius: borderRadiusBT,
         }}>
-        <RequestButton {...{toggle, animation}} />
-
+        <RequestButton {...{book}} />
       </Animated.View>
 
       {/* front face */}
@@ -69,7 +68,7 @@ export default function({animation, toggle}) {
         style={{
           ...StyleSheet.absoluteFillObject,
           backfaceVisibility: 'hidden',
-          backgroundColor: '#ffd9ff',
+          backgroundColor: Colors.neutral.s100,
           transform: [
             // {rotateX: '180deg'},
             {perspective},
@@ -77,8 +76,7 @@ export default function({animation, toggle}) {
             {rotateX: rotateX2},
             {translateY: -sHeight / 2},
           ],
-        borderRadius
-
+          borderRadius,
         }}
       />
     </Animated.View>

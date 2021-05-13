@@ -1,14 +1,49 @@
 import React, {useState} from 'react';
-import {View, Text, Alert} from 'react-native';
+import {View, Text, StyleSheet, Platform} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
-
+import Animated from 'react-native-reanimated';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
-import {fWidth, fHeight} from './FoldingStyle';
+import {fWidth, fHeight, fullBorderRadius} from './FoldingStyle';
+import {Sizing, Outlines, Colors, Typography} from 'styles';
+import moment from 'moment';
+const {interpolate, Extrapolate} = Animated;
 
-const DateSection = () => {
-  const [date, setDate] = useState(new Date(1598051730000));
+const styles = StyleSheet.create({
+  selectServiceContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    borderBottomWidth: 0.5,
+    borderBottomColor: Colors.neutral.s300,
+    borderStyle: 'dashed',
+    backgroundColor: Colors.neutral.s100,
+  },
+
+  service: {
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: Colors.neutral.white,
+    marginHorizontal: Sizing.x20,
+    height: '70%',
+    borderRadius: fullBorderRadius,
+    paddingVertical: 10,
+  },
+  iconButton: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 5,
+    alignSelf: 'center',
+  },
+  serviceText: {flex: 4, justifyContent: 'space-evenly', paddingHorizontal: 5},
+  serviceSelectionText: {...Typography.header.x10},
+});
+
+const DateSection = ({animation, date, setDate, selected}) => {
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
 
@@ -27,36 +62,40 @@ const DateSection = () => {
     showMode('date');
   };
 
-  const showTimepicker = () => {
-    showMode('time');
-  };
+  const borderRadius = interpolate(animation, {
+    inputRange: [0, 0.4],
+    outputRange: [fullBorderRadius, 0],
+    extrapolate: Extrapolate.CLAMP,
+  });
+
   return (
-    <View
-      style={{
-        width: fWidth,
-        height: fHeight,
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        flexDirection: 'row',
-      }}>
-      <View style={{flex: 1, paddingHorizontal: 10, flexDirection: 'row'}}>
-        <View style={{flex: 1, paddingHorizontal: 10}}>
-          <TouchableWithoutFeedback onPress={showDatepicker}>
-            <AntDesign name={'calendar'} size={24} color="#01c5c4" />
-          </TouchableWithoutFeedback>
-        </View>
-        <View style={{flex: 4, justifyContent: 'space-between'}}>
+    <Animated.View style={[styles.selectServiceContainer, {borderRadius}]}>
+      <View style={[styles.service]}>
+        <TouchableWithoutFeedback
+          onPress={showDatepicker}
+          style={styles.iconButton}>
+          <Ionicons
+            name={'calendar-outline'}
+            size={24}
+            color={Colors.primary.brand}
+            style={styles.iconButton}
+          />
+        </TouchableWithoutFeedback>
+        <View style={styles.serviceText}>
           <Text>Date</Text>
-          <Text style={{fontWeight: 'bold', fontSize: 16}}>Jan/05/2020</Text>
+          <Text style={{...Typography.header.x20, fontWeight: 'bold'}}>
+            {moment(date).format('DD/MM')}
+          </Text>
         </View>
       </View>
-      <View style={{flex: 1, paddingHorizontal: 10, flexDirection: 'row'}}>
+
+      <View style={styles.service}>
         <View style={{flex: 1, paddingHorizontal: 10}}>
           <AntDesign name="pay-circle-o1" size={24} color="#01c5c4" />
         </View>
         <View style={{flex: 4, justifyContent: 'space-between'}}>
           <Text>Price</Text>
-          <Text style={{fontWeight: 'bold', fontSize: 16}}>$ 150</Text>
+          <Text style={{fontWeight: 'bold', fontSize: 16}}>${selected}</Text>
         </View>
       </View>
       {show && (
@@ -69,7 +108,7 @@ const DateSection = () => {
           onChange={onChange}
         />
       )}
-    </View>
+    </Animated.View>
   );
 };
 
