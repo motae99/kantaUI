@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
 import {
   StatusBar,
@@ -11,13 +12,17 @@ import {
   TouchableOpacity,
   Easing,
   SafeAreaViewBase,
-  SafeAreaView,
 } from 'react-native';
-const {width, height} = Dimensions.get('screen');
+import FastImage from 'react-native-fast-image';
+import {SharedElement} from 'react-navigation-shared-element';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Share from 'photo/components/share';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
+const {width, height} = Dimensions.get('window');
 const API_KEY = '563492ad6f91700001000001d7bc6ad796bf4db4a876711a1a688b67';
 const API_URL =
-  'https://api.pexels.com/v1/search?query=nature&orientation=portrait&size=small&per_page=20';
+  'https://api.pexels.com/v1/search?query=Party&orientation=portrait&size=small&per_page=20';
 
 const IMAGE_SIZE = 80;
 const SPACING = 10;
@@ -30,12 +35,14 @@ const fetchImagesFromPexel = async () => {
   const {photos} = await data.json();
   return photos;
 };
-export default () => {
+const Browser = ({navigation, route}) => {
+  const {item} = route.params;
+
   const [images, setImages] = React.useState(null);
   React.useEffect(() => {
     const fetchImages = async () => {
-      const images = await fetchImagesFromPexel();
-      setImages(images);
+      const Images = await fetchImagesFromPexel();
+      setImages(Images);
     };
     fetchImages();
   }, []);
@@ -51,13 +58,25 @@ export default () => {
       offset: index * width,
       animated: true,
     });
+    if (index * (IMAGE_SIZE + SPACING) - IMAGE_SIZE / 2 > width / 2) {
+      thumbRef?.current?.scrollToOffset({
+        offset: index * (IMAGE_SIZE + SPACING) - width / 2 + IMAGE_SIZE / 2,
+        animated: true,
+      });
+    } else {
+      thumbRef?.current?.scrollToOffset({
+        offset: 0,
+        animated: true,
+      });
+    }
   };
 
   if (!images) {
     <Text>loading...</Text>;
   }
+
   return (
-    <View style={{flex: 1, backgroundColor: '#fff'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
       <StatusBar hidden />
       <FlatList
         ref={topRef}
@@ -68,16 +87,28 @@ export default () => {
         onMomentumScrollEnd={(ev) => {
           // scrollToIndex(3);
           // console.log(Math.floor(ev.nativeEvent.conten  tOffset.x / width);
-          scrollToIndex(Math.floor(ev.nativeEvent.contentOffset.x / width));
+          scrollToIndex(Math.floor(ev.nativeEvent.contentOffset.x / width) + 1);
         }}
         showsHorizontalScrollIndicator={false}
         renderItem={({item}) => {
           return (
             <View style={{height, width}}>
-              <Image
-                source={{uri: item.src.portrait}}
-                style={[StyleSheet.absoluteFillObject]}
-              />
+              <SharedElement
+                id={`image.${item.src.portrait}`}
+                style={{
+                  width,
+                  height,
+                }}>
+                <FastImage
+                  style={[StyleSheet.absoluteFillObject]}
+                  source={{
+                    uri: item.src.portrait,
+                    priority: FastImage.priority.normal,
+                    cashe: FastImage.cacheControl.immutable,
+                  }}
+                  resizeMode={FastImage.resizeMode.cover}
+                />
+              </SharedElement>
             </View>
           );
         }}
@@ -94,10 +125,9 @@ export default () => {
           return (
             <TouchableOpacity
               onPress={() => {
-                // scrollToIndex(index);
+                scrollToIndex(index);
               }}>
-              <Image
-                source={{uri: item.src.portrait}}
+              <FastImage
                 style={{
                   width: IMAGE_SIZE,
                   height: IMAGE_SIZE,
@@ -106,14 +136,58 @@ export default () => {
                   borderWidth: 2,
                   borderColor: activeIndex === index ? '#fff' : 'transparent',
                 }}
+                source={{
+                  uri: item.src.portrait,
+                  priority: FastImage.priority.normal,
+                  cashe: FastImage.cacheControl.immutable,
+                }}
+                resizeMode={FastImage.resizeMode.cover}
               />
             </TouchableOpacity>
           );
         }}
       />
-    </View>
+      <View
+        style={{
+          position: 'absolute',
+          top: 40,
+          right: 30,
+          width: 30,
+          height: 30,
+          borderRadius: 20,
+          backgroundColor: 'white',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="close" size={24} color={'black'} />
+        </TouchableOpacity>
+      </View>
+
+      <View
+        style={{
+          position: 'absolute',
+          top: 40,
+          right: 70,
+          width: 30,
+          height: 30,
+          borderRadius: 20,
+          backgroundColor: 'white',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <Share {...{item}} />
+      </View>
+    </SafeAreaView>
   );
 };
+
+Browser.sharedElements = (route, otherRoute, showing) => {
+  const {item} = route.params;
+  return item.files.map((i, index) => `image.${i.uri}`);
+};
+
+export default Browser;
 
 // import React from 'react';
 // import {
@@ -206,37 +280,6 @@ export default () => {
 //         />
 //       </View>
 
-//       <View
-//         style={{
-//           position: 'absolute',
-//           top: 80,
-//           right: 30,
-//           width: 30,
-//           height: 30,
-//           borderRadius: 20,
-//           backgroundColor: 'white',
-//           justifyContent: 'center',
-//           alignItems: 'center',
-//         }}>
-//         <TouchableOpacity onPress={() => navigation.goBack()}>
-//           <Ionicons name="close" size={24} color={'black'} />
-//         </TouchableOpacity>
-//       </View>
-
-//       <View
-//         style={{
-//           position: 'absolute',
-//           top: 80,
-//           right: 70,
-//           width: 30,
-//           height: 30,
-//           borderRadius: 20,
-//           backgroundColor: 'white',
-//           justifyContent: 'center',
-//           alignItems: 'center',
-//         }}>
-//         <Share {...{item}} />
-//       </View>
 //     </SafeAreaView>
 //   );
 // };

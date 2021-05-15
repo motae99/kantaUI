@@ -7,8 +7,9 @@ import {
 } from 'react-native-gesture-handler';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Sizing, Outlines, Colors, Typography} from 'styles';
-
+import Heart from 'photo/components/heart';
 import {cardWidth, cardHeigh, fullBorderRadius} from './FoldingStyle';
+
 const styles = StyleSheet.create({
   container: {
     width: cardWidth,
@@ -29,15 +30,16 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: fullBorderRadius,
   },
-  heartContainer: {flex: 1, alignItems: 'center', justifyContent: 'flex-start'},
-  heartButton: {
+  heartContainer: {
+    flex: 1,
+    alignItems: 'center',
+    // justifyContent: 'flex-start',
     height: 35,
     width: 35,
-    backgroundColor: Colors.primary.brand,
     borderRadius: 20,
-    alignItems: 'center',
     justifyContent: 'center',
   },
+
   ratingLine: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -61,7 +63,10 @@ const styles = StyleSheet.create({
     color: Colors.neutral.s300,
   },
 });
-const Base = ({toggle, item}) => {
+
+const FrontFace = ({toggle, item}) => {
+  const [hearted, toggleHeart] = React.useState(false);
+
   return (
     <TouchableWithoutFeedback onPress={() => toggle()}>
       <View style={styles.container}>
@@ -73,10 +78,16 @@ const Base = ({toggle, item}) => {
               source={{uri: item.files[0].uri}}
             />
           </View>
-          <View style={styles.heartContainer}>
-            <TouchableOpacity style={styles.heartButton}>
-              <AntDesign name={'heart'} size={20} color="white" />
-            </TouchableOpacity>
+          <View
+            style={[
+              styles.heartContainer,
+              {
+                backgroundColor: hearted
+                  ? Colors.neutral.white
+                  : Colors.primary.brand,
+              },
+            ]}>
+            <Heart {...{item, hearted, toggleHeart}} />
           </View>
         </View>
 
@@ -113,4 +124,4 @@ const Base = ({toggle, item}) => {
   );
 };
 
-export default Base;
+export default FrontFace;
