@@ -2,7 +2,7 @@ import React, {useRef, useContext, useState, useReducer} from 'react';
 import {StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {AuthContext} from 'context/authContext';
-// import {EventContext} from 'context/eventsContext';
+import {Sizing, Outlines, Colors, Typography} from 'styles';
 
 import Svg, {Path} from 'react-native-svg';
 
@@ -17,8 +17,8 @@ const Heart = ({item, hearted, toggleHeart}) => {
 
   const bounce = () => {
     handleViewRef.current.bounce(300).then((endState) => {
-      hearted ? unLike(item) : addLike(item);
-      // unHeart(item, !item.isHearted);
+      const type = 'photo';
+      hearted ? unLike(item) : addLike(item, type);
 
       toggleHeart(!hearted);
     });
@@ -31,8 +31,8 @@ const Heart = ({item, hearted, toggleHeart}) => {
           width={24}
           height={24}
           viewBox="0 0 24 24"
-          fill={hearted ? '#219CAB' : '#fff'}
-          stroke="white"
+          fill={hearted ? Colors.primary.brand : '#fff'}
+          stroke={hearted ? Colors.primary.brand : '#fff'}
           strokeWidth={2}
           strokeLinecap="round"
           strokeLinejoin="round"

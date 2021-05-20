@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   frontFace: {...StyleSheet.absoluteFillObject, backfaceVisibility: 'hidden'},
 });
 
-const FoldView = ({item}) => {
+const FoldView = ({item, unHeart}) => {
   const {dbUser} = useContext(AuthContext);
 
   const [date, setDate] = useState(new Date());

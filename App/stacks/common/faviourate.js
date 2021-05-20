@@ -6,6 +6,7 @@ import {Sizing, Outlines, Colors, Typography} from 'styles';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {AuthContext} from 'context/authContext';
 import EventCard from 'stacks/common/components/eventFaviourate';
+import PhotoCard from 'stacks/home/photo/photoCard';
 import {useNavigation} from '@react-navigation/native';
 
 const PreviousList = () => {
@@ -39,7 +40,13 @@ const PreviousList = () => {
         renderItem={({item, index}) => {
           const data = item.item;
           const type = item.type;
-          return type === 'events' ? <EventCard {...{data}} /> : null;
+          var {item} = item;
+
+          return type === 'events' ? (
+            <EventCard {...{data}} />
+          ) : type === 'photo' ? (
+            <PhotoCard {...{item}} />
+          ) : null;
           // return <BookingCard {...{item}} />;
         }}
       />

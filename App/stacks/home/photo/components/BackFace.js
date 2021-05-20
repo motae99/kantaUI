@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.neutral.white,
     marginHorizontal: Sizing.x20,
     height: '70%',
+    width: 100,
     borderRadius: fullBorderRadius,
     paddingVertical: 10,
   },
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    width: 130,
+    width: 80,
     height: '100%',
   },
 });
@@ -65,13 +66,13 @@ const BackFace = ({
 
   const onChangeFrom = (event, selectedDate) => {
     setShow(Platform.OS === 'ios');
-    setFromTime(selectedDate);
+    selectedDate ? setFromTime(selectedDate) : null;
     setShowFrom(false);
   };
 
   const onChangeTo = (event, selectedDate) => {
     setShow(Platform.OS === 'ios');
-    setToTime(selectedDate);
+    selectedDate ? setToTime(selectedDate) : null;
     setShowTo(false);
   };
 
@@ -96,6 +97,35 @@ const BackFace = ({
             style={[
               styles.service,
               {
+                borderWidth: selected === item.party ? 2 : 0,
+                borderColor:
+                  selected === item.party
+                    ? Colors.primary.brand
+                    : Colors.neutral.black,
+              },
+            ]}>
+            <TouchableWithoutFeedback
+              style={styles.touchable}
+              onPress={() => setSelected(item.party)}>
+              <Text>Party</Text>
+              <Text
+                style={{
+                  ...Typography.header.x20,
+                  fontWeight: 'bold',
+                  color:
+                    selected === item.party
+                      ? Colors.primary.brand
+                      : Colors.neutral.black,
+                }}>
+                {item.party}
+              </Text>
+            </TouchableWithoutFeedback>
+          </View>
+
+          <View
+            style={[
+              styles.service,
+              {
                 borderWidth: selected === item.inDoor ? 2 : 0,
                 borderColor:
                   selected === item.inDoor
@@ -106,7 +136,7 @@ const BackFace = ({
             <TouchableWithoutFeedback
               style={styles.touchable}
               onPress={() => setSelected(item.inDoor)}>
-              <Text>Indoor</Text>
+              <Text>In-door</Text>
               <Text
                 style={{
                   ...Typography.header.x20,
@@ -134,7 +164,7 @@ const BackFace = ({
             <TouchableWithoutFeedback
               style={styles.touchable}
               onPress={() => setSelected(item.outDoor)}>
-              <Text>outDoor</Text>
+              <Text>out-Door</Text>
               <Text
                 style={{
                   ...Typography.header.x20,

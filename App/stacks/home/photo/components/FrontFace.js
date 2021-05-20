@@ -20,23 +20,26 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   imageContainer: {
-    flex: 1.7,
+    flex: 0.8,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 10,
   },
   image: {
-    width: '100%',
-    height: '100%',
+    width: 100,
+    height: 100,
     borderRadius: fullBorderRadius,
+    backgroundColor: 'black',
+    overflow: 'hidden',
   },
   heartContainer: {
-    flex: 1,
+    // flex: 1,
+    alignSelf: 'center',
     alignItems: 'center',
     // justifyContent: 'flex-start',
     height: 35,
     width: 35,
-    borderRadius: 20,
+    borderRadius: 40,
     justifyContent: 'center',
   },
 
@@ -65,62 +68,65 @@ const styles = StyleSheet.create({
 });
 
 const FrontFace = ({toggle, item}) => {
-  const [hearted, toggleHeart] = React.useState(false);
+  const [hearted, toggleHeart] = React.useState(item.isHearted);
 
   return (
-    <TouchableWithoutFeedback onPress={() => toggle()}>
-      <View style={styles.container}>
-        <View style={{flex: 1.6}}>
-          <View style={styles.imageContainer}>
+    // <TouchableWithoutFeedback onPress={() => toggle()}>
+    <View style={styles.container}>
+      <View style={{flex: 1.6}}>
+        <View style={styles.imageContainer}>
+          <TouchableWithoutFeedback
+            style={styles.image}
+            onPress={() => toggle()}>
             <Image
-              style={styles.image}
+              style={{...StyleSheet.absoluteFillObject}}
               resizeMode="cover"
-              source={{uri: item.files[0].uri}}
+              source={{uri: item.photoURL}}
             />
-          </View>
-          <View
-            style={[
-              styles.heartContainer,
-              {
-                backgroundColor: hearted
-                  ? Colors.neutral.white
-                  : Colors.primary.brand,
-              },
-            ]}>
-            <Heart {...{item, hearted, toggleHeart}} />
-          </View>
+          </TouchableWithoutFeedback>
         </View>
 
-        <View style={{flex: 3, padding: 10}}>
-          <View style={{flex: 1.1, justifyContent: 'center'}}>
-            <Text style={{...Typography.header.x30}}>{item.name}</Text>
-            <View style={styles.ratingLine}>
-              <AntDesign name={'star'} size={18} color={Colors.primary.brand} />
-              <Text style={{marginHorizontal: 10}}>
-                {item.rate ? item.rate : 0}
-              </Text>
-              <View style={styles.line} />
-            </View>
+        <View
+          style={[
+            styles.heartContainer,
+            {
+              backgroundColor: hearted
+                ? Colors.neutral.white
+                : Colors.primary.brand,
+            },
+          ]}>
+          <Heart {...{item, hearted, toggleHeart}} />
+        </View>
+      </View>
+      <View style={{flex: 3, padding: 10}}>
+        <View style={{flex: 1.1, justifyContent: 'center'}}>
+          <Text style={{...Typography.header.x30}}>{item.name}</Text>
+          <View style={styles.ratingLine}>
+            <AntDesign name={'star'} size={18} color={Colors.primary.brand} />
+            <Text style={{marginHorizontal: 10}}>
+              {item.totalRate && item.numberOfRate
+                ? Math.round(item.totalRate / item.numberOfRate)
+                : 0}
+            </Text>
+            <View style={styles.line} />
           </View>
-          <View style={styles.servicesContainer}>
-            <View style={{alignItems: 'flex-start'}}>
-              <Text style={styles.priceTite}>Request</Text>
-              <Text style={styles.priceNumber}>
-                {item.requests ? item.requests : 0}
-              </Text>
-            </View>
-            <View style={{alignItems: 'flex-start'}}>
-              <Text style={styles.priceTite}>Indoor</Text>
-              <Text style={styles.priceNumber}>{item.inDoor} $</Text>
-            </View>
-            <View style={{alignItems: 'flex-start'}}>
-              <Text style={styles.priceTite}>Outdoor</Text>
-              <Text style={styles.priceNumber}>{item.outDoor} $</Text>
-            </View>
+        </View>
+        <View style={styles.servicesContainer}>
+          <View style={{alignItems: 'flex-start'}}>
+            <Text style={styles.priceTite}>Party</Text>
+            <Text style={styles.priceNumber}>{item.party} $</Text>
+          </View>
+          <View style={{alignItems: 'flex-start'}}>
+            <Text style={styles.priceTite}>Indoor</Text>
+            <Text style={styles.priceNumber}>{item.inDoor} $</Text>
+          </View>
+          <View style={{alignItems: 'flex-start'}}>
+            <Text style={styles.priceTite}>Outdoor</Text>
+            <Text style={styles.priceNumber}>{item.outDoor} $</Text>
           </View>
         </View>
       </View>
-    </TouchableWithoutFeedback>
+    </View>
   );
 };
 

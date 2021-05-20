@@ -88,7 +88,10 @@ const Detail = ({route, navigation}) => {
       bookingStatus: 'booked',
     };
     // console.log(moment(date).format('YYYY-MM-DD'));
-    creatBooking(data).then(navigation.goBack());
+    creatBooking(data)
+      .then(() => navigation.goBack())
+      .catch((error) => console.log(error));
+
     // console.log('date: ', moment(data.date).format('DD/MM/YYYY'));
     // console.log('timeStamp:', Date.now());
   };

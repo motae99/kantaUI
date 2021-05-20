@@ -39,7 +39,7 @@ const AuthContextProvider = (props) => {
       });
     }
 
-    if (data.fcmToken === fcmToken) {
+    if (data.fcmToken !== fcmToken) {
       return firestore().collection('users').doc(userId).update({
         fcmToken: fcmToken,
       });
@@ -75,7 +75,7 @@ const AuthContextProvider = (props) => {
     console.log(object);
   }
 
-  function addLike(item) {
+  function addLike(item, type) {
     // console.log('like');
     // item.push({isHearted: true});
     item.isHearted = true;
@@ -83,17 +83,11 @@ const AuthContextProvider = (props) => {
     const data = {
       userId: userId,
       providerId: item.key,
-      type: 'events',
+      type: type,
       createdAt: firestore.FieldValue.serverTimestamp(),
       item,
     };
     return firestore().collection('userFavourite').add(data);
-  }
-
-  function connectProvider(newData) {
-    console.log('it should be PhoneNumber now', newData);
-    const updatedUser = {...dbUser, ...newData};
-    return firestore().collection('users').doc(dbUser.uid).update(updatedUser);
   }
 
   function onAuthStateChanged(user) {
@@ -334,7 +328,7 @@ const AuthContextProvider = (props) => {
           googleProfile: additionalUserInfo.profile,
           providerData: user.providerData,
         };
-        connectProvider(googleData);
+        // connectProvider(googleData);
       })
       .catch((error) => {
         if (error.code === 'auth/operation-not-allowed') {
@@ -461,7 +455,7 @@ const AuthContextProvider = (props) => {
         .currentUser.updatePhoneNumber(credential)
         .then(() => {
           const phoneData = {phoneNumber: phoneNo};
-          connectProvider(phoneData);
+          // connectProvider(phoneData);
         })
         .catch((error) => console.log(error));
       Toast.show({

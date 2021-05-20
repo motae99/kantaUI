@@ -10,15 +10,6 @@ import * as RootNavigation from 'navigation';
 const Services = () => {
   const [localToken, setLocalToken] = useState(null);
 
-  const storageToken = async () => {
-    const tokenStorage = await AsyncStorage.getItem('fcmToken')
-      .then((token) => setLocalToken(token)) //setLocalToken(token)
-      .catch((error) => console.log(error));
-    return tokenStorage;
-  };
-
-  storageToken();
-
   function handleDynamicLink(link) {
     console.log('link', link);
     const testUrl = 'https://kantaui.page.link/HomeStack/EventList';
@@ -48,7 +39,7 @@ const Services = () => {
   };
 
   const processNotification = async (remoteMessage, fromBackground) => {
-    await AsyncStorage.setItem('booking', JSON.stringify(8));
+    // await AsyncStorage.setItem('booking', JSON.stringify(8));
 
     let title = '';
     let body = '';
@@ -56,28 +47,36 @@ const Services = () => {
     let alertBtns = [];
 
     // Update a users messages list using AsyncStorage
-    const currentMessages = await AsyncStorage.getItem('notifications');
-    const messageArray = JSON.parse(currentMessages);
-    const messageData = remoteMessage.data;
-    let notificationType = null;
-    if (messageData.type === 'booking') {
-      notificationType = 'booking';
-    }
-    if (messageData.type === 'offer') {
-      notificationType = 'offer';
-    }
-    if (messageData.type === 'social') {
-      notificationType = 'social';
-    }
-    const badge = await AsyncStorage.getItem(notificationType);
-    // eslint-disable-next-line radix
-    const count = badge ? parseInt(badge) + 1 : 1;
+    // const currentMessages = await AsyncStorage.getItem('notifications');
+
+    // const messageArray = currentMessages ? JSON.parse(currentMessages) : [];
+    // console.log('before messages in storage', JSON.stringify(messageArray));
+    // const messageData = remoteMessage.data;
+    // console.log('new message', JSON.stringify(messageData));
+
+    // let notificationType = null;
+    // if (messageData.type === 'booking') {
+    //   notificationType = 'booking';
+    // }
+    // if (messageData.type === 'offer') {
+    //   notificationType = 'offer';
+    // }
+    // if (messageData.type === 'social') {
+    //   notificationType = 'social';
+    // }
+    // const badge = await AsyncStorage.getItem(notificationType);
+    // // eslint-disable-next-line radix
+    // const count = badge ? parseInt(badge) + 1 : 1;
     // await AsyncStorage.setItem('booking', toString(count));
-    messageArray.push(messageData);
-    await AsyncStorage.setItem('notifications', JSON.stringify(messageArray));
+    // messageArray.push(messageData);
+    // await AsyncStorage.setItem('notifications', JSON.stringify(messageArray));
+    // console.log(
+    //   'after messages added to storage',
+    //   JSON.stringify(messageArray),
+    // );
 
     if (remoteMessage) {
-      // RootNavigation.navigate('EventList');
+      // handle message with no data
       console.log('processing Notification RemoteMessage', remoteMessage);
       if (remoteMessage.notification) {
         title = remoteMessage.notification.title;
@@ -86,6 +85,16 @@ const Services = () => {
       // timeStamp = remoteMessage.sentTime;
 
       if (remoteMessage.data) {
+        // handle message data adding them to notifications array
+        const currentMessages = await AsyncStorage.getItem('notifications');
+        const messageArray = currentMessages ? JSON.parse(currentMessages) : [];
+        const messageData = remoteMessage.data;
+        messageArray.push(messageData);
+        await AsyncStorage.setItem(
+          'notifications',
+          JSON.stringify(messageArray),
+        );
+
         if (fromBackground && remoteMessage.data.msgType) {
           switch (remoteMessage.data.msgType) {
             case 'Event':
@@ -138,11 +147,32 @@ const Services = () => {
     }
   };
 
-  useEffect(() => {
-    if (!localToken) {
-      console.log('we dont have');
+  const storageToken = async () => {
+    try {
+      await AsyncStorage.getItem('fcmToken').then((token) => {
+        // console.log('getToken from Storage and set It in State', token);
+        setLocalToken(token);
+      });
+    } catch (error) {
+      console.log('we dont have Token in Storage', error);
       requestUserPermission();
     }
+  };
+
+  useEffect(() => {
+    // const storageToken = async () => {
+    //   const tokenStorage = await AsyncStorage.getItem('fcmToken')
+    //     .then((token) => setLocalToken(token)) //setLocalToken(token)
+    //     .catch((error) => console.log(error));
+    //   return tokenStorage;
+    // };
+
+    storageToken();
+
+    // if (!localToken) {
+    //   console.log('we dont have');
+    //   requestUserPermission();
+    // }
 
     messaging().onTokenRefresh(async (token) => {
       await AsyncStorage.setItem('fcmToken', token);
@@ -178,7 +208,7 @@ const Services = () => {
       // this.forwardToSearchPage(remoteMessage.data.word);
     });
     return () => unsubscribe();
-  }, [localToken]);
+  }, []);
 
   useEffect(() => {
     dynamicLinks()

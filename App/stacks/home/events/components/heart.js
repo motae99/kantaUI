@@ -18,7 +18,8 @@ const Heart = ({item}) => {
 
   const bounce = () => {
     handleViewRef.current.bounce(300).then((endState) => {
-      hearted ? unLike(item) : addLike(item);
+      const type = 'events';
+      hearted ? unLike(item) : addLike(item, type);
       unHeart(item, !item.isHearted);
 
       toggleHeart(!hearted);

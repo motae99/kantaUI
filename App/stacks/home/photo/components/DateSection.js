@@ -101,7 +101,7 @@ const DateSection = ({animation, date, setDate, selected}) => {
       {show && (
         <DateTimePicker
           testID="dateTimePicker"
-          value={date}
+          value={date ? date : ''}
           mode={mode}
           is24Hour={true}
           display="default"

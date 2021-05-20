@@ -6,6 +6,7 @@ import React, {
   useMemo,
 } from 'react';
 import firestore from '@react-native-firebase/firestore';
+import messaging from '@react-native-firebase/messaging';
 import * as geofirestore from 'geofirestore';
 import {AuthContext} from 'context/authContext';
 export const EventContext = createContext();
@@ -90,7 +91,6 @@ const EventContextProvider = (props) => {
             );
             var hearted = existed.length > 0 ? true : false;
           }
-          console.log(documentSnapshot.data().totalRate);
           return {
             ...documentSnapshot.data(),
             key: documentSnapshot.id,
@@ -108,8 +108,16 @@ const EventContextProvider = (props) => {
   }, [likes, filterQuery]);
 
   const creatBooking = (data) => {
-    // console.log(data.time);
-    return firestore().collection('bookings').add(data);
+    // const topic = data.providerType + data.providerName + data.date + data.time;
+    const topic = data.providerId + data.date;
+    console.log('topic', topic);
+
+    return firestore()
+      .collection('bookings')
+      .add(data)
+      .then(() => {
+        messaging().subscribeToTopic(String(topic));
+      });
   };
 
   const unHeart = (item, hearted) => {

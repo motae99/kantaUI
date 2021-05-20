@@ -60,7 +60,7 @@ const NotificationItem = ({item}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.date}>
-        {moment(item.timeStamp).format('ddd, Do MMM, h:mm')}
+        {moment(Number(item.timeStamp)).format('ddd, Do MMM, h:mm')}
       </Text>
       {item.image ? (
         <Image source={{uri: item.image}} style={styles.image} />
