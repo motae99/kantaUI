@@ -70,7 +70,7 @@ export default class LocationView extends React.Component {
     Events.listen(
       'PlaceSelected',
       this.constructor.displayName,
-      this._onPlaceSelected,
+      // this._onPlaceSelected,
     );
   }
 
@@ -97,16 +97,16 @@ export default class LocationView extends React.Component {
     }).start();
   };
 
-  _onMapRegionChange = (region) => {
-    this._setRegion(region, false);
-    if (this.state.inFocus) {
-      this._input.blur();
-    }
-  };
+  // _onMapRegionChange = (region) => {
+  //   this._setRegion(region, false);
+  //   if (this.state.inFocus) {
+  //     this._input.blur();
+  //   }
+  // };
 
-  _onMapRegionChangeComplete = (region) => {
-    this._input.fetchAddressForLocation(region);
-  };
+  // _onMapRegionChangeComplete = (region) => {
+  //   this._input.fetchAddressForLocation(region);
+  // };
 
   _onTextFocus = () => {
     this.state.inFocus = true;
@@ -118,41 +118,41 @@ export default class LocationView extends React.Component {
     this._animateInput();
   };
 
-  _setRegion = (region, animate = true) => {
-    this.state.region = {...this.state.region, ...region};
-    if (animate) {
-      this._map.animateToRegion(this.state.region);
-    }
-  };
+  // _setRegion = (region, animate = true) => {
+  //   this.state.region = {...this.state.region, ...region};
+  //   if (animate) {
+  //     this._map.animateToRegion(this.state.region);
+  //   }
+  // };
 
-  _onPlaceSelected = (placeId) => {
-    this._input.blur();
-    axios
-      .get(`${PLACE_DETAIL_URL}?key=${this.props.apiKey}&placeid=${placeId}`)
-      .then(({data}) => {
-        let region = (({lat, lng}) => ({latitude: lat, longitude: lng}))(
-          data.result.geometry.location,
-        );
-        this._setRegion(region);
-        this.setState({placeDetails: data.result});
-      });
-  };
+  // _onPlaceSelected = (placeId) => {
+  //   this._input.blur();
+  //   axios
+  //     .get(`${PLACE_DETAIL_URL}?key=${this.props.apiKey}&placeid=${placeId}`)
+  //     .then(({data}) => {
+  //       let region = (({lat, lng}) => ({latitude: lat, longitude: lng}))(
+  //         data.result.geometry.location,
+  //       );
+  //       this._setRegion(region);
+  //       this.setState({placeDetails: data.result});
+  //     });
+  // };
 
-  _getCurrentLocation = () => {
-    const {timeout, maximumAge, enableHighAccuracy} = this.props;
-    Geolocation.getCurrentPosition(
-      (position) => {
-        const {latitude, longitude} = position.coords;
-        this._setRegion({latitude, longitude});
-      },
-      (error) => console.log(error.message),
-      {
-        enableHighAccuracy,
-        timeout,
-        maximumAge,
-      },
-    );
-  };
+  // _getCurrentLocation = () => {
+  //   const {timeout, maximumAge, enableHighAccuracy} = this.props;
+  //   Geolocation.getCurrentPosition(
+  //     (position) => {
+  //       const {latitude, longitude} = position.coords;
+  //       this._setRegion({latitude, longitude});
+  //     },
+  //     (error) => console.log(error.message),
+  //     {
+  //       enableHighAccuracy,
+  //       timeout,
+  //       maximumAge,
+  //     },
+  //   );
+  // };
 
   render() {
     let {inputScale} = this.state;
@@ -183,14 +183,14 @@ export default class LocationView extends React.Component {
             components={this.props.components}
           />
         </View>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={[
             styles.currentLocBtn,
             {backgroundColor: this.props.markerColor},
           ]}
           onPress={this._getCurrentLocation}>
           <MaterialIcons name={'my-location'} color={'white'} size={25} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
           style={[styles.actionButton, this.props.actionButtonStyle]}
           onPress={() =>

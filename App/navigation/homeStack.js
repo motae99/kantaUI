@@ -22,6 +22,7 @@ import Notifications from 'stacks/common/notifications';
 import Faviourate from 'stacks/common/faviourate';
 import FeedBack from 'stacks/common/feedBack';
 import AllReview from 'stacks/common/rating';
+import Payment from 'stacks/common/payment';
 
 import Phone from 'auth/phone';
 // enabledScreens();
@@ -79,6 +80,7 @@ function MainStackScreen() {
       <ModalStack.Screen name="Filter" component={Filter} />
       <ModalStack.Screen name="FeedBack" component={FeedBack} />
       <ModalStack.Screen name="AllReview" component={AllReview} />
+      <ModalStack.Screen name="Payment" component={Payment} />
       <ModalStack.Screen
         name="Notifications"
         component={Notifications}

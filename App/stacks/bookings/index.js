@@ -12,7 +12,7 @@ import Previous from './previous';
 
 const Tab = createMaterialTopTabNavigator();
 
-const MyTabs = () => {
+const MyTabs = (props) => {
   const bottomSheetModalRef = useRef(null);
   const [data, setData] = useState([]);
   const [bookedBookings, setBookedBookings] = useState([]);
@@ -22,7 +22,7 @@ const MyTabs = () => {
   const [selected, setSelected] = useState(null);
   const [requestedAction, setRequestedAction] = useState(null);
   const today = moment(Date.now()).format('YYYY-MM-DD');
- 
+
   useEffect(() => {
     const subscriber = firestore()
       .collection('bookings')
@@ -97,28 +97,55 @@ const MyTabs = () => {
   const handleSheetChanges = useCallback((index) => {
     // console.log('handleSheetChanges', index);
   }, []);
-  const process = () => {
-    requestedAction === 'confirm'
-      ? firestore()
-          .collection('bookings')
-          .doc(selected.key)
-          .update({
-            bookingStatus: 'confirmed',
-          })
-          .then(() => {
-            const newData = data;
-            const objIndex = newData.findIndex((i) => i === selected);
-            newData[objIndex].bookingStatus = 'confirmed';
-            setData(newData);
-            setSort(true);
-          })
-          .then(() => {
-            bottomSheetModalRef.current?.dismiss();
-          })
-          .catch((error) => {
-            console.log(error);
-          })
-      : firestore()
+
+  const process = (amount) => {
+    switch (requestedAction) {
+      case 'confirm':
+        // console.log(amount);
+        bottomSheetModalRef.current?.dismiss();
+        props.navigation.navigate('Modal', {
+          screen: 'Payment',
+          params: {
+            amount: amount,
+            booking: selected,
+          },
+        });
+
+        // .then(() =>
+        //   props.navigation.navigate('Modal', {
+        //     screen: 'Payment',
+        //     params: {
+        //       amount: amount,
+        //       booking: selected,
+        //     },
+        //   }),
+        // )
+        // .catch((error) => {
+        //   console.log(error);
+        // });
+        // firestore()
+        // .collection('bookings')
+        // .doc(selected.key)
+        // .update({
+        //   bookingStatus: 'confirmed',
+        // })
+        // .then(() => {
+        //   const newData = data;
+        //   const objIndex = newData.findIndex((i) => i === selected);
+        //   newData[objIndex].bookingStatus = 'confirmed';
+        //   setData(newData);
+        //   setSort(true);
+        // })
+        // .then(() => {
+        //   bottomSheetModalRef.current?.dismiss();
+        // })
+        // .catch((error) => {
+        //   console.log(error);
+        // })
+        break;
+
+      default:
+        firestore()
           .collection('bookings')
           .doc(selected.key)
           .update({
@@ -137,6 +164,8 @@ const MyTabs = () => {
           .catch((error) => {
             console.log(error);
           });
+        break;
+    }
   };
 
   const action = (name, item) => {

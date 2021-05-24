@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {View, Text, StyleSheet, Dimensions} from 'react-native';
 import {TouchableOpacity} from '@gorhom/bottom-sheet';
@@ -12,21 +13,50 @@ const Sheet = ({selected, requestedAction, process}) => {
   return (
     <View style={styles.contentContainer}>
       {requestedAction === 'confirm' ? (
-        <TouchableOpacity
-          onPress={process}
+        <View
           style={{
-            justifyContent: 'center',
+            // flex: 1,
+            flexDirection: 'row',
             alignItems: 'center',
-            height: 50,
+            justifyContent: 'space-between',
             width: width * 0.9,
-            borderRadius: 5,
-            backgroundColor: Colors.secondary.brand,
-            alignSelf: 'center',
           }}>
-          <Text style={{color: Colors.neutral.white, ...Typography.header.x30}}>
-            Pay Now {selected.totalCost * 0.2}
-          </Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => process(selected.totalCost)}
+            style={{
+              // flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: 50,
+              width: width * 0.42,
+              borderRadius: 5,
+              backgroundColor: Colors.primary.brand,
+              // alignSelf: 'center',
+            }}>
+            <Text
+              style={{color: Colors.neutral.white, ...Typography.header.x30}}>
+              Pay {selected.totalCost}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => process(selected.totalCost * 0.2)}
+            style={{
+              // flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: 50,
+              width: width * 0.42,
+              borderRadius: 5,
+              borderColor: Colors.secondary.brand,
+              borderWidth: 1,
+              alignSelf: 'center',
+            }}>
+            <Text
+              style={{color: Colors.secondary.brand, ...Typography.header.x30}}>
+              Pay {selected.totalCost * 0.2} Only
+            </Text>
+          </TouchableOpacity>
+        </View>
       ) : null}
 
       {requestedAction === 'cancel' ? (
