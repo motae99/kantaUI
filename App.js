@@ -1,7 +1,7 @@
 import React from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
-
+import SplashScreen from 'react-native-splash-screen';
 import {View, Text} from 'react-native';
 // import Navigator from './App/navigation/';
 // import Services from 'utils/services';
@@ -14,10 +14,13 @@ const codePushOptions = {
 };
 
 const App = ({props}) => {
+  React.useEffect(() => {
+    console.log('splashHide');
+    SplashScreen.hide();
+  });
   return (
     <SafeAreaProvider>
       {/* <Services />
-
       <Navigator /> */}
       <View
         style={{

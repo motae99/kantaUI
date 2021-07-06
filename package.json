@@ -73,6 +73,7 @@
     "react-native-sha256": "^1.4.7",
     "react-native-share": "^5.1.7",
     "react-native-shared-element": "^0.7.0",
+    "react-native-splash-screen": "^3.2.0",
     "react-native-svg": "^12.1.0",
     "react-native-swipeable-item": "^1.5.7",
     "react-native-tab-view": "^2.16.0",

@@ -124,7 +124,6 @@ const Payment = (props) => {
   };
 
   if (pUrl && tId) {
-    console.log(tId);
     return (
       <View style={{flex: 1}}>
         {/* <View
@@ -145,7 +144,7 @@ const Payment = (props) => {
         </View> */}
 
         <WebView
-          source={{uri: 'https://www.google.com'}}
+          source={{uri: pUrl}}
           startInLoadingState={true}
           renderLoading={() => <Loading />}
           containerStyle={{marginTop: 10}}
@@ -154,16 +153,6 @@ const Payment = (props) => {
     );
   }
 
-  return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: 'green',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
-      <Text>first load</Text>
-    </View>
-  );
+  return <View />;
 };
 export default Payment;

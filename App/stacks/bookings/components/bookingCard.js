@@ -165,9 +165,9 @@ const BookingCard = ({item, index, action}) => {
           <View style={styles.downButton}>
             <TouchableOpacity
               onPress={() => {
-                item.providerPhoneNumber
-                  ? Linking.openURL(`tel:${item.providerPhoneNumber}`)
-                  : Linking.openURL('tel:87796466');
+                item.userPhoneNumber
+                  ? Linking.openURL(`tel:${item.userPhoneNumber}`)
+                  : Linking.openURL('tel:+249999099148');
               }}
               style={[
                 {
